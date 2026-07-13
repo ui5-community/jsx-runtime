@@ -54,9 +54,11 @@ export default class WelcomeBody extends View {
 	private topBody!: HTML;
 	private bottomBody!: HTML;
 	private demoSlot!: VBox;
+	private page!: Page;
 	private bodyPopulated = false;
 	private navBound = false;
 	private demoMounted = false;
+	private scrollReset = false;
 
 	getAutoPrefixId(): boolean {
 		return true;
@@ -130,11 +132,13 @@ export default class WelcomeBody extends View {
 		// scroll on short viewports. Same "no header" pattern
 		// LearnDoc / ExploreSample use, the shell's ToolPage owns
 		// the visible chrome; this view only fills the content pane.
-		return (
-			<Page showHeader={false} enableScrolling={true} class="jsx-showcase-fullheight">
-				{mainWrap}
-			</Page>
-		);
+		this.page = new Page({
+			showHeader: false,
+			enableScrolling: true,
+			content: [mainWrap]
+		});
+		this.page.addStyleClass("jsx-showcase-fullheight");
+		return this.page;
 	}
 
 	onAfterRendering(): void {
@@ -154,6 +158,18 @@ export default class WelcomeBody extends View {
 		if (!this.demoMounted) {
 			this.demoMounted = true;
 			this.mountLiveDemo();
+		}
+		// Reset the page scroll to the top on first render. The async
+		// HTML-body population above and the live-demo mount below shift
+		// the layout after the Page's scroll container is measured, which
+		// otherwise leaves it a few pixels scrolled down on a cold load.
+		// `scrollTo(0, 0)` (offset, duration) pins it back to the top.
+		if (!this.scrollReset) {
+			this.scrollReset = true;
+			this.page.scrollTo(0, 0);
+			// Run again on the next frame, after the demo view has mounted
+			// and its layout has settled, so a late reflow can't re-nudge it.
+			setTimeout(() => this.page.scrollTo(0, 0), 0);
 		}
 	}
 

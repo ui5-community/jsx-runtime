@@ -1,0 +1,34 @@
+specVersion: "4.0"
+metadata:
+  name: ui5.community.jsx.helloworld
+type: application
+framework:
+  name: OpenUI5
+  version: "1.148.2"
+  libraries:
+    - name: sap.m
+    - name: sap.ui.core
+    - name: themelib_sap_horizon
+builder:
+  resources:
+    excludes:
+      - "test/e2e/**"
+  customTasks:
+    - name: ui5-tooling-transpile-task
+      afterTask: replaceVersion
+server:
+  customMiddleware:
+    - name: ui5-tooling-transpile-middleware
+      afterMiddleware: compression
+      configuration:
+        debug: true
+        transpileDependencies: true
+        transformJSX:
+          runtime: automatic
+          importSource: "ui5/community/jsx/runtime"
+        # Instrument the transpiled code with babel-plugin-istanbul (an
+        # optional peer dep the tooling resolves). Replaces the former
+        # hand-authored `babelConfig` with the `istanbul` plugin.
+        coverage: true
+    - name: ui5-middleware-livereload
+      afterMiddleware: compression

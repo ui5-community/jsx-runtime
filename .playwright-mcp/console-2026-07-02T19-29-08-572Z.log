@@ -1,0 +1,101 @@
+[     544ms] [INFO] 2026-07-02 21:29:09 Device API logging initialized - DEVICE @ http://localhost:8080/resources/sap/ui/Device.js?eval:87
+[    2246ms] [INFO] 2026-07-02 21:29:10.817300 Changing log level to DEBUG -  sap.base.log @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2247ms] [INFO] 2026-07-02 21:29:10.818699 Creating Core -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2248ms] [INFO] 2026-07-02 21:29:10.819500 Declared theme sap_horizon -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2248ms] [INFO] 2026-07-02 21:29:10.819600 Declared modules:  - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2248ms] [INFO] 2026-07-02 21:29:10.819699 Declared libraries: sap.ui.core,sap.m,sap.f,sap.ui.layout,ui5.community.jsx.runtime - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2248ms] [INFO] 2026-07-02 21:29:10.820199 Content direction set to 'ltr' -  sap/ui/core/util/_LocalizationHelper @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2249ms] [INFO] 2026-07-02 21:29:10.820900 Sync point 'UI5 Document Ready' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2249ms] [INFO] 2026-07-02 21:29:10.821000 Sync point 'UI5 Core Preloads and Bootstrap Script' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2249ms] [INFO] 2026-07-02 21:29:10.821400 Sync point 'UI5 Core Preloads and Bootstrap Script' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2282ms] [WARNING] 2026-07-02 21:29:10.854199 Dependency from ui5.community.jsx.runtime to sap.ui.core has not been resolved by library itself -  sap/ui/core/Lib.init @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2282ms] [WARNING] 2026-07-02 21:29:10.854300 Sync request triggered for 'sap/ui/core/library.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2307ms] [WARNING] 2026-07-02 21:29:10.879000 Sync request triggered for 'sap/ui/core/mvc/ViewType.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2316ms] [WARNING] 2026-07-02 21:29:10.888300 Sync request triggered for 'sap/ui/core/CalendarType.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2330ms] [WARNING] 2026-07-02 21:29:10.901500 Sync request triggered for 'sap/ui/core/date/CalendarWeekNumbering.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2336ms] [WARNING] 2026-07-02 21:29:10.908300 Repeated module execution skipped after async/sync conflict for sap/ui/core/library.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2338ms] [WARNING] 2026-07-02 21:29:10.910500 Repeated module execution skipped after async/sync conflict for sap/ui/core/CalendarType.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2339ms] [WARNING] 2026-07-02 21:29:10.911000 Repeated module execution skipped after async/sync conflict for sap/ui/core/mvc/ViewType.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2339ms] [WARNING] 2026-07-02 21:29:10.911000 Repeated module execution skipped after async/sync conflict for sap/ui/core/date/CalendarWeekNumbering.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2361ms] [INFO] 2026-07-02 21:29:10.933500 Declared theme sap_horizon -  sap.ui.core.theming.ThemeManager @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2423ms] [INFO] 2026-07-02 21:29:10.994800 Sync point 'UI5 Document Ready' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2423ms] [INFO] 2026-07-02 21:29:10.994900 Initializing -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2423ms] [INFO] 2026-07-02 21:29:10.995100 Initialized -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2423ms] [INFO] 2026-07-02 21:29:10.995100 Starting Plugins -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2423ms] [INFO] 2026-07-02 21:29:10.995199 Plugins started -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    2424ms] [WARNING] 2026-07-02 21:29:10.995600 Deprecated configuration option 'sap-ui-oninit' given in bootstrap configuration. Please use 'sap-ui-on-init' instead. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    2654ms] [ERROR] 2026-07-02 21:29:11.226300 Component.create() failed - TypeError: Cannot read properties of undefined (reading 'initialize') sap.ui.core.Component 
+ TypeError: Cannot read properties of undefined (reading 'initialize')
+    at Component.init (http://localhost:8080/Component.js:18:23)
+    at eval (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:533:34)
+    at Component.constructor (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:552:5)
+    at Component.constructor (http://localhost:8080/resources/sap/ui/core/Component.js?eval:391:18)
+    at new constructor (http://localhost:8080/resources/sap/ui/core/UIComponent.js:97:15)
+    at new Component (http://localhost:8080/Component.js:11:3)
+    at createInstance (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2686:20)
+    at eval (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2812:14)
+    at runWithOwner (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:1204:14)
+    at eval (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2811:13) @ http://localhost:8080/resources/sap/base/Log.js?eval:496
+[    2655ms] [ERROR] 2026-07-02 21:29:11.226900 [FUTURE FATAL] Failed to load component for container __container0 - TypeError: Cannot read properties of undefined (reading 'initialize')  
+ TypeError: Cannot read properties of undefined (reading 'initialize')
+    at Component.init (http://localhost:8080/Component.js:18:23)
+    at eval (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:533:34)
+    at Component.constructor (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:552:5)
+    at Component.constructor (http://localhost:8080/resources/sap/ui/core/Component.js?eval:391:18)
+    at new constructor (http://localhost:8080/resources/sap/ui/core/UIComponent.js:97:15)
+    at new Component (http://localhost:8080/Component.js:11:3)
+    at createInstance (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2686:20)
+    at eval (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2812:14)
+    at runWithOwner (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:1204:14)
+    at eval (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2811:13) @ http://localhost:8080/resources/sap/base/Log.js?eval:496
+[    2661ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8080/favicon.ico:0
+[   50822ms] [INFO] 2026-07-02 21:29:59 Device API logging initialized - DEVICE @ http://localhost:8080/resources/sap/ui/Device.js?eval:87
+[   51534ms] [INFO] 2026-07-02 21:30:00.105399 Changing log level to DEBUG -  sap.base.log @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51534ms] [INFO] 2026-07-02 21:30:00.105899 Creating Core -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51534ms] [INFO] 2026-07-02 21:30:00.106199 Declared theme sap_horizon -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51534ms] [INFO] 2026-07-02 21:30:00.106199 Declared modules:  - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51534ms] [INFO] 2026-07-02 21:30:00.106199 Declared libraries: sap.ui.core,sap.m,sap.f,sap.ui.layout,ui5.community.jsx.runtime - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51535ms] [INFO] 2026-07-02 21:30:00.106599 Content direction set to 'ltr' -  sap/ui/core/util/_LocalizationHelper @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51535ms] [INFO] 2026-07-02 21:30:00.106800 Sync point 'UI5 Document Ready' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51535ms] [INFO] 2026-07-02 21:30:00.106800 Sync point 'UI5 Core Preloads and Bootstrap Script' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51535ms] [INFO] 2026-07-02 21:30:00.107000 Sync point 'UI5 Core Preloads and Bootstrap Script' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51559ms] [WARNING] 2026-07-02 21:30:00.130500 Dependency from ui5.community.jsx.runtime to sap.ui.core has not been resolved by library itself -  sap/ui/core/Lib.init @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51559ms] [WARNING] 2026-07-02 21:30:00.130699 Sync request triggered for 'sap/ui/core/library.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51581ms] [WARNING] 2026-07-02 21:30:00.152899 Sync request triggered for 'sap/ui/core/mvc/ViewType.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51597ms] [WARNING] 2026-07-02 21:30:00.168300 Sync request triggered for 'sap/ui/core/CalendarType.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51604ms] [WARNING] 2026-07-02 21:30:00.176199 Sync request triggered for 'sap/ui/core/date/CalendarWeekNumbering.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51639ms] [WARNING] 2026-07-02 21:30:00.210699 Repeated module execution skipped after async/sync conflict for sap/ui/core/library.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51642ms] [WARNING] 2026-07-02 21:30:00.214099 Repeated module execution skipped after async/sync conflict for sap/ui/core/CalendarType.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51642ms] [WARNING] 2026-07-02 21:30:00.214300 Repeated module execution skipped after async/sync conflict for sap/ui/core/date/CalendarWeekNumbering.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51643ms] [WARNING] 2026-07-02 21:30:00.214300 Repeated module execution skipped after async/sync conflict for sap/ui/core/mvc/ViewType.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51662ms] [INFO] 2026-07-02 21:30:00.233399 Declared theme sap_horizon -  sap.ui.core.theming.ThemeManager @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51693ms] [INFO] 2026-07-02 21:30:00.265099 Sync point 'UI5 Document Ready' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51693ms] [INFO] 2026-07-02 21:30:00.265099 Initializing -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51693ms] [INFO] 2026-07-02 21:30:00.265099 Initialized -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51693ms] [INFO] 2026-07-02 21:30:00.265199 Starting Plugins -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51693ms] [INFO] 2026-07-02 21:30:00.265199 Plugins started -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   51694ms] [WARNING] 2026-07-02 21:30:00.265300 Deprecated configuration option 'sap-ui-oninit' given in bootstrap configuration. Please use 'sap-ui-on-init' instead. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   51845ms] [ERROR] 2026-07-02 21:30:00.417000 Component.create() failed - TypeError: Cannot read properties of undefined (reading 'initialize') sap.ui.core.Component 
+ TypeError: Cannot read properties of undefined (reading 'initialize')
+    at Component.init (http://localhost:8080/Component.js:17:23)
+    at eval (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:533:34)
+    at Component.constructor (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:552:5)
+    at Component.constructor (http://localhost:8080/resources/sap/ui/core/Component.js?eval:391:18)
+    at new constructor (http://localhost:8080/resources/sap/ui/core/UIComponent.js:97:15)
+    at new Component (http://localhost:8080/Component.js:11:3)
+    at createInstance (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2686:20)
+    at eval (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2812:14)
+    at runWithOwner (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:1204:14)
+    at eval (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2811:13) @ http://localhost:8080/resources/sap/base/Log.js?eval:496
+[   51845ms] [ERROR] 2026-07-02 21:30:00.417199 [FUTURE FATAL] Failed to load component for container __container0 - TypeError: Cannot read properties of undefined (reading 'initialize')  
+ TypeError: Cannot read properties of undefined (reading 'initialize')
+    at Component.init (http://localhost:8080/Component.js:17:23)
+    at eval (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:533:34)
+    at Component.constructor (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:552:5)
+    at Component.constructor (http://localhost:8080/resources/sap/ui/core/Component.js?eval:391:18)
+    at new constructor (http://localhost:8080/resources/sap/ui/core/UIComponent.js:97:15)
+    at new Component (http://localhost:8080/Component.js:11:3)
+    at createInstance (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2686:20)
+    at eval (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2812:14)
+    at runWithOwner (http://localhost:8080/resources/sap/ui/base/ManagedObject.js?eval:1204:14)
+    at eval (http://localhost:8080/resources/sap/ui/core/Component.js?eval:2811:13) @ http://localhost:8080/resources/sap/base/Log.js?eval:496

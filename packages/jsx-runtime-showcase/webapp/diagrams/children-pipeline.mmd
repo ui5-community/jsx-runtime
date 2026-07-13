@@ -1,0 +1,35 @@
+flowchart TB
+    In["<b>props.children</b><br/>(unknown shape:<br/>single value, array, or fragment)"]
+
+    subgraph Pass1 ["Pass 1. Surface unwrap"]
+        F1["<b>flattenSentinelLevel</b><br/>walk children one level deep<br/>unwrap <code>&lt;Fragment&gt;</code> and arrays<br/>so <code>&lt;For&gt;</code>/<code>&lt;If&gt;</code>/<code>&lt;Switch&gt;</code> surface"]
+        F1Out["flat list:<br/>[ &lt;For&gt;, &lt;If&gt;, &lt;Button&gt;, … ]"]
+    end
+
+    subgraph Pass2 ["Pass 2. Processor dispatch"]
+        F2["<b>processChildren</b><br/>for each child →<br/>first registered <code>ChildrenProcessor</code><br/>that claims it gets called"]
+        F2Out["mixed list:<br/>some claimed (For consumed binding slot),<br/>some passed through as IfNodes,<br/>some controls untouched"]
+    end
+
+    subgraph Pass3 ["Pass 3. Final cleanup"]
+        F3["<b>flattenChildren</b><br/>drop <code>null</code>/<code>undefined</code>/<code>false</code>/<code>''</code><br/>resolve literal <code>&lt;If&gt;</code> (inline or drop)<br/>recursively unwrap nested fragments"]
+        F3Out["clean list of UI5 control instances"]
+    end
+
+    Decide{"existing<br/><code>settings[content]</code>?"}
+    AsTemplate["<b>becomes the binding's <code>template</code></b><br/>(parent had <code>items={listRef}</code> → row factory)"]
+    AsAgg["<b>assigned to <code>settings[content]</code></b>"]
+
+    In --> F1
+    F1 --> F1Out
+    F1Out --> F2
+    F2 --> F2Out
+    F2Out --> F3
+    F3 --> F3Out
+    F3Out --> Decide
+    Decide -->|"is a BindingInfo<br/>(has <code>.path</code>)"| AsTemplate
+    Decide -->|"empty or not a binding"| AsAgg
+
+    style F1 fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style F2 fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style F3 fill:#fff4e1,stroke:#f57c00,color:#131e29

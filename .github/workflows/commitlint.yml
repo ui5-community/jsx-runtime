@@ -1,0 +1,23 @@
+name: Lint Commit Message
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  HUSKY_SKIP: true
+
+jobs:
+  commitlint:
+    name: commitlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so the action can lint the whole commit range
+      - uses: wagoid/commitlint-github-action@v6

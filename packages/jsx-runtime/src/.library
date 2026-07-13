@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<library xmlns="http://www.sap.com/sap.ui.library.xsd">
+	<name>ui5.community.jsx.runtime</name>
+	<vendor>UI5 Community</vendor>
+	<copyright>Apache-2.0</copyright>
+	<version>${version}</version>
+	<documentation>A plugin-based JSX runtime for UI5, write UI5 views as TSX with per-control TypeScript typing.</documentation>
+	<dependencies>
+		<dependency>
+			<libraryName>sap.ui.core</libraryName>
+		</dependency>
+	</dependencies>
+</library>

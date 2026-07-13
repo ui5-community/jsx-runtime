@@ -1,0 +1,53 @@
+{
+  "name": "jsx-runtime",
+
+  "description": "A plugin-based JSX runtime for UI5: write UI5 views as TSX. Monorepo hosting the library and its showcase app.",
+  "private": true,
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@11.12.0",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ui5-community/jsx-runtime.git"
+  },
+  "scripts": {
+    "build": "pnpm --filter @ui5-community/jsx-runtime build && pnpm --filter @ui5-community/jsx-runtime-showcase build && pnpm --filter @ui5-community/jsx-runtime-helloworld build",
+    "build:api": "pnpm --filter @ui5-community/jsx-runtime build:api",
+    "start": "pnpm --filter @ui5-community/jsx-runtime-showcase start",
+    "start:helloworld": "pnpm --filter @ui5-community/jsx-runtime-helloworld start",
+    "dev": "pnpm --filter @ui5-community/jsx-runtime-showcase dev",
+    "dev:helloworld": "pnpm --filter @ui5-community/jsx-runtime-helloworld dev",
+    "test": "pnpm -r --workspace-concurrency=1 test",
+    "test:helloworld": "pnpm --filter @ui5-community/jsx-runtime-helloworld test",
+    "test:runtime": "pnpm --filter @ui5-community/jsx-runtime test",
+    "test:showcase": "pnpm --filter @ui5-community/jsx-runtime-showcase test",
+    "lint": "pnpm -r lint",
+    "ts-typecheck": "pnpm -r ts-typecheck",
+    "clean": "pnpm -r clean && rimraf node_modules",
+    "changeset": "changeset",
+    "changeset:empty": "changeset --empty",
+    "changeset:auto": "node scripts/auto-changeset.mjs",
+    "version-packages": "changeset version && pnpm install --lockfile-only",
+    "release-publish": "changeset publish",
+    "lint:commit": "commitlint -e",
+    "lint:staged": "lint-staged",
+    "hooks:pre-commit": "pnpm lint:staged",
+    "hooks:pre-push": "pnpm lint:commit",
+    "prepare": "node ./.husky/skip.mjs || husky"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.7.0",
+    "@changesets/cli": "^2.31.0",
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "rimraf": "^6.0.1",
+    "typescript-eslint": "^8.63.0"
+  }
+}

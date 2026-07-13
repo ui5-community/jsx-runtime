@@ -1,0 +1,49 @@
+flowchart TB
+    Author["<b>Plugin author</b><br/><code>withScope({ ... }, () => &lt;Root/&gt;)</code>"]
+
+    subgraph Scope ["Active scope (stack-saved, per-tree)"]
+        Reg["<b>Merged registries</b><br/>core defaults + plugin extras<br/>first-match-wins per point"]
+    end
+
+    subgraph Phases ["jsx() phases that read the scope"]
+        P1["<b>Phase 1. Dispatch</b><br/>string type?"]
+        HI["→ <code>HtmlIntrinsic</code><br/>(build a control for &lt;div&gt;, &lt;svg&gt;, …)"]
+
+        P2["<b>Phase 2. Prop loop</b><br/>per (key, value) in props"]
+        IH["→ <code>IntrinsicHandler</code><br/>(<code>class=</code>, <code>ref=</code>, <code>binding=</code>,<br/>dot-handler events)"]
+
+        P3["<b>Phase 3. Children</b><br/>per JSX child"]
+        CP["→ <code>ChildrenProcessor</code><br/>(&lt;Fragment&gt;, &lt;For&gt;, &lt;If&gt;,<br/>&lt;Switch&gt;, custom sentinels)"]
+
+        P4["<b>Phase 4. Construct</b><br/>settings ready"]
+        RN["→ <code>Renderer</code><br/>(default: <code>new type(settings)</code>;<br/>renderToXML swaps this)"]
+
+        P5["<b>Phase 5. Post-construct</b><br/>per prop, per instance"]
+        PA["→ <code>PropertyApplier</code><br/>(Promise-valued props,<br/>late-binding semantics)"]
+    end
+
+    Out["<b>Result</b><br/>UI5 control tree · XML string ·<br/>RenderManager thunk"]
+
+    Author --> Scope
+    Scope -.reads.-> Reg
+    Reg --> P1
+    P1 -->|yes| HI
+    P1 -->|no| P2
+    P2 --> IH
+    IH --> P2
+    P2 --> P3
+    P3 --> CP
+    CP --> P3
+    P3 --> P4
+    P4 --> RN
+    RN --> P5
+    P5 --> PA
+    PA --> Out
+    HI -.->|early return| Out
+
+    style Reg fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style HI fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style IH fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style CP fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style RN fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style PA fill:#fff4e1,stroke:#f57c00,color:#131e29

@@ -1,0 +1,30 @@
+- generic [ref=f13e8]:
+  - banner
+  - generic [ref=f13e12]:
+    - generic [ref=f13e14]:
+      - banner [ref=f13e15]:
+        - heading "UI5 JSX Runtime Showcase" [level=2] [ref=f13e18]
+      - list [ref=f13e21]:
+        - listitem "Contains Selectable Items . List Item . Is Active . Home . Not Selected" [active] [ref=f13e22] [cursor=pointer]:
+          - generic [ref=f13e25]: Home
+        - listitem [ref=f13e26] [cursor=pointer]:
+          - generic [ref=f13e29]: Hello (jsx / Fragment)
+        - listitem [ref=f13e30] [cursor=pointer]:
+          - generic [ref=f13e33]: For
+        - listitem [ref=f13e34] [cursor=pointer]:
+          - generic [ref=f13e37]: If
+        - listitem [ref=f13e38] [cursor=pointer]:
+          - generic [ref=f13e41]: Switch (plugin)
+        - listitem [ref=f13e42] [cursor=pointer]:
+          - generic [ref=f13e45]: Events
+        - listitem [ref=f13e46] [cursor=pointer]:
+          - generic [ref=f13e49]: Bound aggregation
+    - generic [ref=f13e54]:
+      - banner [ref=f13e55]:
+        - heading "UI5 JSX Runtime" [level=2] [ref=f13e58]
+      - generic [ref=f13e60]:
+        - heading "UI5 JSX Runtime" [level=1] [ref=f13e62]
+        - generic [ref=f13e64]: Pick a concept on the left to see it in action.
+        - link "Concept documentation" [ref=f13e66] [cursor=pointer]:
+          - /url: https://github.com/ui5-community/ui5-jsx-runtime/blob/main/docs/jsx-runtime.md
+          - generic [ref=f13e67]: Concept documentation

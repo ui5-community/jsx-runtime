@@ -1,0 +1,62 @@
+# jsx-runtime
+
+> A plugin-based JSX runtime for UI5. Author UI5 views as `.tsx` files with per-control TypeScript typing. `<Foo/>` compiles to `new Foo(settings)` — no React, no VDOM, no reconciler. A stable five-extension-point plugin SPI lets libraries layer features on the core without touching it.
+
+## Read first
+
+- [README.md](README.md): One-page overview, install, minimal example, monorepo map.
+- [AGENTS.md](AGENTS.md): Orientation for coding agents. Monorepo layout, gotchas, "read Y if you need to know X."
+- [CONTRIBUTING.md](CONTRIBUTING.md): Dev loop, prerequisites, how to add a plugin or a showcase page.
+- [CHANGELOG.md](CHANGELOG.md): Pointer to the changesets-generated release notes. The library's log is [packages/jsx-runtime/CHANGELOG.md](packages/jsx-runtime/CHANGELOG.md).
+
+## Curated docs (root `docs/`)
+
+- [docs/jsx-runtime.md](docs/jsx-runtime.md): Concept overview. The transform pipeline, three-layer API surface, plugin SPI walkthrough.
+- [docs/requirements.md](docs/requirements.md): 622-line requirements spec. Functional and non-functional requirements with stable IDs (`FR-CON-04`, `FR-INT-02`, …) that source JSDoc cross-references.
+- [docs/cookbook.md](docs/cookbook.md): 15 canonical recipes (minimal view, events, bindings, aggregations, fragments, embedding, plugin opt-in, plugin authoring). Each recipe is grounded in a runnable showcase sample.
+- [docs/gotchas.md](docs/gotchas.md): 12 known pitfalls consolidated. Cross-linked from source JSDoc.
+- [docs/MIGRATION.md](docs/MIGRATION.md): XMLView → JSXView translation table. Interop, prerequisites, sanity checklist.
+- [docs/xmlview-to-tsx.md](docs/xmlview-to-tsx.md): Step-by-step XMLView→TSX conversion guide (toolchain wiring, element/aggregation/binding mapping, resource-roots, OPA viewName gotcha). Grounded in the jsx-runtime-helloworld conversion.
+- [docs/deferred-samples.md](docs/deferred-samples.md): The documented gap of samples not yet included (routing, OData, custom-control authoring, forms, tables beyond `sap.m.Table`).
+- [docs/persona-review.md](docs/persona-review.md): Design-time persona review. Useful for "why does the runtime make choice X?" questions.
+- [docs/performance.md](docs/performance.md): JSX vs XMLView instantiation performance — architecture rationale + measured micro-benchmark numbers.
+
+## Library package — `@ui5-community/jsx-runtime`
+
+- [packages/jsx-runtime/README.md](packages/jsx-runtime/README.md): Package README. Babel + tsconfig snippets, manifest snippet, three-layer summary, plugin opt-in example.
+- [packages/jsx-runtime/src/jsx-runtime.ts](packages/jsx-runtime/src/jsx-runtime.ts): Public barrel. The Babel-automatic-runtime entry. Lists every exported symbol with a one-line description in the file header.
+- [packages/jsx-runtime/src/runtime/runtime.ts](packages/jsx-runtime/src/runtime/runtime.ts): Core implementation. `jsx`, `jsxs`, `Fragment`, `For`, `If`, `defineSentinel`, `isSentinelNode`, built-in intrinsics, `JSX` namespace. ~50% comment density with `tsx` code fences and `@example` blocks on the public entry points.
+- [packages/jsx-runtime/src/runtime/plugin.ts](packages/jsx-runtime/src/runtime/plugin.ts): SPI type declarations. `Renderer`, `IntrinsicHandler`, `PropertyApplier`, `ChildrenProcessor`, `ControlClass`, `ControlMetadata`, `PostConstructHook`, plus `defaultRenderer`.
+- [packages/jsx-runtime/src/runtime/scope.ts](packages/jsx-runtime/src/runtime/scope.ts): `Scope`, `withScope`, plus `current*` accessors. Read for the plugin-context model.
+- [packages/jsx-runtime/src/runtime/installViewScopeBridge.ts](packages/jsx-runtime/src/runtime/installViewScopeBridge.ts): Prototype patch on `View.prototype.createContent` that wraps subclass calls in `withScope({ view })`. Import-time side effect, needed for auto-prefix ID.
+- [packages/jsx-runtime/src/plugins/switch/index.tsx](packages/jsx-runtime/src/plugins/switch/index.tsx): Sample plugin. `<Switch>` / `<Case>` / `<Default>` as an existence proof of the SPI on a non-FE example.
+- [packages/jsx-runtime/src/plugins/switch/README.md](packages/jsx-runtime/src/plugins/switch/README.md): Sample-plugin README.
+- [packages/jsx-runtime/typedoc.json](packages/jsx-runtime/typedoc.json): TypeDoc configuration. Emits HTML API docs into `packages/jsx-runtime-showcase/webapp/api/`; the showcase's `build` script runs it automatically, so the deployed GitHub Pages artifact includes an `/api/` folder alongside Learn and Explore.
+
+## Showcase package — `@ui5-community/jsx-runtime-showcase`
+
+The showcase is a runnable UI5 app that doubles as living documentation. Every sample view has a 1:1 companion `.md`.
+
+- [packages/jsx-runtime-showcase/samples.json](packages/jsx-runtime-showcase/samples.json): Machine-readable sample index (id, title, chapter, concepts, viewName, sourcePath, docPath). 17 samples.
+- [packages/jsx-runtime-showcase/webapp/docs/overview.md](packages/jsx-runtime-showcase/webapp/docs/overview.md): Learn entry point.
+- [packages/jsx-runtime-showcase/webapp/docs/](packages/jsx-runtime-showcase/webapp/docs/): 19 concept pages (`setup.md`, `first-view.md`, `controls.md`, `props-typing.md`, `data-binding.md`, `events.md`, `aggregations.md`, `directives.md`, `fragments.md`, `nested-views.md`, `type-coercion.md`, `auto-prefix.md`, `jsx-vs-xmlview.md`, `plugin-spi.md`, `switch-plugin.md`, `runtime-anatomy.md`, `tsconfig.md`, `ui5-yaml.md`).
+- [packages/jsx-runtime-showcase/webapp/docs/samples/](packages/jsx-runtime-showcase/webapp/docs/samples/): 17 sample companion docs (concept + minimal snippet + "See also" cross-links).
+- [packages/jsx-runtime-showcase/webapp/view/showcases/](packages/jsx-runtime-showcase/webapp/view/showcases/): 17 runnable sample TSX views, one per sample doc.
+- [packages/jsx-runtime-showcase/webapp/view/ExploreSample.tsx](packages/jsx-runtime-showcase/webapp/view/ExploreSample.tsx): Sample registry (single source of truth for the sample list; mirrored by `samples.json`).
+
+## Reference app — `@ui5-community/jsx-runtime-helloworld`
+
+A minimal, plain-scaffolded UI5 TypeScript app that consumes the runtime the way an external project would. The from-scratch adoption reference: a `workspace:^` dependency plus config-only wiring (`jsxImportSource`, Babel automatic runtime, `ui5.yaml`), no showcase machinery.
+
+- [packages/jsx-runtime-helloworld/tsconfig.json](packages/jsx-runtime-helloworld/tsconfig.json): The per-project TypeScript wiring — `jsx: "react-jsx"`, `jsxImportSource: "ui5/community/jsx/runtime"`, package added to `types`.
+- [packages/jsx-runtime-helloworld/ui5.yaml](packages/jsx-runtime-helloworld/ui5.yaml): `ui5-tooling-transpile` `transformJSX` option (`runtime: "automatic"`, `importSource` pointing at the runtime) — enables the JSX transform with no hand-authored `.babelrc.json`.
+- [packages/jsx-runtime-helloworld/ui5.yaml](packages/jsx-runtime-helloworld/ui5.yaml): `includeDependency` + `transpileDependencies` so the workspace-linked runtime resolves in dev and bundles into the build.
+- [packages/jsx-runtime-helloworld/webapp/view/Main.tsx](packages/jsx-runtime-helloworld/webapp/view/Main.tsx): A real view in TSX (bindings, formatter, dot-handler, named aggregation as prop, default aggregation as children) — converted from `Main.view.xml`.
+
+## Tests as executable spec
+
+- [packages/jsx-runtime/test/qunit/runtime/](packages/jsx-runtime/test/qunit/runtime/): One QUnit file per concern (`jsx.qunit.ts`, `for.qunit.ts`, `if.qunit.ts`, `fragment.qunit.ts`, `scope.qunit.ts`, `intrinsics.qunit.ts`, `property-appliers.qunit.ts`, `auto-prefix-id.qunit.ts`).
+
+## Do not index
+
+- [packages/jsx-runtime-showcase/webapp/docs/_archive/](packages/jsx-runtime-showcase/webapp/docs/_archive/): Historical drafts kept for provenance only. Superseded by the active docs above. See the folder's [README.md](packages/jsx-runtime-showcase/webapp/docs/_archive/README.md).

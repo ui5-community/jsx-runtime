@@ -1,0 +1,20 @@
+{
+  "generator-ui5-ts-app": {
+    "namespace": "ui5.community.jsx.helloworld",
+    "framework": "OpenUI5",
+    "frameworkVersion": "1.148.2",
+    "author": "UI5 Community",
+    "tstypes": "@openui5/types",
+    "tstypesVersion": "1.148.2",
+    "appId": "ui5.community.jsx.helloworld",
+    "appURI": "ui5/community/jsx/helloworld",
+    "cdnDomain": "sdk.openui5.org",
+    "defaultTheme": "sap_horizon",
+    "gte1_98_0": true,
+    "gte1_104_0": true,
+    "gte1_115_0": true,
+    "gte1_120_0": true,
+    "gte1_142_0": true,
+    "lt1_124_0": false
+  }
+}

@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+docs-api/
+packages/jsx-runtime-showcase/webapp/api/
+
+# Test / coverage output
+coverage/
+report/
+.nyc_output/
+
+# UI5 tooling caches
+.ui5-tooling-modules/
+.ui5-middleware-serveframework/
+ui5-workspace.yaml
+# Keep the showcase's workspace file tracked — it wires the
+# workspace-linked runtime dependency for `pnpm dev` and is the
+# same for every developer. Per-developer overrides can live in
+# a sibling ui5-workspace.yaml under a different name via the
+# `--workspace` CLI flag.
+!packages/jsx-runtime-showcase/ui5-workspace.yaml
+
+# TypeScript
+*.tsbuildinfo
+
+# Editor / OS
+.DS_Store
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+Thumbs.db
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Package-manager lockfiles from other tools (pnpm-only)
+package-lock.json
+yarn.lock

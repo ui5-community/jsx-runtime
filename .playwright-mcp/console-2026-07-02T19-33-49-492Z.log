@@ -1,0 +1,128 @@
+[     156ms] [INFO] 2026-07-02 21:33:49 Device API logging initialized - DEVICE @ http://localhost:8080/resources/sap/ui/Device.js?eval:87
+[     648ms] [INFO] 2026-07-02 21:33:50.139799 Changing log level to DEBUG -  sap.base.log @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     648ms] [INFO] 2026-07-02 21:33:50.140099 Creating Core -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     648ms] [INFO] 2026-07-02 21:33:50.140399 Declared theme sap_horizon -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     649ms] [INFO] 2026-07-02 21:33:50.140500 Declared modules:  - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     649ms] [INFO] 2026-07-02 21:33:50.140599 Declared libraries: sap.ui.core,sap.m,sap.f,sap.ui.layout,ui5.community.jsx.runtime - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     649ms] [INFO] 2026-07-02 21:33:50.140699 Content direction set to 'ltr' -  sap/ui/core/util/_LocalizationHelper @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     649ms] [INFO] 2026-07-02 21:33:50.140799 Sync point 'UI5 Document Ready' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     649ms] [INFO] 2026-07-02 21:33:50.140899 Sync point 'UI5 Core Preloads and Bootstrap Script' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     649ms] [INFO] 2026-07-02 21:33:50.141199 Sync point 'UI5 Core Preloads and Bootstrap Script' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     660ms] [WARNING] 2026-07-02 21:33:50.151500 Dependency from ui5.community.jsx.runtime to sap.ui.core has not been resolved by library itself -  sap/ui/core/Lib.init @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     660ms] [WARNING] 2026-07-02 21:33:50.151599 Sync request triggered for 'sap/ui/core/library.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     666ms] [WARNING] 2026-07-02 21:33:50.157799 Sync request triggered for 'sap/ui/core/mvc/ViewType.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     676ms] [WARNING] 2026-07-02 21:33:50.168199 Sync request triggered for 'sap/ui/core/CalendarType.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     679ms] [WARNING] 2026-07-02 21:33:50.170899 Sync request triggered for 'sap/ui/core/date/CalendarWeekNumbering.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     682ms] [WARNING] 2026-07-02 21:33:50.174399 Repeated module execution skipped after async/sync conflict for sap/ui/core/library.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     684ms] [WARNING] 2026-07-02 21:33:50.176199 Repeated module execution skipped after async/sync conflict for sap/ui/core/mvc/ViewType.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     685ms] [WARNING] 2026-07-02 21:33:50.176500 Repeated module execution skipped after async/sync conflict for sap/ui/core/CalendarType.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     685ms] [WARNING] 2026-07-02 21:33:50.176599 Repeated module execution skipped after async/sync conflict for sap/ui/core/date/CalendarWeekNumbering.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     685ms] [INFO] 2026-07-02 21:33:50.177299 Declared theme sap_horizon -  sap.ui.core.theming.ThemeManager @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     708ms] [INFO] 2026-07-02 21:33:50.199899 Sync point 'UI5 Document Ready' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     708ms] [INFO] 2026-07-02 21:33:50.200000 Initializing -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     708ms] [INFO] 2026-07-02 21:33:50.200000 Initialized -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     708ms] [INFO] 2026-07-02 21:33:50.200000 Starting Plugins -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     708ms] [INFO] 2026-07-02 21:33:50.200000 Plugins started -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     708ms] [WARNING] 2026-07-02 21:33:50.200099 Deprecated configuration option 'sap-ui-oninit' given in bootstrap configuration. Please use 'sap-ui-on-init' instead. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[     723ms] [INFO] 2026-07-02 21:33:50.215399 Loading manifest via URL: ./manifest.json?sap-language=6N -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     761ms] [INFO] 2026-07-02 21:33:50.253299 Component "ui5.community.jsx.showcase" is loading libraries: "sap.ui.core, sap.m, sap.f, sap.ui.layout, ui5.community.jsx.runtime" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     978ms] [INFO] 2026-07-02 21:33:50.469500 Component "ui5.community.jsx.showcase" is loading library: "sap.ui.core" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     978ms] [INFO] 2026-07-02 21:33:50.469699 Component "ui5.community.jsx.showcase" is loading library: "sap.m" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     978ms] [INFO] 2026-07-02 21:33:50.469699 Component "ui5.community.jsx.showcase" is loading library: "sap.f" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     978ms] [INFO] 2026-07-02 21:33:50.469699 Component "ui5.community.jsx.showcase" is loading library: "sap.ui.layout" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     978ms] [INFO] 2026-07-02 21:33:50.469699 Component "ui5.community.jsx.showcase" is loading library: "ui5.community.jsx.runtime" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[     979ms] [INFO] 2026-07-02 21:33:50.471199 Component instance Id = showcase -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    1139ms] [WARNING] 2026-07-02 21:33:50.630799 Element sap.m.NavContainer#showcase---app--shell: page stack is empty but should have been initialized - application failed to provide a page to display -   @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    1140ms] [INFO] 2026-07-02 21:33:50.631799 Did place the view target 'ui5.community.jsx.showcase.view.Home' with the id 'showcase---home' into the aggregation 'pages' of a control with the id 'showcase---app--shell' - EventProvider sap.m.routing.Target  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    1140ms] [INFO] 2026-07-02 21:33:50.632299 navigation to view with id: showcase---home the targetControl is showcase---app--shell backwards is false -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    1140ms] [WARNING] 2026-07-02 21:33:50.632299 Element sap.m.NavContainer#showcase---app--shell: Cannot navigate to page showcase---home because this is the current page. -   @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[    1140ms] [INFO] 2026-07-02 21:33:50.632299 The route named 'home' did match with its pattern - EventProvider sap.ui.core.routing.Route  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    1145ms] [INFO] 2026-07-02 21:33:50.637099 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    1145ms] [INFO] 2026-07-02 21:33:50.637199 Set Focus on ID: __item0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    1146ms] [INFO] 2026-07-02 21:33:50.638500 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    1148ms] [INFO] 2026-07-02 21:33:50.640199 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[    1148ms] [INFO] 2026-07-02 21:33:50.640299 Set Focus on ID: __item0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   10379ms] [INFO] 2026-07-02 21:33:59.871299 FocusItem: 1 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   10380ms] [INFO] 2026-07-02 21:33:59.871500 Set Focus on ID: __item1 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38067ms] [INFO] 2026-07-02 21:34:27 Device API logging initialized - DEVICE @ http://localhost:8080/resources/sap/ui/Device.js?eval:87
+[   38782ms] [INFO] 2026-07-02 21:34:28.274100 Changing log level to DEBUG -  sap.base.log @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38783ms] [INFO] 2026-07-02 21:34:28.274500 Creating Core -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38783ms] [INFO] 2026-07-02 21:34:28.274800 Declared theme sap_horizon -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38783ms] [INFO] 2026-07-02 21:34:28.274899 Declared modules:  - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38783ms] [INFO] 2026-07-02 21:34:28.274899 Declared libraries: sap.ui.core,sap.m,sap.f,sap.ui.layout,ui5.community.jsx.runtime - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38783ms] [INFO] 2026-07-02 21:34:28.275300 Content direction set to 'ltr' -  sap/ui/core/util/_LocalizationHelper @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38784ms] [INFO] 2026-07-02 21:34:28.275399 Sync point 'UI5 Document Ready' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38784ms] [INFO] 2026-07-02 21:34:28.275500 Sync point 'UI5 Core Preloads and Bootstrap Script' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38784ms] [INFO] 2026-07-02 21:34:28.275699 Sync point 'UI5 Core Preloads and Bootstrap Script' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38800ms] [WARNING] 2026-07-02 21:34:28.291699 Dependency from ui5.community.jsx.runtime to sap.ui.core has not been resolved by library itself -  sap/ui/core/Lib.init @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38800ms] [WARNING] 2026-07-02 21:34:28.291800 Sync request triggered for 'sap/ui/core/library.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38820ms] [WARNING] 2026-07-02 21:34:28.311899 Sync request triggered for 'sap/ui/core/mvc/ViewType.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38828ms] [WARNING] 2026-07-02 21:34:28.320000 Sync request triggered for 'sap/ui/core/CalendarType.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38834ms] [WARNING] 2026-07-02 21:34:28.326000 Sync request triggered for 'sap/ui/core/date/CalendarWeekNumbering.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38840ms] [WARNING] 2026-07-02 21:34:28.332000 Repeated module execution skipped after async/sync conflict for sap/ui/core/library.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38842ms] [WARNING] 2026-07-02 21:34:28.334100 Repeated module execution skipped after async/sync conflict for sap/ui/core/mvc/ViewType.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38842ms] [WARNING] 2026-07-02 21:34:28.334199 Repeated module execution skipped after async/sync conflict for sap/ui/core/CalendarType.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38842ms] [WARNING] 2026-07-02 21:34:28.334300 Repeated module execution skipped after async/sync conflict for sap/ui/core/date/CalendarWeekNumbering.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38843ms] [INFO] 2026-07-02 21:34:28.335300 Declared theme sap_horizon -  sap.ui.core.theming.ThemeManager @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38887ms] [INFO] 2026-07-02 21:34:28.379199 Sync point 'UI5 Document Ready' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38887ms] [INFO] 2026-07-02 21:34:28.379300 Initializing -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38887ms] [INFO] 2026-07-02 21:34:28.379399 Initialized -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38887ms] [INFO] 2026-07-02 21:34:28.379399 Starting Plugins -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38887ms] [INFO] 2026-07-02 21:34:28.379399 Plugins started -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38888ms] [WARNING] 2026-07-02 21:34:28.379500 Deprecated configuration option 'sap-ui-oninit' given in bootstrap configuration. Please use 'sap-ui-on-init' instead. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   38912ms] [INFO] 2026-07-02 21:34:28.403500 Loading manifest via URL: ./manifest.json?sap-language=6N -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   38951ms] [INFO] 2026-07-02 21:34:28.442899 Component "ui5.community.jsx.showcase" is loading libraries: "sap.ui.core, sap.m, sap.f, sap.ui.layout, ui5.community.jsx.runtime" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39306ms] [INFO] 2026-07-02 21:34:28.797899 Component "ui5.community.jsx.showcase" is loading library: "sap.ui.core" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39306ms] [INFO] 2026-07-02 21:34:28.798000 Component "ui5.community.jsx.showcase" is loading library: "sap.m" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39306ms] [INFO] 2026-07-02 21:34:28.798100 Component "ui5.community.jsx.showcase" is loading library: "sap.f" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39306ms] [INFO] 2026-07-02 21:34:28.798100 Component "ui5.community.jsx.showcase" is loading library: "sap.ui.layout" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39306ms] [INFO] 2026-07-02 21:34:28.798100 Component "ui5.community.jsx.showcase" is loading library: "ui5.community.jsx.runtime" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39308ms] [INFO] 2026-07-02 21:34:28.800000 Component instance Id = showcase -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39531ms] [WARNING] 2026-07-02 21:34:29.022899 Element sap.m.NavContainer#showcase---app--shell: page stack is empty but should have been initialized - application failed to provide a page to display -   @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   39532ms] [INFO] 2026-07-02 21:34:29.023899 Did place the view target 'ui5.community.jsx.showcase.view.Home' with the id 'showcase---home' into the aggregation 'pages' of a control with the id 'showcase---app--shell' - EventProvider sap.m.routing.Target  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39532ms] [INFO] 2026-07-02 21:34:29.024300 navigation to view with id: showcase---home the targetControl is showcase---app--shell backwards is false -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39532ms] [WARNING] 2026-07-02 21:34:29.024300 Element sap.m.NavContainer#showcase---app--shell: Cannot navigate to page showcase---home because this is the current page. -   @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   39532ms] [INFO] 2026-07-02 21:34:29.024399 The route named 'home' did match with its pattern - EventProvider sap.ui.core.routing.Route  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39538ms] [INFO] 2026-07-02 21:34:29.030100 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39538ms] [INFO] 2026-07-02 21:34:29.030199 Set Focus on ID: showcase---app--nav-nodata - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39539ms] [INFO] 2026-07-02 21:34:29.031399 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39541ms] [INFO] 2026-07-02 21:34:29.032899 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   39541ms] [INFO] 2026-07-02 21:34:29.033000 Set Focus on ID: showcase---app--nav-nodata - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42171ms] [INFO] 2026-07-02 21:34:31 Device API logging initialized - DEVICE @ http://localhost:8080/resources/sap/ui/Device.js?eval:87
+[   42699ms] [INFO] 2026-07-02 21:34:32.190899 Changing log level to DEBUG -  sap.base.log @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42699ms] [INFO] 2026-07-02 21:34:32.191199 Creating Core -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42700ms] [INFO] 2026-07-02 21:34:32.191600 Declared theme sap_horizon -  sap.ui.core.Core @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42700ms] [INFO] 2026-07-02 21:34:32.191600 Declared modules:  - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42700ms] [INFO] 2026-07-02 21:34:32.191699 Declared libraries: sap.ui.core,sap.m,sap.f,sap.ui.layout,ui5.community.jsx.runtime - sap.ui.core.Core  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42700ms] [INFO] 2026-07-02 21:34:32.191800 Content direction set to 'ltr' -  sap/ui/core/util/_LocalizationHelper @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42700ms] [INFO] 2026-07-02 21:34:32.191899 Sync point 'UI5 Document Ready' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42700ms] [INFO] 2026-07-02 21:34:32.191899 Sync point 'UI5 Core Preloads and Bootstrap Script' created -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42700ms] [INFO] 2026-07-02 21:34:32.192100 Sync point 'UI5 Core Preloads and Bootstrap Script' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42711ms] [WARNING] 2026-07-02 21:34:32.203300 Dependency from ui5.community.jsx.runtime to sap.ui.core has not been resolved by library itself -  sap/ui/core/Lib.init @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   42711ms] [WARNING] 2026-07-02 21:34:32.203500 Sync request triggered for 'sap/ui/core/library.js' while async request was already pending. Loading a module twice might cause issues and should be avoided by fully migrating to async APIs. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   42741ms] [WARNING] 2026-07-02 21:34:32.232800 Repeated module execution skipped after async/sync conflict for sap/ui/core/library.js -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   42741ms] [INFO] 2026-07-02 21:34:32.233399 Declared theme sap_horizon -  sap.ui.core.theming.ThemeManager @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42761ms] [INFO] 2026-07-02 21:34:32.253399 Sync point 'UI5 Document Ready' finished (tasks:2, open:0, failures:0) -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42762ms] [INFO] 2026-07-02 21:34:32.253500 Initializing -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42762ms] [INFO] 2026-07-02 21:34:32.253600 Initialized -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42762ms] [INFO] 2026-07-02 21:34:32.253699 Starting Plugins -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42762ms] [INFO] 2026-07-02 21:34:32.253699 Plugins started -  sap.ui.core.Core.init() @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42762ms] [WARNING] 2026-07-02 21:34:32.253699 Deprecated configuration option 'sap-ui-oninit' given in bootstrap configuration. Please use 'sap-ui-on-init' instead. -  sap.ui.ModuleSystem @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   42774ms] [INFO] 2026-07-02 21:34:32.266199 Loading manifest via URL: ./manifest.json?sap-language=6N -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   42806ms] [INFO] 2026-07-02 21:34:32.298100 Component "ui5.community.jsx.showcase" is loading libraries: "sap.ui.core, sap.m, sap.f, sap.ui.layout, ui5.community.jsx.runtime" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43012ms] [INFO] 2026-07-02 21:34:32.504300 Component "ui5.community.jsx.showcase" is loading library: "sap.ui.core" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43012ms] [INFO] 2026-07-02 21:34:32.504399 Component "ui5.community.jsx.showcase" is loading library: "sap.m" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43012ms] [INFO] 2026-07-02 21:34:32.504399 Component "ui5.community.jsx.showcase" is loading library: "sap.f" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43012ms] [INFO] 2026-07-02 21:34:32.504500 Component "ui5.community.jsx.showcase" is loading library: "sap.ui.layout" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43013ms] [INFO] 2026-07-02 21:34:32.504500 Component "ui5.community.jsx.showcase" is loading library: "ui5.community.jsx.runtime" -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43014ms] [INFO] 2026-07-02 21:34:32.506100 Component instance Id = showcase -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43207ms] [WARNING] 2026-07-02 21:34:32.698699 Element sap.m.NavContainer#showcase---app--shell: page stack is empty but should have been initialized - application failed to provide a page to display -   @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   43209ms] [INFO] 2026-07-02 21:34:32.701300 Did place the view target 'ui5.community.jsx.showcase.view.Home' with the id 'showcase---home' into the aggregation 'pages' of a control with the id 'showcase---app--shell' - EventProvider sap.m.routing.Target  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43210ms] [INFO] 2026-07-02 21:34:32.701699 navigation to view with id: showcase---home the targetControl is showcase---app--shell backwards is false -   @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43210ms] [WARNING] 2026-07-02 21:34:32.701800 Element sap.m.NavContainer#showcase---app--shell: Cannot navigate to page showcase---home because this is the current page. -   @ http://localhost:8080/resources/sap/base/Log.js?eval:497
+[   43210ms] [INFO] 2026-07-02 21:34:32.701800 The route named 'home' did match with its pattern - EventProvider sap.ui.core.routing.Route  @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43215ms] [INFO] 2026-07-02 21:34:32.706800 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43215ms] [INFO] 2026-07-02 21:34:32.706800 Set Focus on ID: __item0-showcase---app--nav-0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43216ms] [INFO] 2026-07-02 21:34:32.708399 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43218ms] [INFO] 2026-07-02 21:34:32.710199 FocusItem: 0 iFocusedIndex: 0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500
+[   43218ms] [INFO] 2026-07-02 21:34:32.710300 Set Focus on ID: __item0-showcase---app--nav-0 - focusItem ItemNavigation @ http://localhost:8080/resources/sap/base/Log.js?eval:500

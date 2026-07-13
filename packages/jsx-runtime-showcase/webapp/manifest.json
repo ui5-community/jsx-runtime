@@ -1,0 +1,100 @@
+{
+	"_version": "1.65.0",
+	"sap.app": {
+		"id": "ui5.community.jsx.showcase",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "0.1.0"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "module:ui5/community/jsx/showcase/view/App",
+			"id": "app",
+			"async": true
+		},
+		"dependencies": {
+			"minUI5Version": "1.120.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.f": {},
+				"sap.tnt": {},
+				"sap.ui.layout": {},
+				"sap.ui.table": {},
+				"ui5.community.jsx.runtime": {}
+			}
+		},
+		"handleValidation": true,
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "ui5.community.jsx.showcase.i18n.i18n",
+					"supportedLocales": ["en"],
+					"fallbackLocale": "en",
+					"async": true
+				}
+			}
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"async": true
+			},
+			"routes": [
+				{ "pattern": "",                    "name": "welcome",       "target": ["shell", "welcomeContent"]      },
+				{ "pattern": "learn/{topic}",       "name": "learnDoc",      "target": ["shell", "learnDocContent"]     },
+				{ "pattern": "explore/{sampleId}",  "name": "exploreSample", "target": ["shell", "exploreSampleContent"] }
+			],
+			"targets": {
+				"shell": {
+					"id": "shell",
+					"name": "module:ui5/community/jsx/showcase/view/Explorer",
+					"type": "View"
+				},
+				"welcomeContent": {
+					"parent": "shell",
+					"controlId": "explorerContent",
+					"controlAggregation": "pages",
+					"id": "welcomeBody",
+					"name": "module:ui5/community/jsx/showcase/view/WelcomeBody",
+					"type": "View"
+				},
+				"learnDocContent": {
+					"parent": "shell",
+					"controlId": "explorerContent",
+					"controlAggregation": "pages",
+					"id": "learnDoc",
+					"name": "module:ui5/community/jsx/showcase/view/LearnDoc",
+					"type": "View"
+				},
+				"exploreSampleContent": {
+					"parent": "shell",
+					"controlId": "explorerContent",
+					"controlAggregation": "pages",
+					"id": "exploreSample",
+					"name": "module:ui5/community/jsx/showcase/view/ExploreSample",
+					"type": "View"
+				}
+			}
+		}
+	}
+}

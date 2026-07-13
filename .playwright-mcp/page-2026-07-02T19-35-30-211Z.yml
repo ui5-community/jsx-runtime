@@ -1,0 +1,35 @@
+- generic [ref=f14e8]:
+  - banner
+  - generic [ref=f14e12]:
+    - generic [ref=f14e14]:
+      - banner [ref=f14e15]:
+        - heading "UI5 JSX Runtime Showcase" [level=2] [ref=f14e18]
+      - list [ref=f14e21]:
+        - listitem "Contains Selectable Items . List Item . Is Active . Home . Not Selected" [active] [ref=f14e22] [cursor=pointer]:
+          - generic [ref=f14e25]: Home
+        - listitem [ref=f14e26] [cursor=pointer]:
+          - generic [ref=f14e29]: Hello (jsx / Fragment)
+        - listitem [ref=f14e30] [cursor=pointer]:
+          - generic [ref=f14e33]: For
+        - listitem [ref=f14e34] [cursor=pointer]:
+          - generic [ref=f14e37]: If
+        - listitem [ref=f14e38] [cursor=pointer]:
+          - generic [ref=f14e41]: Switch (plugin)
+        - listitem [ref=f14e42] [cursor=pointer]:
+          - generic [ref=f14e45]: Events
+        - listitem [ref=f14e46] [cursor=pointer]:
+          - generic [ref=f14e49]: Bound aggregation
+    - generic [ref=f14e54]:
+      - banner [ref=f14e55]:
+        - heading "jsx() + <Fragment> + falsy filter" [level=2] [ref=f14e58]
+      - form "jsx() + <Fragment> + falsy filter" [ref=f14e60]:
+        - heading "jsx() + <Fragment> + falsy filter" [level=2] [ref=f14e61]:
+          - generic [ref=f14e62]: jsx() + <Fragment> + falsy filter
+        - generic [ref=f14e64]:
+          - generic [ref=f14e66]: "The smallest possible TSX view: a page containing controls constructed from JSX. Falsy children (null, undefined, false, \"\") are silently dropped so patterns like {flag && <X/>} Just Work."
+          - heading "Line 1" [level=5] [ref=f14e68]
+          - generic [ref=f14e70]: First line
+          - heading "Line 2" [level=5] [ref=f14e72]
+          - generic [ref=f14e74]: Second line
+          - button "Say hi" [ref=f14e76] [cursor=pointer]:
+            - generic [ref=f14e78]: Say hi

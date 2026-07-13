@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+    "jsxImportSource": "ui5/community/jsx/runtime",
+    "paths": {
+      "ui5/community/jsx/runtime": ["./src/jsx-runtime.ts"],
+      "ui5/community/jsx/runtime/*": ["./src/*"]
+    },
+    "types": ["@openui5/types", "@types/qunit"]
+  },
+  "include": ["./src/**/*", "./test/**/*"]
+}

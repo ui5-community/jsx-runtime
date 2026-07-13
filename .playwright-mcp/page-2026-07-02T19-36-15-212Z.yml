@@ -1,0 +1,41 @@
+- generic [ref=f15e1]:
+  - generic:
+    - status
+    - status
+  - generic [ref=f15e8]:
+    - banner
+    - generic [ref=f15e12]:
+      - generic [ref=f15e14]:
+        - banner [ref=f15e15]:
+          - heading "UI5 JSX Runtime Showcase" [level=2] [ref=f15e18]
+        - list [ref=f15e21]:
+          - listitem "Contains Selectable Items . List Item . Is Active . Home . Not Selected" [active] [ref=f15e22] [cursor=pointer]:
+            - generic [ref=f15e25]: Home
+          - listitem [ref=f15e26] [cursor=pointer]:
+            - generic [ref=f15e29]: Hello (jsx / Fragment)
+          - listitem [ref=f15e30] [cursor=pointer]:
+            - generic [ref=f15e33]: For
+          - listitem [ref=f15e34] [cursor=pointer]:
+            - generic [ref=f15e37]: If
+          - listitem [ref=f15e38] [cursor=pointer]:
+            - generic [ref=f15e41]: Switch (plugin)
+          - listitem [ref=f15e42] [cursor=pointer]:
+            - generic [ref=f15e45]: Events
+          - listitem [ref=f15e46] [cursor=pointer]:
+            - generic [ref=f15e49]: Bound aggregation
+      - generic [ref=f15e54]:
+        - banner [ref=f15e55]:
+          - heading "<Switch> / <Case> / <Default> (plugin)" [level=2] [ref=f15e58]
+        - form "<Switch> / <Case> / <Default> (plugin)" [ref=f15e60]:
+          - heading "<Switch> / <Case> / <Default> (plugin)" [level=2] [ref=f15e61]:
+            - generic [ref=f15e62]: <Switch> / <Case> / <Default> (plugin)
+          - generic [ref=f15e64]:
+            - generic [ref=f15e66]: Opt in via withScope. Literal on picks one branch; bound on emits every branch with a visible expression binding.
+            - generic [ref=f15e67]:
+              - heading "Kind" [level=5] [ref=f15e69]
+              - generic [ref=f15e71] [cursor=pointer]:
+                - combobox [ref=f15e72]: info
+                - textbox [ref=f15e73]
+                - generic [ref=f15e74]: info
+                - generic [ref=f15e75]: 
+            - generic [ref=f15e77]: No selection — default branch

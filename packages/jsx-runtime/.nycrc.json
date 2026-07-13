@@ -1,0 +1,12 @@
+{
+	"all": true,
+	"reporter": ["text-summary", "lcov", "html"],
+	"exclude": [
+		"**/test/**",
+		"**/dist/**",
+		"**/*.d.ts",
+		"**/*.gen.d.ts",
+		"eslint.config.mjs"
+	],
+	"extension": [".ts", ".tsx"]
+}

@@ -1,0 +1,70 @@
+flowchart TB
+    In["<b>jsx(Button, { text: 'Hi', press: '.onTap' })</b>"]
+
+    subgraph P1 ["Phase 1. Dispatch"]
+        D1{"type is<br/><b>string</b>?"}
+        DH["→ <code>currentHtmlIntrinsic()</code><br/>(or throw if none)"]
+        D2{"type is<br/><b>Fragment</b>?"}
+        DF["→ <code>makeFragmentNode</code>"]
+        D3{"type is<br/><b>&lt;For&gt;</b> / <b>&lt;If&gt;</b>?"}
+        DFI["→ <code>makeForNode</code> / <code>makeIfNode</code>"]
+        D4{"type is<br/><b>plugin sentinel</b>?"}
+        DS["→ <code>makeSentinelNode</code>"]
+        D5["type is a <b>control class</b><br/>continue ↓"]
+    end
+
+    subgraph P2 ["Phase 2. Prop loop (per prop)"]
+        Loop["for each (key, value) in props"]
+        IH{"any registered<br/><code>IntrinsicHandler</code><br/>claims it?<br/>(first-match-wins)"}
+        IY["claimed:<br/>handler transforms or drops<br/>may schedule post-construct hook"]
+        IN["not claimed:<br/>forward as-is to settings<br/>(UI5 applySettings handles it)"]
+    end
+
+    subgraph P3 ["Phase 3. Children pipeline"]
+        Kids["if children present →<br/>see diagram 3"]
+    end
+
+    subgraph P4 ["Phase 4. Construct"]
+        Render["<code>currentRenderer().construct(Button, settings)</code><br/>default = <code>new Button(settings)</code>"]
+    end
+
+    subgraph P5 ["Phase 5. Post-construct"]
+        Hooks["run intrinsic-scheduled hooks<br/>(<code>addStyleClass</code>, <code>ref(instance)</code>, <code>bindElement</code>)"]
+        AppL{"any registered<br/><code>PropertyApplier</code><br/>claims a prop?"}
+        AY["applier runs with the<br/>constructed instance"]
+    end
+
+    Out["<b>Button instance</b>"]
+
+    In --> D1
+    D1 -->|yes| DH
+    D1 -->|no| D2
+    D2 -->|yes| DF
+    D2 -->|no| D3
+    D3 -->|yes| DFI
+    D3 -->|no| D4
+    D4 -->|yes| DS
+    D4 -->|no| D5
+    D5 --> Loop
+    Loop --> IH
+    IH -->|yes| IY
+    IH -->|no| IN
+    IY --> Loop
+    IN --> Loop
+    Loop --> Kids
+    Kids --> Render
+    Render --> Hooks
+    Hooks --> AppL
+    AppL -->|yes| AY
+    AY --> Out
+    AppL -->|no| Out
+
+    DH -.->|"return early"| Out
+    DF -.->|"return early"| Out
+    DFI -.->|"return early"| Out
+    DS -.->|"return early"| Out
+
+    style IH fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style AppL fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style Render fill:#fff4e1,stroke:#f57c00,color:#131e29
+    style DH fill:#fff4e1,stroke:#f57c00,color:#131e29

@@ -1,0 +1,102 @@
+{
+  "name": "@ui5-community/jsx-runtime",
+  "version": "0.0.0",
+  "description": "A plugin-based JSX runtime for UI5, write UI5 views as TSX with per-control TypeScript typing.",
+  "license": "Apache-2.0",
+  "author": "UI5 Community",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ui5-community/jsx-runtime.git",
+    "directory": "packages/jsx-runtime"
+  },
+  "keywords": [
+    "ui5",
+    "openui5",
+    "jsx",
+    "tsx",
+    "typescript",
+    "runtime",
+    "sapui5"
+  ],
+  "types": "dist/index.d.ts",
+  "sideEffects": [
+    "**/jsx-runtime.js",
+    "**/jsx-runtime-dbg.js",
+    "**/library.js",
+    "**/library-dbg.js",
+    "**/installViewScopeBridge.js"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts"
+    },
+    "./library": {
+      "types": "./dist/resources/ui5/community/jsx/runtime/library.d.ts",
+      "default": "./dist/resources/ui5/community/jsx/runtime/library.js"
+    },
+    "./jsx-runtime": {
+      "types": "./dist/resources/ui5/community/jsx/runtime/jsx-runtime.d.ts",
+      "default": "./dist/resources/ui5/community/jsx/runtime/jsx-runtime.js"
+    },
+    "./jsx-dev-runtime": {
+      "types": "./dist/resources/ui5/community/jsx/runtime/jsx-runtime.d.ts",
+      "default": "./dist/resources/ui5/community/jsx/runtime/jsx-runtime.js"
+    },
+    "./plugins/switch": {
+      "types": "./dist/resources/ui5/community/jsx/runtime/plugins/switch/index.d.ts",
+      "default": "./dist/resources/ui5/community/jsx/runtime/plugins/switch/index.js"
+    },
+    "./src/*": "./src/*",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/resources",
+    "dist/index.d.ts",
+    "src",
+    "ui5.yaml",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rimraf dist coverage report .nyc_output docs-api",
+    "build": "ui5 build --clean-dest && node scripts/build-index-dts.mjs",
+    "build:api": "typedoc",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prepack": "node scripts/swap-ui5-config.mjs --mode swap",
+    "postpack": "node scripts/swap-ui5-config.mjs --mode restore",
+    "dev": "ui5 serve --port 8081 --open test/qunit/testsuite.qunit.html",
+    "start": "ui5 serve --port 8081",
+    "ts-typecheck": "tsc --noEmit",
+    "lint": "eslint src test",
+    "test-runner": "ui5-test-runner --url http://localhost:8081/test-resources/ui5/community/jsx/runtime/qunit/testsuite.qunit.html --start dev --start-timeout 60000 --coverage",
+    "test": "npm run ts-typecheck && npm run lint && npm run test-runner",
+    "testsuite": "ui5 serve --port 8081 --open test-resources/ui5/community/jsx/runtime/qunit/testsuite.qunit.html"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.25.9",
+    "@openui5/types": "~1.148.2",
+    "@ui5/cli": "^4.0.55",
+    "@ui5/linter": "^1.23.1",
+    "@ui5/ts-interface-generator": "^0.11.1",
+    "@eslint/js": "^10.0.1",
+    "@types/qunit": "^2.19.12",
+    "babel-plugin-istanbul": "^8.0.0",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "rimraf": "^6.0.1",
+    "typedoc": "^0.28.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.63.0",
+    "ui5-middleware-livereload": "^3.0.4",
+    "ui5-test-runner": "^5.13.1",
+    "ui5-tooling-modules": "^3.34.0",
+    "ui5-tooling-transpile": "^3.12.0"
+  }
+}

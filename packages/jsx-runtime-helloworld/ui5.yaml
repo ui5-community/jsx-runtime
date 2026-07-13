@@ -1,0 +1,47 @@
+specVersion: "4.0"
+metadata:
+  name: ui5.community.jsx.helloworld
+type: application
+framework:
+  name: OpenUI5
+  version: "1.148.2"
+  libraries:
+    - name: sap.m
+    - name: sap.ui.core
+    - name: themelib_sap_horizon
+customConfiguration:
+  # Transpile .ts AND .tsx, and transform the JSX/TSX syntax itself.
+  # `transformJSX` makes ui5-tooling-transpile add
+  # `@babel/plugin-transform-react-jsx` (an optional peer dep) with the
+  # given options — no hand-authored `.babelrc.json` needed. The rest of
+  # the Babel pipeline (preset-env, transform-ui5, preset-typescript) is
+  # assembled by the tooling from `tsconfig.json` + browserslist.
+  # Shared by the build task and dev middleware via the anchor below.
+  # `transpileDependencies` transpiles the workspace-linked
+  # `@ui5-community/jsx-runtime` .ts sources on the fly in dev, so its
+  # AMD modules resolve without a prior build.
+  config-ui5-tooling-transpile: &cfgTranspile
+    transpileDependencies: true
+    transformJSX:
+      runtime: automatic
+      importSource: "ui5/community/jsx/runtime"
+builder:
+  settings:
+    # Bundle the JSX runtime library into the build output so its
+    # `ui5/community/jsx/runtime/...` modules are served from the app.
+    includeDependency:
+      - ui5.community.jsx.runtime
+  resources:
+    excludes:
+      - "test/e2e/**"
+  customTasks:
+    - name: ui5-tooling-transpile-task
+      afterTask: replaceVersion
+      configuration: *cfgTranspile
+server:
+  customMiddleware:
+    - name: ui5-tooling-transpile-middleware
+      afterMiddleware: compression
+      configuration: *cfgTranspile
+    - name: ui5-middleware-livereload
+      afterMiddleware: compression

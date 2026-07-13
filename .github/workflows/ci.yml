@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build, lint, typecheck, test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.12.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Type-check
+        run: pnpm ts-typecheck
+      - name: Lint
+        run: pnpm lint
+      - name: Test
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+
+  changeset:
+    name: Changeset present
+    runs-on: ubuntu-latest
+    # PRs only; skip the auto-generated release PR (it consumes all changesets).
+    if: github.event_name == 'pull_request' && github.head_ref != 'changeset-release/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so `changeset status` can diff against the base
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.12.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Verify a changeset is present
+        run: |
+          # `changeset status` exits non-zero when packages changed with no
+          # changeset — that alone is the "missing" signal. When it does
+          # succeed, double-check the count in case it passed for another
+          # reason (e.g. only ignored/private packages changed → also fine).
+          if pnpm changeset status --since=origin/${{ github.base_ref }} --output=/tmp/cs.json; then
+            count="$(jq '.changesets | length' /tmp/cs.json)"
+            if [ "$count" -eq 0 ]; then
+              # No publishable change detected at all — nothing to release,
+              # which is acceptable (docs/CI/showcase-only PRs).
+              echo "No release-relevant changes detected; no changeset required."
+              exit 0
+            fi
+            echo "Changeset present ($count)."
+          else
+            echo "::error::No changeset found on this PR. Run 'pnpm changeset' (or 'pnpm changeset:auto') and commit the file, or 'pnpm changeset:empty' for changes that need no release entry (docs/CI/showcase-only)."
+            exit 1
+          fi
+

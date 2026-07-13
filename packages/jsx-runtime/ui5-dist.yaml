@@ -1,0 +1,34 @@
+specVersion: "4.0"
+metadata:
+  name: ui5.community.jsx.runtime
+type: library
+# ── Distribution UI5 configuration (published, not for dev) ─────────
+#
+# This file is swapped in over `ui5.yaml` at pack/publish time by the
+# `prepack` script (and restored by `postpack`). It is the `ui5.yaml`
+# an INSTALLED consumer sees in `node_modules/@ui5-community/jsx-runtime`.
+#
+# Why a separate file: the working-tree `ui5.yaml` is the dev/build
+# config — it reads TypeScript from `src/` and runs the transpile +
+# modules tasks, and the monorepo showcase live-transpiles those same
+# `src/` sources through UI5 workspace resolution (which only supports
+# a `path`, not an alternate config file). A consumer, by contrast,
+# installs the prebuilt `dist/` output and must never see `src/` on the
+# resource path. Those two needs conflict in one file, so we ship this
+# variant and keep the dev one in git.
+#
+# It exists at all because `@ui5/project` only adds a `node_modules`
+# dependency to the build/serve graph as a UI5 library when it finds a
+# `ui5.yaml` at the package root; without it the runtime's AMD modules
+# 404 in a consuming app.
+framework:
+  name: OpenUI5
+  version: "1.148.2"
+  libraries:
+    - name: sap.ui.core
+    - name: themelib_sap_horizon
+resources:
+  configuration:
+    paths:
+      src: dist/resources
+      test: dist/test-resources

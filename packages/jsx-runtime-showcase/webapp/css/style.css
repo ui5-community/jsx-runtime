@@ -1,0 +1,676 @@
+/*
+ * Global styles for the JSX Runtime for UI5 Explorer.
+ *
+ * Injected via `sap.ui.getCore().attachInit(() => { ... })` inside
+ * [index.ts](./index.ts) so the classes are available before the
+ * first view renders. Everything is scoped to `.jsx-showcase-*`
+ * class names so nothing bleeds into other UI5 apps or plays with
+ * global element selectors.
+ */
+
+/*
+ * Ensure the router-mounted Page fills the viewport regardless of
+ * where in the tree it lands. Without this, `sap.tnt.ToolPage`
+ * collapses to intrinsic height inside a NavContainer child.
+ */
+.jsx-showcase-fullheight,
+.jsx-showcase-fullheight > .sapMPage,
+.jsx-showcase-fullheight .sapMPage > section {
+	height: 100%;
+}
+
+/*
+ * LearnDoc two-column layout, main markdown on the left, sticky TOC
+ * on the right. HBox with renderType="Bare" produces plain divs, so
+ * we can use CSS Grid for the responsive columns.
+ */
+.jsx-showcase-doc-row {
+	display: grid !important;
+	grid-template-columns: minmax(0, 1fr) 16rem;
+	gap: 2rem;
+	padding: 0 2rem;
+	max-width: 1400px;
+	width: 100%;
+	margin: 0 auto;
+	align-items: start;
+}
+.jsx-showcase-doc-main {
+	min-width: 0; /* let long code blocks scroll instead of blowing out the grid */
+}
+.jsx-showcase-doc-toc {
+	position: sticky;
+	top: 1rem;
+	min-width: 0;
+}
+
+/* On narrow viewports, stack the TOC below the content. */
+@media (max-width: 900px) {
+	.jsx-showcase-doc-row {
+		grid-template-columns: 1fr;
+		padding: 0 1rem;
+	}
+	.jsx-showcase-doc-toc {
+		position: static;
+	}
+}
+
+/*
+ * ExploreSample two-column layout, live demo on the left, source
+ * code on the right. Same `HBox renderType="Bare"` bare-div trick as
+ * `.jsx-showcase-doc-row` so CSS Grid controls the columns. The
+ * right column is wider than the LearnDoc TOC (16rem) because code
+ * lines are long, 40rem fits ~110-120 chars of the monospace body so
+ * typical `import … from "…"` lines don't truncate.
+ * The `!important` on `display` mirrors `.jsx-showcase-doc-row` and
+ * defeats UI5's inline `display: flex` from HBox.
+ */
+.jsx-showcase-explore-row {
+	display: grid !important;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 40rem);
+	gap: 2rem;
+	align-items: start;
+	width: 100%;
+}
+.jsx-showcase-explore-demo,
+.jsx-showcase-explore-code {
+	min-width: 0; /* let long code lines wrap/scroll inside the cell instead of blowing out the grid */
+}
+
+/* Match LearnDoc's 900px breakpoint, stack code below demo. */
+@media (max-width: 900px) {
+	.jsx-showcase-explore-row {
+		grid-template-columns: 1fr;
+	}
+}
+
+/*
+ * ExploreSample description panel, the companion markdown rendered
+ * above the demo+code split. Uses the same `.jsx-showcase-markdown`
+ * inner shell as LearnDoc (so paragraph / heading / code-block
+ * styling comes from `util/markdownStyles.ts`), but caps the
+ * per-heading vertical spacing tighter so the description doesn't
+ * dominate the sample page.
+ */
+.jsx-showcase-explore-description {
+	font-size: 0.9rem;
+	line-height: 1.5;
+	max-width: 60rem;
+}
+.jsx-showcase-explore-description .jsx-showcase-markdown h1 {
+	display: none; /* the header row above already carries the title */
+}
+.jsx-showcase-explore-description .jsx-showcase-markdown h2 {
+	font-size: 1.05rem;
+	margin: 0.9rem 0 0.4rem;
+}
+.jsx-showcase-explore-description .jsx-showcase-markdown h3 {
+	font-size: 0.95rem;
+	margin: 0.7rem 0 0.3rem;
+}
+.jsx-showcase-explore-description .jsx-showcase-markdown p,
+.jsx-showcase-explore-description .jsx-showcase-markdown ul,
+.jsx-showcase-explore-description .jsx-showcase-markdown ol {
+	margin: 0.35rem 0;
+}
+.jsx-showcase-explore-description .jsx-showcase-markdown pre {
+	margin: 0.5rem 0;
+}
+
+/*
+ * Shared: incubation pill next to the app title in the ToolHeader.
+ * Applied on both the Welcome view and the Explorer.
+ */
+.jsx-showcase-incubation-pill {
+	margin-left: 0.5rem;
+}
+
+/*
+ * Welcome view uses the same shared `sap.tnt.ToolPage` shell as
+ * Learn and Explore. On the welcome route we hide the side
+ * navigation entirely (via `SideNavigation.setVisible(false)` in
+ * the Explorer controller) and use this class on the ToolPage to
+ * reclaim the reserved aside gutter so the hero + demo + steps
+ * stretch full-width.
+ *
+ * The two `sapTnt*` selectors below try both class names UI5 has
+ * used for the aside/main slots (`.sapTntToolPageAside` in 1.120+,
+ * `.sapTntToolPageSide` in earlier releases) so the rule survives
+ * across UI5 patch levels without needing a lookup table.
+ */
+.jsx-welcome-no-sidenav .sapTntToolPageAside,
+.jsx-welcome-no-sidenav .sapTntToolPageSide {
+	display: none !important;
+}
+.jsx-welcome-no-sidenav .sapTntToolPageMain {
+	margin-left: 0 !important;
+}
+/*
+ * Welcome body wrap. The VBox holding the two HTML controls and the
+ * native-UI5 "See it live" demo strip must bound its children with a
+ * concrete height so the inner `.jsx-welcome-html` can install its
+ * own scrollbar. `sap.m.VBox` alone produces `display: flex; flex-direction: column`
+ * but children with `height: 100%` inside a bare VBox collapse when
+ * the flex line has no `min-height: 0`; forcing that here unblocks
+ * `.jsx-welcome-html { overflow-y: auto }` for the scrollable body
+ * segments. `overflow-y: auto` on the wrap itself is the fallback
+ * for the case where a segment (the live-demo strip) breaks the
+ * flex-item height constraint.
+ */
+.jsx-welcome-main-wrap {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+}
+.jsx-welcome-main-wrap > .sapMFlexItem {
+	min-height: 0;
+	flex-shrink: 0;
+}
+
+/* The HTML body root. Fills the ToolPage main area and gets its
+ * own scrollbar. */
+.jsx-welcome-html {
+	background: var(--sapBackgroundColor, #fafafa);
+	color: var(--sapTextColor, #131e29);
+	font-family: "72", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	line-height: 1.5;
+	overflow-y: auto;
+	height: 100%;
+}
+.jsx-welcome-html a {
+	color: var(--sapLinkColor, #0070f2);
+	text-decoration: none;
+	cursor: pointer;
+}
+.jsx-welcome-html a:hover {
+	text-decoration: underline;
+}
+.jsx-welcome-html code {
+	font-family: var(--sapFontMonospaceFamily, "SF Mono", Consolas, Monaco, monospace);
+	font-size: 0.85em;
+	background: rgba(0, 112, 242, 0.06);
+	padding: 0 0.25rem;
+	border-radius: 3px;
+}
+
+/* Hero, soft tinted background, decorative blob behind the copy,
+ * big headline, tagline, three CTAs. */
+.jsx-welcome-hero {
+	position: relative;
+	padding: 4rem 2rem 3rem;
+	overflow: hidden;
+	background: linear-gradient(180deg, #f4f9ff 0%, #fafafa 100%);
+	border-bottom: 1px solid var(--sapGroup_ContentBorderColor, rgba(0, 0, 0, 0.08));
+}
+.jsx-welcome-blob {
+	position: absolute;
+	top: -80px;
+	right: -80px;
+	width: 520px;
+	height: 520px;
+	opacity: 0.65;
+	pointer-events: none;
+}
+.jsx-welcome-hero-inner {
+	position: relative;
+	max-width: 1100px;
+	margin: 0 auto;
+}
+.jsx-welcome-headline {
+	font-size: 2.75rem;
+	line-height: 1.1;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	margin: 0 0 1rem;
+	max-width: 42rem;
+}
+.jsx-welcome-tagline {
+	font-size: 1.1rem;
+	color: var(--sapContent_LabelColor, #4a5560);
+	max-width: 50rem;
+	margin: 0 0 1.5rem;
+}
+.jsx-welcome-cta-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+}
+.jsx-welcome-cta {
+	display: inline-block;
+	padding: 0.6rem 1.2rem;
+	border-radius: 0.35rem;
+	font-weight: 600;
+	font-size: 0.95rem;
+	border: 1px solid var(--sapButton_BorderColor, #b3b3b3);
+	background: var(--sapButton_Background, #fff);
+	color: var(--sapButton_TextColor, #131e29);
+	text-decoration: none !important;
+	transition: background 120ms, border-color 120ms;
+}
+/*
+ * Anchor colour on CTAs is bumped to selector specificity 0-2-0 so
+ * it outranks the generic `.jsx-welcome-html a { color: var(--sapLinkColor) }`
+ * rule above (specificity 0-1-1). Without this the emphasised CTA
+ * would render blue-on-blue at rest and only pick up its white text
+ * on hover (when the base rule doesn't apply). Applies to `:visited`
+ * too, otherwise Chrome overrides the colour once the link has
+ * been clicked.
+ */
+.jsx-welcome-html a.jsx-welcome-cta,
+.jsx-welcome-html a.jsx-welcome-cta:visited {
+	color: var(--sapButton_TextColor, #131e29);
+}
+.jsx-welcome-html a.jsx-welcome-cta:hover {
+	background: var(--sapButton_Hover_Background, #f5f6f7);
+	border-color: var(--sapButton_Hover_BorderColor, #808080);
+}
+.jsx-welcome-cta-primary {
+	background: var(--sapButton_Emphasized_Background, #0070f2);
+	border-color: var(--sapButton_Emphasized_BorderColor, #0070f2);
+	color: var(--sapButton_Emphasized_TextColor, #ffffff);
+}
+.jsx-welcome-html a.jsx-welcome-cta-primary,
+.jsx-welcome-html a.jsx-welcome-cta-primary:visited {
+	color: var(--sapButton_Emphasized_TextColor, #ffffff);
+}
+.jsx-welcome-html a.jsx-welcome-cta-primary:hover {
+	background: var(--sapButton_Emphasized_Hover_Background, #0064d9);
+	border-color: var(--sapButton_Emphasized_Hover_BorderColor, #0064d9);
+	color: #ffffff;
+}
+
+/* Three-column feature grid, flat cards, icon-in-circle, headline,
+ * body, "Read more" link. Below 900px they stack. */
+.jsx-welcome-features {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.5rem;
+	max-width: 1100px;
+	margin: 3rem auto;
+	padding: 0 2rem;
+}
+@media (max-width: 900px) {
+	.jsx-welcome-features {
+		grid-template-columns: 1fr;
+	}
+}
+.jsx-welcome-card {
+	background: transparent;
+	padding: 0;
+}
+.jsx-welcome-card-icon {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	background: rgba(0, 112, 242, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+.jsx-welcome-card-icon-glyph {
+	font-family: var(--sapFontMonospaceFamily, "SF Mono", Consolas, monospace);
+	font-weight: 700;
+	font-size: 1.4rem;
+	color: var(--sapLinkColor, #0070f2);
+	line-height: 1;
+}
+.jsx-welcome-card-title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin: 0 0 0.5rem;
+}
+.jsx-welcome-card-body {
+	color: var(--sapContent_LabelColor, #4a5560);
+	margin: 0 0 0.75rem;
+	font-size: 0.95rem;
+}
+.jsx-welcome-card-more {
+	font-size: 0.9rem;
+	font-weight: 500;
+}
+
+/* Numbered steps, install / configure / see-it-running. Two on
+ * a line above ~900px, stacked below. */
+.jsx-welcome-steps {
+	max-width: 1100px;
+	margin: 2.5rem auto 3.5rem;
+	padding: 0 2rem;
+}
+.jsx-welcome-steps-heading {
+	font-size: 1.75rem;
+	font-weight: 700;
+	margin: 0 0 1.5rem;
+	letter-spacing: -0.01em;
+}
+.jsx-welcome-step {
+	display: flex;
+	gap: 1.25rem;
+	align-items: flex-start;
+	margin-bottom: 1.5rem;
+}
+.jsx-welcome-step-num {
+	flex: 0 0 auto;
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+	background: var(--sapButton_Emphasized_Background, #0070f2);
+	color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	font-size: 1.05rem;
+}
+.jsx-welcome-step-num-done {
+	background: var(--sapPositiveColor, #107e3e);
+	font-size: 1.2rem;
+}
+.jsx-welcome-step-body {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.jsx-welcome-step-title {
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin: 0.3rem 0 0.5rem;
+}
+.jsx-welcome-step-note {
+	margin: 0.5rem 0 0;
+	font-size: 0.95rem;
+}
+.jsx-welcome-code {
+	font-family: var(--sapFontMonospaceFamily, "SF Mono", Consolas, Monaco, monospace);
+	font-size: 0.85rem;
+	line-height: 1.55;
+	background: var(--sapNeutralBackground, #f5f6f7);
+	border: 1px solid var(--sapGroup_ContentBorderColor, rgba(0, 0, 0, 0.08));
+	border-radius: 0.35rem;
+	padding: 0.8rem 1rem;
+	margin: 0;
+	overflow-x: auto;
+	white-space: pre;
+}
+.jsx-welcome-code code {
+	background: transparent;
+	padding: 0;
+	font-size: inherit;
+}
+
+/* Footer, three column-link groups + legal line. */
+.jsx-welcome-footer {
+	background: var(--sapPageHeader_Background, #f4f4f4);
+	border-top: 1px solid var(--sapGroup_ContentBorderColor, rgba(0, 0, 0, 0.08));
+	padding: 2.5rem 2rem 1.5rem;
+	margin-top: 2rem;
+}
+.jsx-welcome-footer-cols {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 2rem;
+	max-width: 1100px;
+	margin: 0 auto;
+}
+@media (max-width: 700px) {
+	.jsx-welcome-footer-cols {
+		grid-template-columns: 1fr;
+	}
+}
+.jsx-welcome-footer-col h4 {
+	font-size: 0.85rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--sapContent_LabelColor, #4a5560);
+	margin: 0 0 0.75rem;
+}
+.jsx-welcome-footer-col ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.jsx-welcome-footer-col li {
+	margin: 0.35rem 0;
+	font-size: 0.9rem;
+}
+.jsx-welcome-footer-legal {
+	max-width: 1100px;
+	margin: 2rem auto 0;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--sapGroup_ContentBorderColor, rgba(0, 0, 0, 0.08));
+	font-size: 0.85rem;
+	color: var(--sapContent_LabelColor, #4a5560);
+}
+
+/*
+ * ── Browser-chrome frame around a live UI5 demo ──────────────────
+ *
+ * A pure-CSS box that gives every live-sample cell a
+ * "browser-window" chrome (title bar with the three traffic-light
+ * dots on the left, a fake URL bar on the right). No new controls,
+ * no SVG assets, one wrapper element with two pseudo-elements
+ * carries everything.
+ *
+ * Used in two places: (1) the Welcome page's "See it live" demo
+ * strip and (2) every ExploreSample's live-demo cell. Both use-sites
+ * add the class to a VBox and set a `data-url` attribute (via
+ * `Control#data("url", value)`, which UI5 renders as `data-url`):
+ * the URL bar's text is `attr(data-url)` off the pseudo-element.
+ *
+ * Height is intrinsic (fits demo). The title-bar strip is drawn
+ * with a linear-gradient background on the `::before` pseudo,
+ * three traffic-light dots via radial-gradient tiles, and the URL
+ * bar via the `::after` pseudo. Everything renders in front of the
+ * demo content because both pseudos sit at the top of the frame.
+ */
+.jsx-showcase-browser-frame {
+	position: relative;
+	background: var(--sapBackgroundColor, #ffffff);
+	border: 1px solid var(--sapGroup_ContentBorderColor, rgba(0, 0, 0, 0.15));
+	border-radius: 0.5rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	overflow: hidden;
+	padding-top: 2.25rem; /* space for the fake title bar */
+}
+.jsx-showcase-browser-frame::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 2.25rem;
+	background:
+		/* three traffic-light dots, left-aligned */
+		radial-gradient(circle at 0.85rem 1.1rem, #ff5f57 0 0.35rem, transparent 0.36rem),
+		radial-gradient(circle at 1.7rem 1.1rem, #febc2e 0 0.35rem, transparent 0.36rem),
+		radial-gradient(circle at 2.55rem 1.1rem, #28c840 0 0.35rem, transparent 0.36rem),
+		linear-gradient(180deg, #f2f2f4 0%, #e6e7ea 100%);
+	border-bottom: 1px solid var(--sapGroup_ContentBorderColor, rgba(0, 0, 0, 0.12));
+	pointer-events: none;
+}
+/*
+ * URL bar. `content: attr(data-url)` reads the frame's `data-url`
+ * attribute so every use-site can carry a distinct label (the
+ * sampleId, or `hello-jsx` on Welcome) without duplicating rules.
+ * Sits centred inside the title strip.
+ */
+.jsx-showcase-browser-frame::after {
+	content: "demo.jsx-runtime.local/" attr(data-url);
+	position: absolute;
+	top: 0.375rem;
+	left: 4rem;
+	right: 4rem;
+	height: 1.5rem;
+	background: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 0.4rem;
+	font-family: var(--sapFontMonospaceFamily, "SF Mono", Consolas, Monaco, monospace);
+	font-size: 0.75rem;
+	color: var(--sapContent_LabelColor, #4a5560);
+	line-height: 1.5rem;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	pointer-events: none;
+	padding: 0 0.5rem;
+}
+
+/*
+ * ── Welcome "See it live" demo strip ─────────────────────────────
+ *
+ * Landed between the feature-cards HTML block and the numbered-steps
+ * HTML block, see [Welcome.tsx](../view/Welcome.tsx) for the
+ * assembly. Two side-by-side cells:
+ *
+ *   left  → CodeBlock showing the sample source (stripped of JSDoc +
+ *           getAutoPrefixId boilerplate);
+ *   right → the live UI5 view wrapped in the browser-chrome frame.
+ *
+ * Same 900px stacking breakpoint as the feature-cards and doc-row
+ * grids for consistency.
+ */
+.jsx-welcome-demo-strip {
+	max-width: 1100px;
+	margin: 0 auto 2.5rem;
+	padding: 0 2rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+.jsx-welcome-demo-header {
+	margin-bottom: 1rem;
+}
+.jsx-welcome-demo-heading {
+	font-size: 1.75rem;
+	font-weight: 700;
+	margin: 0 0 0.35rem;
+	letter-spacing: -0.01em;
+}
+.jsx-welcome-demo-note {
+	color: var(--sapContent_LabelColor, #4a5560);
+	font-size: 0.95rem;
+	margin: 0;
+	max-width: 50rem;
+}
+.jsx-welcome-demo-grid {
+	display: grid !important;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 1.5rem;
+	align-items: stretch;
+	width: 100%;
+}
+.jsx-welcome-demo-code,
+.jsx-welcome-demo-live {
+	min-width: 0;
+}
+/*
+ * The live cell carries the browser-frame class too. Give it a
+ * light minimum height so the frame doesn't collapse before the
+ * async `View.create` resolves.
+ */
+.jsx-welcome-demo-live {
+	min-height: 12rem;
+}
+@media (max-width: 900px) {
+	.jsx-welcome-demo-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/*
+ * GitHub icon-only link in the ToolHeader. Rendered as a plain
+ * anchor around an inline SVG (see [AppHeader.tsx](../view/AppHeader.tsx)):
+ *
+ *   - Inline SVG (not `<img>`) so `fill="currentColor"` inside
+ *     the mark resolves against the surrounding CSS `color`
+ *     cascade. The theme's shell text tone flows through
+ *     unchanged on every theme switch, no JS involved.
+ *   - Sized to align with the neighbouring `sap.m.Button` icons
+ *     in the ToolHeader (matches their padded 2.25rem hit area).
+ *   - Focus + hover states borrow the same tints the transparent
+ *     button uses so it reads as an interactive control.
+ */
+.jsx-showcase-github-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	margin: 0 0.125rem;
+	padding: 0;
+	border-radius: 0.25rem;
+	color: var(--sapShell_TextColor, #ffffff);
+	text-decoration: none;
+	transition: background 120ms;
+}
+.jsx-showcase-github-btn:hover {
+	background: var(--sapShell_Hover_Background, rgba(255, 255, 255, 0.1));
+	text-decoration: none;
+}
+.jsx-showcase-github-btn:focus-visible {
+	outline: 2px solid var(--sapContent_FocusColor, currentColor);
+	outline-offset: -2px;
+}
+.jsx-showcase-github-btn svg {
+	width: 1rem;
+	height: 1rem;
+	display: block;
+}
+
+/*
+ * ── Dark-theme overrides ────────────────────────────────────────
+ *
+ * The Welcome view (see [WelcomeBody.tsx](../view/WelcomeBody.tsx))
+ * renders hand-authored HTML inside a `sap.ui.core.HTML` control.
+ * UI5's CSS variables cover most of the palette, but a handful of
+ * accents on the hero, card icons, code blocks, and footer are
+ * hardcoded light-theme values. The `html[data-jsx-theme="dark"]`
+ * attribute is written by both the pre-paint resolver in
+ * `webapp/index.html` and the runtime `applyMode` in
+ * `webapp/util/theme.ts`, so this cascade fires on the very first
+ * paint for a dark-mode user and on every toggle thereafter.
+ *
+ * Kept together at the bottom of the file so the light-theme rules
+ * above read as the base case and dark reads as a diff, not the
+ * other way around.
+ */
+html[data-jsx-theme="dark"] .jsx-welcome-hero {
+	background: linear-gradient(180deg, #1c2733 0%, #12171c 100%);
+	border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+html[data-jsx-theme="dark"] .jsx-welcome-blob path {
+	fill: #1e3a5a;
+}
+html[data-jsx-theme="dark"] .jsx-welcome-html code {
+	background: rgba(76, 141, 246, 0.15);
+}
+html[data-jsx-theme="dark"] .jsx-welcome-card-icon {
+	background: rgba(76, 141, 246, 0.18);
+}
+html[data-jsx-theme="dark"] .jsx-welcome-code {
+	background: #1a2028;
+	border-color: rgba(255, 255, 255, 0.1);
+}
+html[data-jsx-theme="dark"] .jsx-welcome-footer {
+	background: #1a2028;
+	border-top-color: rgba(255, 255, 255, 0.08);
+}
+/* Browser-frame chrome. Traffic-light dots + gradient title bar
+ * were tuned for a light background; brighten them slightly and
+ * darken the URL-bar surface so the frame reads on dark. */
+html[data-jsx-theme="dark"] .jsx-showcase-browser-frame {
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+html[data-jsx-theme="dark"] .jsx-showcase-browser-frame::before {
+	background:
+		radial-gradient(circle at 0.85rem 1.1rem, #ff5f57 0 0.35rem, transparent 0.36rem),
+		radial-gradient(circle at 1.7rem 1.1rem, #febc2e 0 0.35rem, transparent 0.36rem),
+		radial-gradient(circle at 2.55rem 1.1rem, #28c840 0 0.35rem, transparent 0.36rem),
+		linear-gradient(180deg, #2b3441 0%, #1a2028 100%);
+	border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+html[data-jsx-theme="dark"] .jsx-showcase-browser-frame::after {
+	background: #12171c;
+	border-color: rgba(255, 255, 255, 0.12);
+	color: #a5adba;
+}

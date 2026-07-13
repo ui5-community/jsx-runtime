@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"target": "es2023",
+		"module": "es2022",
+		"moduleResolution": "bundler",
+		"skipLibCheck": true,
+		"allowJs": true,
+		"strict": true,
+		"strictNullChecks": false,
+		"strictPropertyInitialization": false,
+		"rootDir": "./webapp",
+		"jsx": "react-jsx",
+		"jsxImportSource": "ui5/community/jsx/runtime",
+		"types": ["@openui5/types", "@types/qunit", "@ui5-community/jsx-runtime"],
+		"paths": {
+			"ui5/community/jsx/helloworld/*": ["./webapp/*"],
+			"unit/*": ["./webapp/test/unit/*"],
+			"integration/*": ["./webapp/test/integration/*"]
+		}
+	},
+	"exclude": ["./webapp/test/e2e/**/*"],
+	"include": ["./webapp/**/*"]
+}

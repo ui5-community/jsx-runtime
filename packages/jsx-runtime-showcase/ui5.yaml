@@ -1,0 +1,105 @@
+specVersion: "4.0"
+metadata:
+  name: ui5.community.jsx.showcase
+type: application
+framework:
+  name: OpenUI5
+  version: "1.148.2"
+  libraries:
+    - name: sap.m
+    - name: sap.f
+    - name: sap.tnt
+    - name: sap.ui.core
+    - name: sap.ui.layout
+    - name: sap.ui.table
+    - name: themelib_sap_horizon
+customConfiguration:
+  config-ui5-tooling-transpile: &cfgTranspile
+    debug: true
+    filePattern: ".+(ts|tsx)"
+    generateDts: false
+    # Keep the raw .tsx/.ts source in the built dist so the CodeBlock
+    # viewer in the Explorer can fetch and display it. The transpiled
+    # .js sits next to the source and is what UI5 actually loads.
+    omitTSFromBuildResult: false
+    # In dev mode, transpile .ts/.tsx sources of workspace-linked
+    # dependencies too (the sibling `@ui5-community/jsx-runtime`
+    # package under pnpm). Without this, requests to
+    # `/resources/ui5/community/jsx/runtime/jsx-runtime.js` 404 —
+    # the middleware only serves `.ts`, and the runtime's `dist/`
+    # is stale between builds. Ignored by the build task.
+    transpileDependencies: true
+    # Transform the JSX/TSX syntax via `@babel/plugin-transform-react-jsx`
+    # (an optional peer dep the tooling resolves). Replaces the former
+    # hand-authored `.babelrc.json`; the TypeScript/UI5/env presets are
+    # assembled by the tooling from `tsconfig.json` + browserslist.
+    transformJSX:
+      runtime: automatic
+      importSource: "ui5/community/jsx/runtime"
+  config-ui5-tooling-modules: &cfgModules
+    debug: true
+    # Bundle npm modules under the app's own namespace so
+    # `sap.ui.require(["prismjs/components/prism-tsx", ...])` finds
+    # every sub-module. Without this, only the top-level `prismjs`,
+    # `mermaid`, `marked` entries are wrapped and sub-path lookups
+    # 404 at runtime.
+    addToNamespace: true
+    # Force the tooling to also bundle these modules even if they're
+    # not statically imported anywhere. Needed for lazy dependencies
+    # loaded via `sap.ui.require([...], cb)` (mermaid, prismjs
+    # grammars), the tool otherwise skips them because no `import`
+    # statement anchors them into the module graph.
+    entryPoints:
+      - "mermaid"
+      - "prismjs/components/prism-markup"
+      - "prismjs/components/prism-clike"
+      - "prismjs/components/prism-javascript"
+      - "prismjs/components/prism-typescript"
+      - "prismjs/components/prism-jsx"
+      - "prismjs/components/prism-tsx"
+      - "prismjs/components/prism-bash"
+      - "prismjs/components/prism-markdown"
+    # Copy grammar & theme sub-modules of prismjs (loaded lazily via
+    # `sap.ui.require` in `control/install-prism-global.ts`) and the
+    # bundled theme CSS. Also grab mermaid's chunk assets so the
+    # lazy-loaded diagram control can find them.
+    includeAssets:
+      prismjs:
+        - "components/prism-markup.js"
+        - "components/prism-clike.js"
+        - "components/prism-javascript.js"
+        - "components/prism-typescript.js"
+        - "components/prism-jsx.js"
+        - "components/prism-tsx.js"
+        - "components/prism-bash.js"
+        - "components/prism-markdown.js"
+        - "themes/prism.css"
+        - "themes/prism-tomorrow.css"
+builder:
+  # `index-local.html` is the local-dev entry (loads UI5 from the app's
+  # own served `resources/`). The built `dist/` is what deploys to GitHub
+  # Pages, where UI5 comes from the CDN via `index.html` — the local
+  # entry would 404 there, so keep it out of the build output.
+  resources:
+    excludes:
+      - "/index-local.html"
+  settings:
+    includeDependency:
+      - ui5.community.jsx.runtime
+  customTasks:
+    - name: ui5-tooling-transpile-task
+      afterTask: replaceVersion
+      configuration: *cfgTranspile
+    - name: ui5-tooling-modules-task
+      afterTask: ui5-tooling-transpile-task
+      configuration: *cfgModules
+server:
+  customMiddleware:
+    - name: ui5-tooling-transpile-middleware
+      afterMiddleware: compression
+      configuration: *cfgTranspile
+    - name: ui5-tooling-modules-middleware
+      afterMiddleware: ui5-tooling-transpile-middleware
+      configuration: *cfgModules
+    - name: ui5-middleware-livereload
+      afterMiddleware: compression

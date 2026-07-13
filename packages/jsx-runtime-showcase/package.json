@@ -1,0 +1,51 @@
+{
+  "name": "@ui5-community/jsx-runtime-showcase",
+  "version": "0.0.0",
+
+  "description": "Living documentation for @ui5-community/jsx-runtime, a UI5 TSX app that demonstrates each runtime concept.",
+  "private": true,
+  "license": "Apache-2.0",
+  "author": "UI5 Community",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ui5-community/jsx-runtime.git",
+    "directory": "packages/jsx-runtime-showcase"
+  },
+  "scripts": {
+    "clean": "rimraf dist coverage report .nyc_output webapp/api",
+    "build": "pnpm --filter @ui5-community/jsx-runtime build:api && ui5 build --clean-dest",
+    "dev": "ui5 serve --port 8080 -o index-local.html",
+    "start": "ui5 serve --port 8080 -o index.html --config ui5-dist.yaml",
+    "ts-typecheck": "tsc --noEmit",
+    "lint": "eslint webapp",
+    "test-runner": "ui5-test-runner --url http://localhost:8080/test/testsuite.qunit.html --start dev --start-timeout 60000",
+    "test": "npm run ts-typecheck && npm run lint && npm run test-runner"
+  },
+  "dependencies": {
+    "@ui5-community/jsx-runtime": "workspace:^",
+    "marked": "^18.0.6",
+    "mermaid": "^11.16.0",
+    "prismjs": "^1.30.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.25.9",
+    "@openui5/types": "~1.148.2",
+    "@ui5/cli": "^4.0.55",
+    "@ui5/linter": "^1.23.1",
+    "@eslint/js": "^10.0.1",
+    "@types/prismjs": "^1.26.6",
+    "@types/qunit": "^2.19.12",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.63.0",
+    "ui5-middleware-livereload": "^3.3.1",
+    "ui5-test-runner": "^5.13.1",
+    "ui5-tooling-modules": "^3.37.8",
+    "ui5-tooling-transpile": "^3.12.0"
+  }
+}

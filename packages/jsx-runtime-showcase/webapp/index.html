@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>JSX Runtime for UI5. Author UI5 views as TypeScript JSX</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="A plugin-based JSX runtime for UI5. Write .tsx views that compile to plain new Control(settings) calls, with per-control prop typing and a plugin SPI you can extend without touching the core." />
+
+	<style>
+		/*
+		 * Splash screen. Visible before any JavaScript runs. Full
+		 * viewport, brand icon + spinner + hint. The `#jsx-splash`
+		 * element gets `hidden` set (with an opacity fade) by
+		 * `webapp/index.ts` once the UI5 ComponentContainer's
+		 * `componentCreated` fires.
+		 *
+		 * Same palette variables the rest of the app uses so the
+		 * splash matches the loaded view visually.
+		 */
+		/* The app is a fixed-height `sap.tnt.ToolPage` SPA that manages
+		 * its own scrolling internally (the content Page scrolls, the
+		 * shell doesn't). Clip the document itself so a stray sub-pixel
+		 * overflow can't raise a second, outer window scrollbar next to
+		 * the inner content one. */
+		html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+		body { font-family: -apple-system, BlinkMacSystemFont, "72", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+		#content { height: 100%; }
+
+		#jsx-splash {
+			position: fixed;
+			inset: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 1.5rem;
+			background: #ffffff;
+			color: #131e29;
+			z-index: 9999;
+			transition: opacity 200ms ease-out;
+		}
+		/* Splash matches the pre-paint-resolved theme so a dark-mode
+		 * user doesn't see a white flash before UI5 boots. The
+		 * `data-jsx-theme` attribute is set by the small resolver
+		 * script below. */
+		html[data-jsx-theme="dark"] #jsx-splash {
+			background: #12171c;
+			color: #eaecee;
+		}
+		html[data-jsx-theme="dark"] .jsx-splash-title {
+			color: #eaecee;
+		}
+		html[data-jsx-theme="dark"] .jsx-splash-hint {
+			color: #a5adba;
+		}
+		html[data-jsx-theme="dark"] .jsx-splash-spinner {
+			border-color: #2b3441;
+			border-top-color: #4c8df6;
+		}
+		#jsx-splash[hidden] {
+			display: flex;
+			opacity: 0;
+			pointer-events: none;
+		}
+		.jsx-splash-brand {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			font-family: -apple-system, BlinkMacSystemFont, "72", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+		}
+		.jsx-splash-brand svg {
+			width: 3rem;
+			height: 3rem;
+		}
+		.jsx-splash-title {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: #131e29;
+			letter-spacing: -0.01em;
+		}
+		.jsx-splash-spinner {
+			width: 2rem;
+			height: 2rem;
+			border: 3px solid #e5e7eb;
+			border-top-color: #0070f2;
+			border-radius: 50%;
+			animation: jsx-splash-spin 700ms linear infinite;
+		}
+		@keyframes jsx-splash-spin {
+			to { transform: rotate(360deg); }
+		}
+		.jsx-splash-hint {
+			font-size: 0.9rem;
+			color: #4a5560;
+		}
+		.jsx-splash-incubation {
+			font-size: 0.75rem;
+			color: #a06600;
+			background: #fff4e5;
+			border: 1px solid #ffd88a;
+			padding: 0.15rem 0.5rem;
+			border-radius: 999px;
+			letter-spacing: 0.02em;
+			text-transform: uppercase;
+			font-weight: 600;
+		}
+	</style>
+
+	<!--
+		Pre-paint theme resolver. Runs before the UI5 bootstrap script
+		so `data-sap-ui-theme` on the bootstrap tag carries the right
+		theme name from the very first paint (no flash-of-light-theme
+		swap after boot).
+
+		Two modes only, `"light"` and `"dark"`. If nothing is stored
+		yet we consult `prefers-color-scheme` so a first-time visitor
+		on a dark desktop sees a dark app. The result is written back
+		onto the `<script id="sap-ui-bootstrap">` tag's
+		`data-sap-ui-theme` attribute and mirrored onto
+		`<html data-jsx-theme="…">` for the CSS cascade to select on.
+
+		Kept as a synchronous `<script>` so it executes before the
+		bootstrap tag below fires its own request.
+	-->
+	<script>
+		(function () {
+			try {
+				var stored = localStorage.getItem("jsx-showcase-theme");
+				var mode;
+				if (stored === "light" || stored === "dark") {
+					mode = stored;
+				} else {
+					var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+					mode = prefersDark ? "dark" : "light";
+				}
+				var theme = mode === "dark" ? "sap_horizon_dark" : "sap_horizon";
+				document.documentElement.setAttribute("data-jsx-theme", mode);
+				var boot = document.getElementById("sap-ui-bootstrap");
+				if (boot) boot.setAttribute("data-sap-ui-theme", theme);
+			} catch (e) {
+				// localStorage / matchMedia blocked by a sandboxed
+				// context; fall back to the bootstrap tag's own default.
+			}
+		})();
+	</script>
+
+	<!--
+		PRODUCTION bootstrap (GitHub Pages).
+
+		Loads the UI5 framework from the OpenUI5 CDN, pinned to the same
+		version the app is built against. Only `sap-ui-core.js` (and the
+		framework libraries it pulls) come from the CDN — the app's own
+		modules and the bundled `ui5.community.jsx.runtime` library still
+		resolve from the deployed `resources/` via the resource-roots
+		below (the community runtime is not hosted on the CDN; it ships
+		inside the app's built `dist/`).
+
+		For local development the entry is `index-local.html`, which
+		loads UI5 from the app's own `resources/` served by `ui5 serve`.
+		`pnpm dev` opens that one.
+
+		Keep the CDN version in sync with the `framework.version` in
+		`ui5.yaml` / `ui5-dist.yaml` (currently OpenUI5 1.148.2).
+
+		UI5 boots inline. The application Component mounts eagerly via
+		`webapp/index.ts` (called through `data-sap-ui-oninit`), and the
+		router decides which page to show, the Welcome view at `""` or
+		the Explorer shell for `#/learn/*` / `#/explore/*`.
+
+		The `#jsx-splash` element below is visible before any of that
+		fires; `index.ts` removes it once the Component's
+		`componentCreated` event fires.
+	-->
+	<script
+		id="sap-ui-bootstrap"
+		src="https://sdk.openui5.org/1.148.2/resources/sap-ui-core.js"
+		data-sap-ui-theme="sap_horizon"
+		data-sap-ui-async="true"
+		data-sap-ui-libs="sap.m,sap.f,sap.tnt,sap.ui.core,sap.ui.layout,ui5.community.jsx.runtime"
+		data-sap-ui-resource-roots='{
+			"ui5.community.jsx.showcase": "./",
+			"ui5.community.jsx.runtime": "./resources/ui5/community/jsx/runtime/",
+			"prismjs": "./resources/prismjs/",
+			"mermaid": "./resources/mermaid/",
+			"marked": "./resources/marked/"
+		}'
+		data-sap-ui-oninit="module:ui5/community/jsx/showcase/index"
+		data-sap-ui-compat-version="edge"
+	></script>
+</head>
+<body class="sapUiBody">
+
+	<div id="jsx-splash" role="status" aria-live="polite" aria-label="Loading the JSX Runtime for UI5 showcase">
+		<div class="jsx-splash-brand">
+			<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<rect width="32" height="32" rx="6" fill="#0070f2"/>
+				<g transform="translate(6.5 6) scale(0.0381)">
+					<path fill="#ffffff" d="M250 9q14 11 37.5 20.5t51 22.5T394 82t50.5 43 37 62 14.5 86-19 93.5-52 76-77 51-94 18.5q-41 0-78-13t-67-36-51.5-54T25 341q-3-8-6-24.5t-2-37 6-43T42 194q15-22 34.5-38.5T116 126t39-24 33-24q-3 12-10 22t-17 19-21 18-21 21q-26 29-31.5 53.5T82 251q0 17 6.5 35.5t18.5 34 29 25.5 37 10q21 0 34-10t17.5-23 .5-25.5-17-17.5q-18-7-30-2-6 3-11 7-6-11-2-22 3-10 15-22.5t41-26.5q28-13 42.5-25.5T285 166q8-11 8-21 5 11 5.5 20t-1.5 17q-2 9-5 17 12-5 20-11.5t13-11.5q5-6 9-12 2 15 1.5 26.5T333 210q-2 9-5 15 3-1 7.5-3.5t9.5-4.5q5-3 11-6 0 11-4 19.5t-9 14.5q-5 7-12 13 9 11 23 10t26.5-10 21.5-24.5 9-35.5q0-4-1.5-17T398 149.5t-31.5-41T305 62q-21-12-32-22t-16-17q-6-8-7-14zm-31 244q8-2 5-8-4-8-16-3-2 2-4 2.5t-4 2.5-4 3h9q4 2 7 3t7 0z"/>
+				</g>
+			</svg>
+			<div class="jsx-splash-title">JSX Runtime for UI5</div>
+			<span class="jsx-splash-incubation">Incubation</span>
+		</div>
+		<div class="jsx-splash-spinner" aria-hidden="true"></div>
+		<div class="jsx-splash-hint">Loading the community showcase…</div>
+	</div>
+
+	<div id="content"></div>
+
+</body>
+</html>

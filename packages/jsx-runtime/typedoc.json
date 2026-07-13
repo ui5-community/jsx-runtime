@@ -1,0 +1,27 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": ["src/jsx-runtime.ts"],
+	"entryPointStrategy": "expand",
+	"tsconfig": "tsconfig.json",
+	"out": "../jsx-runtime-showcase/webapp/api",
+	"readme": "README.md",
+	"name": "JSX Runtime for UI5 — API Reference",
+	"includeVersion": true,
+	"excludeInternal": true,
+	"excludePrivate": true,
+	"excludeProtected": false,
+	"gitRevision": "main",
+	"navigationLinks": {
+		"Repo": "https://github.com/ui5-community/jsx-runtime",
+		"Concept overview": "https://github.com/ui5-community/jsx-runtime/blob/main/docs/jsx-runtime.md",
+		"Cookbook": "https://github.com/ui5-community/jsx-runtime/blob/main/docs/cookbook.md",
+		"Gotchas": "https://github.com/ui5-community/jsx-runtime/blob/main/docs/gotchas.md"
+	},
+	"categorizeByGroup": true,
+	"disableSources": false,
+	"validation": {
+		"notExported": true,
+		"invalidLink": true,
+		"notDocumented": false
+	}
+}

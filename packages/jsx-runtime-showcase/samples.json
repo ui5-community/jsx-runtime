@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json.schemastore.org/base",
+  "description": "Machine-readable index of showcase samples. Mirrors the REGISTRY in webapp/view/ExploreSample.tsx. Regenerate this file when you add or remove a sample.",
+  "samples": [
+    {
+      "id": "hello-jsx",
+      "title": "Hello, JSX",
+      "chapter": 1,
+      "concepts": ["minimal view", "inline event handler", "class attribute"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.HelloJSX",
+      "sourcePath": "webapp/view/showcases/HelloJSX.tsx",
+      "docPath": "webapp/docs/samples/hello-jsx.md"
+    },
+    {
+      "id": "prop-typing",
+      "title": "Per-control prop typing",
+      "chapter": 2,
+      "concepts": ["$XSettings typing", "typed event payloads", "TS errors at JSX site"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.PropTyping",
+      "sourcePath": "webapp/view/showcases/PropTyping.tsx",
+      "docPath": "webapp/docs/samples/prop-typing.md"
+    },
+    {
+      "id": "events-dot",
+      "title": "Events, dot notation",
+      "chapter": 3,
+      "concepts": ["dot-handler strings", "controller lookup", ".onPress convention"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.EventsDot",
+      "sourcePath": "webapp/view/showcases/EventsDot.tsx",
+      "docPath": "webapp/docs/samples/events-dot.md"
+    },
+    {
+      "id": "events-fn",
+      "title": "Events, function reference",
+      "chapter": 4,
+      "concepts": ["function-reference handlers", "[fn, listener] shape", "arrow handlers"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.EventsFn",
+      "sourcePath": "webapp/view/showcases/EventsFn.tsx",
+      "docPath": "webapp/docs/samples/events-fn.md"
+    },
+    {
+      "id": "no-bindings",
+      "title": "Wiring without bindings (the foil)",
+      "chapter": 5,
+      "concepts": ["ref/byId lookup", "imperative setText plumbing", "contrast with bound sample"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.NoBindings",
+      "sourcePath": "webapp/view/showcases/NoBindings.tsx",
+      "docPath": "webapp/docs/samples/no-bindings.md"
+    },
+    {
+      "id": "binding-string",
+      "title": "String data binding (JSONModel)",
+      "chapter": 6,
+      "concepts": ["JSONModel", "named-model binding {form>/name}", "auto-sync between controls"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.BindingString",
+      "sourcePath": "webapp/view/showcases/BindingString.tsx",
+      "docPath": "webapp/docs/samples/binding-string.md"
+    },
+    {
+      "id": "binding-object",
+      "title": "Binding object + DataType",
+      "chapter": 7,
+      "concepts": ["object-form binding-info", "SimpleType (Integer)", "parse/validate error handling", "as never cast"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.BindingObject",
+      "sourcePath": "webapp/view/showcases/BindingObject.tsx",
+      "docPath": "webapp/docs/samples/binding-object.md"
+    },
+    {
+      "id": "fragments",
+      "title": "JSX fragments <>…</>",
+      "chapter": 8,
+      "concepts": ["JSX fragment (sense 1)", "sibling flattening", "no wrapper control"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.Fragments",
+      "sourcePath": "webapp/view/showcases/Fragments.tsx",
+      "docPath": "webapp/docs/samples/fragments.md"
+    },
+    {
+      "id": "fragment-fn",
+      "title": "Fragment as helper function",
+      "chapter": 9,
+      "concepts": ["JSX fragment via helper function", "return type is Control[]", "call site vs tag site"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.FragmentFn",
+      "sourcePath": "webapp/view/showcases/FragmentFn.tsx",
+      "docPath": "webapp/docs/samples/fragment-fn.md"
+    },
+    {
+      "id": "fragment-dialog",
+      "title": "Fragment factory (dialog from separate file)",
+      "chapter": 10,
+      "concepts": ["UI5 fragment (sense 2)", ".fragment.tsx factory", "addDependent + dot-handler walk"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.FragmentDialogDemo",
+      "sourcePath": "webapp/view/showcases/FragmentDialogDemo.tsx",
+      "docPath": "webapp/docs/samples/fragment-dialog.md"
+    },
+    {
+      "id": "structural",
+      "title": "Structural directives <For>, <If>",
+      "chapter": 11,
+      "concepts": ["<For> three spellings", "<If> literal vs bound", "bound aggregation with template"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.Structural",
+      "sourcePath": "webapp/view/showcases/Structural.tsx",
+      "docPath": "webapp/docs/samples/structural.md"
+    },
+    {
+      "id": "switch-plugin",
+      "title": "Plugin <Switch>/<Case>/<Default>",
+      "chapter": 12,
+      "concepts": ["plugin SPI", "withScope + switchProcessor", "defineSentinel usage"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.SwitchPlugin",
+      "sourcePath": "webapp/view/showcases/SwitchPlugin.tsx",
+      "docPath": "webapp/docs/samples/switch-plugin.md"
+    },
+    {
+      "id": "type-coercion",
+      "title": "Property type coercion",
+      "chapter": 13,
+      "concepts": ["string-literal coercion to metadata types", "JSX-site type errors", "enum coercion"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.TypeCoercion",
+      "sourcePath": "webapp/view/showcases/TypeCoercion.tsx",
+      "docPath": "webapp/docs/samples/type-coercion.md"
+    },
+    {
+      "id": "embed-six",
+      "title": "Six ways to embed reusable UIs",
+      "chapter": 14,
+      "concepts": ["fragment helper", "single-subtree helper", ".fragment.tsx", "nested <View/>", "XMLView({definition})", "XMLView({viewName})"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.EmbedSix",
+      "sourcePath": "webapp/view/showcases/EmbedSix.tsx",
+      "docPath": "webapp/docs/samples/embed-six.md"
+    },
+    {
+      "id": "controller-as-file",
+      "title": "Controller in a separate file (recommended)",
+      "chapter": 15,
+      "concepts": ["view/controller split", "onInit lifecycle", "dot-handler string wiring", "recommended production pattern"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.ControllerAsFile",
+      "sourcePath": "webapp/view/showcases/ControllerAsFile.tsx",
+      "docPath": "webapp/docs/samples/controller-as-file.md"
+    },
+    {
+      "id": "i18n",
+      "title": "Internationalization via {i18n>…}",
+      "chapter": 16,
+      "concepts": ["ResourceModel", "{i18n>key} binding", "parameterized getText", "same syntax as XMLView"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.I18n",
+      "sourcePath": "webapp/view/showcases/I18n.tsx",
+      "docPath": "webapp/docs/samples/i18n.md"
+    },
+    {
+      "id": "table-bound",
+      "title": "Bound sap.m.Table with columns",
+      "chapter": 17,
+      "concepts": ["sap.m.Table", "columns=[…] header row", "ColumnListItem cells=[…]", "ObjectStatus with bound state", "add/remove via model mutation"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.TableBound",
+      "sourcePath": "webapp/view/showcases/TableBound.tsx",
+      "docPath": "webapp/docs/samples/table-bound.md"
+    }
+  ]
+}

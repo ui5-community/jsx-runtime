@@ -54,7 +54,7 @@ export default class WelcomeBody extends View {
 	private topBody!: HTML;
 	private bottomBody!: HTML;
 	private demoSlot!: VBox;
-	private page!: Page;
+	private mainWrap!: VBox;
 	private bodyPopulated = false;
 	private navBound = false;
 	private demoMounted = false;
@@ -127,18 +127,20 @@ export default class WelcomeBody extends View {
 		mainWrap.addItem(this.topBody);
 		mainWrap.addItem(demoStrip);
 		mainWrap.addItem(this.bottomBody);
+		// `.jsx-welcome-main-wrap` is the actual scroll container
+		// (`overflow-y: auto` in style.css), not the Page — keep a
+		// reference so onAfterRendering can pin it back to the top.
+		this.mainWrap = mainWrap;
 
 		// `Page` with `enableScrolling={true}` so the body can
 		// scroll on short viewports. Same "no header" pattern
 		// LearnDoc / ExploreSample use, the shell's ToolPage owns
 		// the visible chrome; this view only fills the content pane.
-		this.page = new Page({
-			showHeader: false,
-			enableScrolling: true,
-			content: [mainWrap]
-		});
-		this.page.addStyleClass("jsx-showcase-fullheight");
-		return this.page;
+		return (
+			<Page showHeader={false} enableScrolling={true} class="jsx-showcase-fullheight">
+				{mainWrap}
+			</Page>
+		);
 	}
 
 	onAfterRendering(): void {
@@ -159,17 +161,20 @@ export default class WelcomeBody extends View {
 			this.demoMounted = true;
 			this.mountLiveDemo();
 		}
-		// Reset the page scroll to the top on first render. The async
+		// Pin the scroll container to the top on a cold load. The async
 		// HTML-body population above and the live-demo mount below shift
-		// the layout after the Page's scroll container is measured, which
-		// otherwise leaves it a few pixels scrolled down on a cold load.
-		// `scrollTo(0, 0)` (offset, duration) pins it back to the top.
+		// the layout after the browser has laid out `.jsx-welcome-main-wrap`
+		// (the `overflow-y: auto` scroller), which otherwise leaves it a
+		// few pixels scrolled down. Reset its DOM scrollTop now and again
+		// on the next tick, after the demo view mounts and reflows.
 		if (!this.scrollReset) {
 			this.scrollReset = true;
-			this.page.scrollTo(0, 0);
-			// Run again on the next frame, after the demo view has mounted
-			// and its layout has settled, so a late reflow can't re-nudge it.
-			setTimeout(() => this.page.scrollTo(0, 0), 0);
+			const resetScroll = (): void => {
+				const dom = this.mainWrap.getDomRef();
+				if (dom) dom.scrollTop = 0;
+			};
+			resetScroll();
+			setTimeout(resetScroll, 0);
 		}
 	}
 

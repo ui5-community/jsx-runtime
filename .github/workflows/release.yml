@@ -49,14 +49,26 @@ jobs:
       - name: Build library
         run: pnpm --filter @ui5-community/jsx-runtime build
 
-      # npm auth via classic automation token. This repo is private, so
-      # npm OIDC trusted publishing is NOT available (it requires a public
-      # repo). Write the token to ~/.npmrc so `changeset publish` picks it
-      # up instead of falling back to OIDC (which silently no-ops here).
+      # npm auth. We always write the automation token to ~/.npmrc so the
+      # publish authenticates regardless of repo visibility. Provenance
+      # (npm OIDC trusted publishing) additionally requires a PUBLIC repo,
+      # so we only enable it when the repo is public — forcing it on a
+      # private repo makes `npm publish` fail. This makes the workflow work
+      # unchanged across the private → public transition.
       - name: Configure npm auth
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+
+      - name: Determine provenance eligibility
+        id: prov
+        run: |
+          # Provenance needs a public repo + id-token; enable it only then.
+          if [ "${{ github.event.repository.private }}" = "false" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Create Release PR or publish
         uses: changesets/action@v1
@@ -69,3 +81,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Only set on a public repo; empty (unset) on a private one.
+          NPM_CONFIG_PROVENANCE: ${{ steps.prov.outputs.enabled == 'true' && 'true' || '' }}

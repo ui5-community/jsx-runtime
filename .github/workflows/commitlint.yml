@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read # commitlint-github-action lists PR commits via the API on pull_request events
 
 env:
   HUSKY_SKIP: true

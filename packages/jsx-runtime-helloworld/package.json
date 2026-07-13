@@ -1,7 +1,6 @@
 {
 	"name": "@ui5-community/jsx-runtime-helloworld",
 	"version": "0.0.0",
-
 	"description": "UI5 Application: ui5.community.jsx.helloworld",
 	"private": true,
 	"author": "UI5 Community",
@@ -27,7 +26,7 @@
 		"test": "npm run lint && npm run test-ui5"
 	},
 	"dependencies": {
-    "@ui5-community/jsx-runtime": "workspace:^"
+		"@ui5-community/jsx-runtime": "workspace:^"
 	},
 	"devDependencies": {
 		"@babel/plugin-transform-react-jsx": "^7.29.7",

@@ -1,7 +1,6 @@
 {
   "name": "@ui5-community/jsx-runtime-showcase",
   "version": "0.0.0",
-
   "description": "Living documentation for @ui5-community/jsx-runtime, a UI5 TSX app that demonstrates each runtime concept.",
   "private": true,
   "license": "Apache-2.0",

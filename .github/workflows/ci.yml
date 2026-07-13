@@ -24,6 +24,14 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      # Build the library first: the showcase and helloworld packages
+      # reference `@ui5-community/jsx-runtime` in their tsconfig `types`,
+      # which resolves to the library's generated `dist/index.d.ts`. On a
+      # fresh CI checkout that file doesn't exist yet, so ts-typecheck
+      # would fail with "Cannot find type definition file" unless the
+      # library is built up front.
+      - name: Build library
+        run: pnpm --filter @ui5-community/jsx-runtime build
       - name: Type-check
         run: pnpm ts-typecheck
       - name: Lint

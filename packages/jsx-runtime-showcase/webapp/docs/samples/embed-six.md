@@ -20,9 +20,9 @@ ceremony. Most reusable pieces are fine as helper functions;
 reach for the heavier options only when you actually need what
 they add.
 
-Concept reference: [Nested views & embedding](/#/learn/nested-views).
+Concept reference: [Nested views & embedding](#/learn/nested-views).
 
-See also: [fragments](/#/explore/fragments) — the lightest option
-(pattern #1); [fragment-fn](/#/explore/fragment-fn) — helper function
-(pattern #2); [fragment-dialog](/#/explore/fragment-dialog) — factory
+See also: [fragments](#/explore/fragments) — the lightest option
+(pattern #1); [fragment-fn](#/explore/fragment-fn) — helper function
+(pattern #2); [fragment-dialog](#/explore/fragment-dialog) — factory
 file (pattern #3).

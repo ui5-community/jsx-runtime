@@ -34,7 +34,7 @@ which prop was wrong.
 
 ## Two lines of defence
 
-1. **TypeScript** ([`$XSettings` typing](/#/learn/props-typing))
+1. **TypeScript** ([`$XSettings` typing](#/learn/props-typing))
    catches typos at compile time.
 2. **This intrinsic** catches values that slip past the type
    checker: JSON config, spread props, `as never` escape
@@ -46,7 +46,7 @@ which prop was wrong.
   them in `applySettings`; coercing now would corrupt them.
 - **Binding strings**: `"{path}"`, `"{= 1 + 2 }"`,
   `"Total: {= ${count} } EUR"`. Same reason.
-- **Functions** (event handlers). See [Events](/#/learn/events).
+- **Functions** (event handlers). See [Events](#/learn/events).
 - **Props declared `type: "any"`**: explicit metadata opt-out.
 
 ## Escaping a literal `{`
@@ -60,5 +60,5 @@ Same convention UI5's settings parser follows, `\{`:
 The parser treats the escaped brace as literal; the value
 reaches coercion, not the binding path.
 
-Uncomment a case in [type-coercion](/#/explore/type-coercion)
+Uncomment a case in [type-coercion](#/explore/type-coercion)
 to see the error message live.

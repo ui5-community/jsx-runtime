@@ -15,7 +15,7 @@ step up buys reusability at the cost of ceremony.
 
 ## 1. JSX fragment
 
-Zero footprint. See [Fragments](/#/learn/fragments).
+Zero footprint. See [Fragments](#/learn/fragments).
 
 ## 2. Helper function
 
@@ -44,7 +44,7 @@ function statCard(label: string, value: string): Control {
 
 `*.fragment.tsx` file exporting a factory. Mounted via
 `view.addDependent(factory())`. Full story in
-[Fragments: sense 2](/#/learn/fragments#sense-2-ui5-fragment-factories-fragment-tsx).
+[Fragments: sense 2](#/learn/fragments#sense-2-ui5-fragment-factories-fragment-tsx).
 
 ## 4. Nested TSX View
 
@@ -96,4 +96,4 @@ const xmlView = await XMLView.create({
 The view lives at `webapp/view/EmbeddedByName.view.xml`. Best
 for coexisting with an XML-view codebase.
 
-See all six side by side in [embed-six](/#/explore/embed-six).
+See all six side by side in [embed-six](#/explore/embed-six).

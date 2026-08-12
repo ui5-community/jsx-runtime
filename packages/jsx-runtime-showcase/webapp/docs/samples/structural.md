@@ -22,10 +22,10 @@ in lockstep on add/remove:
   calls `bindProperty("visible", …)` on each child directly.
   No wrapper, no `sap.m` dependency.
 
-Concept reference: [Structural directives](/#/learn/directives)
-and [Aggregations](/#/learn/aggregations#bound-aggregations).
+Concept reference: [Structural directives](#/learn/directives)
+and [Aggregations](#/learn/aggregations#bound-aggregations).
 
-See also: [switch-plugin](/#/explore/switch-plugin) — a `<Switch>`
+See also: [switch-plugin](#/explore/switch-plugin) — a `<Switch>`
 directive added by a plugin (same shape, opt-in via `withScope`);
-[binding-string](/#/explore/binding-string) — the binding syntax
+[binding-string](#/explore/binding-string) — the binding syntax
 `<For>` and bound `<If>` compile into.

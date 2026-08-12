@@ -29,7 +29,7 @@ it at the value level:
 ```
 
 To group siblings without adding a wrapper control, use JSX
-[fragments](/#/learn/fragments) (`<>…</>`).
+[fragments](#/learn/fragments) (`<>…</>`).
 
 ## `getAutoPrefixId()`
 
@@ -54,8 +54,8 @@ behaves the same as
 ## Every other prop
 
 Flows through to UI5's `applySettings`. Properties get validated
-and coerced by the runtime's [type coercion](/#/learn/type-coercion);
+and coerced by the runtime's [type coercion](#/learn/type-coercion);
 aggregations receive children (see
-[Aggregations](/#/learn/aggregations)); events get wired (see
-[Events](/#/learn/events)). See it running in
-[hello-jsx](/#/explore/hello-jsx).
+[Aggregations](#/learn/aggregations)); events get wired (see
+[Events](#/learn/events)). See it running in
+[hello-jsx](#/explore/hello-jsx).

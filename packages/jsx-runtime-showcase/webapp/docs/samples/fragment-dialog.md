@@ -24,11 +24,11 @@ changes automatically: `.onCloseDialog` resolves against
 whichever view mounted the fragment, not against a captured
 original.
 
-Concept reference: [Fragments](/#/learn/fragments).
+Concept reference: [Fragments](#/learn/fragments).
 
-See also: [fragments](/#/explore/fragments) — the JSX-fragment sense,
+See also: [fragments](#/explore/fragments) — the JSX-fragment sense,
 which does **not** interoperate with `*.fragment.tsx` factories;
-[events-dot](/#/explore/events-dot) — the parent-chain handler walk
+[events-dot](#/explore/events-dot) — the parent-chain handler walk
 that resolves `.onCloseDialog` back to the mounting view;
-[embed-six](/#/explore/embed-six) — pattern #3 in the six embedding
+[embed-six](#/explore/embed-six) — pattern #3 in the six embedding
 options.

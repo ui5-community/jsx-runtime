@@ -2,7 +2,7 @@
 
 The runtime ships one reference plugin at
 `ui5/community/jsx/runtime/plugins/switch`. A worked example
-of the [SPI](/#/learn/plugin-spi) end to end.
+of the [SPI](#/learn/plugin-spi) end to end.
 
 ## What it looks like
 
@@ -46,7 +46,7 @@ export const Switch = defineSentinel<{
 type parameter `P` locks the prop shape so `<Case whenn="info"/>`
 is a compile error. At runtime `<Switch>` produces a sentinel
 node. The runtime doesn't know what to do with it; the plugin's
-processor does. See [Plugin SPI: Sentinels](/#/learn/plugin-spi#sentinels).
+processor does. See [Plugin SPI: Sentinels](#/learn/plugin-spi#sentinels).
 
 ### 2. `matches`
 
@@ -116,4 +116,4 @@ To target a **non-default aggregation** from your processor,
 mutate the `settings` object directly instead of `emit(child)`.
 That's how `<For aggregation="columns">` works.
 
-See it running in [switch-plugin](/#/explore/switch-plugin).
+See it running in [switch-plugin](#/explore/switch-plugin).

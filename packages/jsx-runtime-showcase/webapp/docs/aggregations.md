@@ -135,6 +135,6 @@ Pass an id string (single-cardinality) or an array of ids
 control doesn't affect the referrer, it just leaves a dangling
 id.
 
-See it running in [structural](/#/explore/structural) (the three
+See it running in [structural](#/explore/structural) (the three
 `<For>` spellings side-by-side) and
-[hello-jsx](/#/explore/hello-jsx) (default aggregation).
+[hello-jsx](#/explore/hello-jsx) (default aggregation).

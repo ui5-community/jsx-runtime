@@ -22,9 +22,9 @@ The plugin has **zero** imports from `sap.m` or any other UI
 library: it binds `visible` on whichever child the author
 supplied. Library-agnostic by construction.
 
-Concept reference: [The Plugin SPI](/#/learn/plugin-spi) and
-[Case study: <Switch>](/#/learn/switch-plugin).
+Concept reference: [The Plugin SPI](#/learn/plugin-spi) and
+[Case study: <Switch>](#/learn/switch-plugin).
 
-See also: [structural](/#/explore/structural) — the built-in `<For>`
+See also: [structural](#/explore/structural) — the built-in `<For>`
 and `<If>` this plugin mirrors in shape; the SPI walkthrough at
 `docs/cookbook.md` recipe 15.

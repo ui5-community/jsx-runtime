@@ -65,6 +65,6 @@ TypeScript doesn't. Cast:
 Same escape hatch you'd use in imperative
 `new Button({ enabled: {…} })`.
 
-See it in [binding-string](/#/explore/binding-string) and
-[binding-object](/#/explore/binding-object), plus the
-[no-bindings](/#/explore/no-bindings) foil for what disappears.
+See it in [binding-string](#/explore/binding-string) and
+[binding-object](#/explore/binding-object), plus the
+[no-bindings](#/explore/no-bindings) foil for what disappears.

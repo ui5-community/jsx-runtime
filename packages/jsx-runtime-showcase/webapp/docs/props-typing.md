@@ -28,9 +28,9 @@ Five props that `$XSettings` doesn't declare, layered on by the
 runtime:
 
 - `class`: routes through `addStyleClass`. See
-  [Controls](/#/learn/controls).
+  [Controls](#/learn/controls).
 - `children`: JSX-mandated. Processed as
-  [aggregations](/#/learn/aggregations).
+  [aggregations](#/learn/aggregations).
 - `id`: UI5's constructor id.
 - `key`: JSX-mandated. Stripped; not forwarded to UI5.
 - `ref`: a callback receiving the constructed instance.
@@ -39,8 +39,8 @@ runtime:
 ## Event props also accept dot-handler literals
 
 Every event-shaped prop accepts a `".methodName"` string in
-addition to a function. See [Events](/#/learn/events).
+addition to a function. See [Events](#/learn/events).
 
 Uncomment a TS-ERROR line in
-[prop-typing](/#/explore/prop-typing) to see the compiler in
+[prop-typing](#/explore/prop-typing) to see the compiler in
 action.

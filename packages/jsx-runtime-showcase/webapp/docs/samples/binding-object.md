@@ -21,9 +21,9 @@ The read-only `<Text>` on the same path uses the default
 `Integer` formatter, so what you see is the raw `number` in the
 model, not the user's string.
 
-Concept reference: [Data binding](/#/learn/data-binding).
+Concept reference: [Data binding](#/learn/data-binding).
 
-See also: [binding-string](/#/explore/binding-string) — the simpler
+See also: [binding-string](#/explore/binding-string) — the simpler
 string form when a `path` is all you need;
-[prop-typing](/#/explore/prop-typing) — background for the `as never`
+[prop-typing](#/explore/prop-typing) — background for the `as never`
 cast at the JSX site.

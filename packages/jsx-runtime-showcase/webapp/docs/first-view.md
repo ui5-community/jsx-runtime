@@ -46,9 +46,9 @@ can't resolve it.
 
 No controller. No model. No `manifest` entry. `<VBox/>` becomes
 `new VBox(…)`, `press={fn}` gets wired via UI5's
-`[fn, listener]` shape (see [Events](/#/learn/events)), and
+`[fn, listener]` shape (see [Events](#/learn/events)), and
 `class="…"` routes through `addStyleClass` (see
-[Controls](/#/learn/controls)).
+[Controls](#/learn/controls)).
 
 ## Loading it
 
@@ -63,7 +63,7 @@ const view = await View.create({
 The `module:` prefix is UI5's target for programmatic views.
 Routing, embedding, `NavContainer` mounting: same as XML.
 
-Now wire the build: [Setup →](/#/learn/setup).
+Now wire the build: [Setup →](#/learn/setup).
 
 ## About `getAutoPrefixId`
 
@@ -88,8 +88,8 @@ mounting the same nested sample can safely name a control
 XMLView invokes this automatically for every control the parser
 constructs. With the JSX runtime, the same behaviour is wired in
 transparently at runtime: see
-[Auto id prefix →](/#/learn/auto-prefix) for the how, and
-[JSX vs XMLView →](/#/learn/jsx-vs-xmlview) for the wider concept
+[Auto id prefix →](#/learn/auto-prefix) for the how, and
+[JSX vs XMLView →](#/learn/jsx-vs-xmlview) for the wider concept
 map.
 
 Keep the method on every JSX view unless you have a strong reason

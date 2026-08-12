@@ -16,7 +16,7 @@ Add these to your `tsconfig.json`:
 ```
 
 - `"jsx": "react-jsx"`: automatic-runtime JSX transform.
-  Matches Babel's `runtime: "automatic"` from [Setup](/#/learn/setup).
+  Matches Babel's `runtime: "automatic"` from [Setup](#/learn/setup).
 - `"jsxImportSource"`: same string as Babel's `importSource`.
   Type checker and runtime have to agree.
 - `"types"`: pulls in the `$XSettings` interfaces

@@ -16,9 +16,9 @@ liveChange={(e: Input$LiveChangeEvent): void => {
 `@openui5/types`. Dot-handler strings work too, but lose the
 compile-time payload check.
 
-Concept reference: [Events](/#/learn/events).
+Concept reference: [Events](#/learn/events).
 
-See also: [events-dot](/#/explore/events-dot) — dot-notation
+See also: [events-dot](#/explore/events-dot) — dot-notation
 alternative that survives controller swaps;
-[prop-typing](/#/explore/prop-typing) — how the typed event payloads
+[prop-typing](#/explore/prop-typing) — how the typed event payloads
 compose with the rest of the `$XSettings` surface.

@@ -16,10 +16,10 @@ Note the **two senses** of "fragment" in UI5:
 
 The two share a name and nothing else.
 
-Concept reference: [Fragments](/#/learn/fragments).
+Concept reference: [Fragments](#/learn/fragments).
 
-See also: [fragment-fn](/#/explore/fragment-fn) — same JSX-fragment
-sense, wrapped in a helper function; [fragment-dialog](/#/explore/fragment-dialog)
+See also: [fragment-fn](#/explore/fragment-fn) — same JSX-fragment
+sense, wrapped in a helper function; [fragment-dialog](#/explore/fragment-dialog)
 — the **other** sense of "fragment" (a reusable UI chunk with no
-controller); [embed-six](/#/explore/embed-six) — all six embedding
+controller); [embed-six](#/explore/embed-six) — all six embedding
 patterns side by side.

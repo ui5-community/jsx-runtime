@@ -2,7 +2,7 @@
 
 Five extension points. Any of them can be extended by a plain
 module (a plugin) with no core changes. See the phases they
-plug into in [Runtime anatomy](/#/learn/runtime-anatomy).
+plug into in [Runtime anatomy](#/learn/runtime-anatomy).
 
 ## Opt-in
 
@@ -89,14 +89,14 @@ in phase 2 for every `(key, value)` prop. Claims by key name
 and/or value shape; transforms the settings entry and/or
 schedules a post-construct hook. Core handlers cover `class`,
 `ref`, `binding`/`bindElement`, dot-handler event strings, and
-[property type coercion](/#/learn/type-coercion).
+[property type coercion](#/learn/type-coercion).
 
 **`ChildrenProcessor`.** Many per scope, first-match-wins. Runs
 in phase 3 for every JSX child. Claims a child (usually a
 plugin-defined sentinel) and emits replacement entries. Core
 processors handle `<Fragment>`, `<For>`, `<If>`. The shipped
 `switchProcessor` is a full working example; see
-[Case study](/#/learn/switch-plugin).
+[Case study](#/learn/switch-plugin).
 
 **`Renderer`.** One per scope. Runs in phase 4. `construct(type,
 settings)` returns the instance. Default: `new type(settings)`.
@@ -138,4 +138,4 @@ why the plugin can ship in the runtime package: it has no
 library dependency to declare.
 
 Walk through a working plugin end to end:
-[Case study: <Switch>](/#/learn/switch-plugin).
+[Case study: <Switch>](#/learn/switch-plugin).

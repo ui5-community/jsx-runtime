@@ -36,9 +36,9 @@ overriding `getController(): this` — convenient for a single-file
 demo, but explicitly not what a real app should do. This chapter
 is the pattern to copy for production code.
 
-Concept reference: [Events](/#/learn/events) and
-[Nested views & embedding](/#/learn/nested-views).
+Concept reference: [Events](#/learn/events) and
+[Nested views & embedding](#/learn/nested-views).
 
-See also: [events-dot](/#/explore/events-dot) — the one-file variant
-of the same dot-handler wiring; [i18n](/#/explore/i18n) — how the
+See also: [events-dot](#/explore/events-dot) — the one-file variant
+of the same dot-handler wiring; [i18n](#/explore/i18n) — how the
 same pattern combines with resource bundles.

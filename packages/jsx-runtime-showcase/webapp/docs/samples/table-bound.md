@@ -36,10 +36,10 @@ Not covered here (see [deferred-samples.md](../../../../../../docs/deferred-samp
 OData, `growing`/`updateFinished`, `sap.ui.table.Table`,
 `sap.ui.mdc.Table`, cell personalization, export.
 
-Concept reference: [Aggregations](/#/learn/aggregations#bound-aggregations)
-and [Data binding](/#/learn/data-binding).
+Concept reference: [Aggregations](#/learn/aggregations#bound-aggregations)
+and [Data binding](#/learn/data-binding).
 
-See also: [structural](/#/explore/structural) — the same
+See also: [structural](#/explore/structural) — the same
 bound-aggregation mechanism on `List` with all three `<For>`
-spellings; [binding-string](/#/explore/binding-string) — the
+spellings; [binding-string](#/explore/binding-string) — the
 underlying binding syntax.

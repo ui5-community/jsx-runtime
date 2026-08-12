@@ -12,10 +12,10 @@ consumes it.
 Named model scope (`form>`) keeps this view's model isolated
 from any default model a parent view might attach later.
 
-Concept reference: [Data binding](/#/learn/data-binding).
+Concept reference: [Data binding](#/learn/data-binding).
 
-See also: [no-bindings](/#/explore/no-bindings) — the foil, same
+See also: [no-bindings](#/explore/no-bindings) — the foil, same
 mirroring done imperatively via `byId` + `setText`;
-[binding-object](/#/explore/binding-object) — when the binding needs
-more than a `path`; [structural](/#/explore/structural) — the same
+[binding-object](#/explore/binding-object) — when the binding needs
+more than a `path`; [structural](#/explore/structural) — the same
 binding syntax powering bound aggregations.

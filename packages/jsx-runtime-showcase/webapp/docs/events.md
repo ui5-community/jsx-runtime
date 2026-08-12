@@ -19,7 +19,7 @@ Reach for this when:
 - The handler lives on a separate `*.controller.ts` file.
 - The JSX subtree might be re-parented under a different view, and
   handlers rebind automatically.
-- You're mounting a [fragment factory](/#/learn/fragments) whose
+- You're mounting a [fragment factory](#/learn/fragments) whose
   events should route back to the mounting view.
 
 ## Function references
@@ -52,5 +52,5 @@ Dot-handler strings lose that compile-time payload check.
 Redundant but harmless. A bound function's own `this` wins over
 UI5's listener argument.
 
-See both in [events-dot](/#/explore/events-dot) and
-[events-fn](/#/explore/events-fn).
+See both in [events-dot](#/explore/events-dot) and
+[events-fn](#/explore/events-fn).

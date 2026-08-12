@@ -22,7 +22,7 @@ between them.
 | Loops | `<template:for>` (needs the XML preprocessor) | `<For each={items}>{item => …}</For>` (built-in) |
 | Conditionals | `<template:if>` (same preprocessor) | `<If test={cond}>…</If>` or `{cond && …}` |
 | Fragments / grouping | `<sap.ui.core:Fragment>` | `<Fragment>` / `<>…</>` |
-| Auto id prefix | Handled by the XML parser automatically | Handled transparently once `getAutoPrefixId()` returns `true`; see [Auto id prefix →](/#/learn/auto-prefix) |
+| Auto id prefix | Handled by the XML parser automatically | Handled transparently once `getAutoPrefixId()` returns `true`; see [Auto id prefix →](#/learn/auto-prefix) |
 | Interop with the other | JSX views embed via `<View viewName="module:…" />` | XML views embed via `XMLView.create({ viewName })` |
 | Inline JS/TS logic in the view | Not allowed | Full: imports, helper functions, closures |
 | Tooling | UI5 built-in XSD; XML editors | TypeScript compiler + ESLint + the entire TS ecosystem |
@@ -121,7 +121,7 @@ reference:
 <Button text="Save" press={this.onSave} />
 ```
 
-See [Events →](/#/learn/events) for the full resolution order
+See [Events →](#/learn/events) for the full resolution order
 and the `[fn, listener]` shape UI5 uses under the hood.
 
 ## When to pick which
@@ -158,12 +158,12 @@ They coexist on the same page. Two flavours:
    ```
 
 Both flavours are demoed live in
-[Chapter 14 · Six ways to embed reusable UIs](/#/explore/embed-six).
+[Chapter 14 · Six ways to embed reusable UIs](#/explore/embed-six).
 
 ## See also
 
-- [Your first TSX view](/#/learn/first-view)
-- [Auto id prefix](/#/learn/auto-prefix)
-- [Controls & JSX elements](/#/learn/controls)
-- [Props & TypeScript](/#/learn/props-typing)
-- [Events](/#/learn/events)
+- [Your first TSX view](#/learn/first-view)
+- [Auto id prefix](#/learn/auto-prefix)
+- [Controls & JSX elements](#/learn/controls)
+- [Props & TypeScript](#/learn/props-typing)
+- [Events](#/learn/events)

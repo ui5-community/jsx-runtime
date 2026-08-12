@@ -1,5 +1,5 @@
 `sap.ui.table.Table` (the grid table) is the sibling of the
-[table-bound](/#/explore/table-bound) `sap.m.Table` sample — same
+[table-bound](#/explore/table-bound) `sap.m.Table` sample — same
 job, different control, different aggregation shape.
 
 `sap.m.Table` pairs `<Column>` headers with one `<ColumnListItem>`
@@ -42,9 +42,9 @@ Not covered here (see [deferred-samples.md](../../../../../../docs/deferred-samp
 OData, selection handling, sorting/filtering menus, column freezing,
 `sap.ui.mdc.Table`.
 
-Concept reference: [Aggregations](/#/learn/aggregations#bound-aggregations)
-and [Data binding](/#/learn/data-binding).
+Concept reference: [Aggregations](#/learn/aggregations#bound-aggregations)
+and [Data binding](#/learn/data-binding).
 
-See also: [table-bound](/#/explore/table-bound) — the same data on
-`sap.m.Table`; [structural](/#/explore/structural) — the same
+See also: [table-bound](#/explore/table-bound) — the same data on
+`sap.m.Table`; [structural](#/explore/structural) — the same
 bound-aggregation mechanism on `List`.

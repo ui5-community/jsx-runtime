@@ -9,7 +9,7 @@ not around it.
 `<For>` populates a bound aggregation with a repeated template.
 It has three equivalent spellings and an `aggregation="…"`
 override for non-default targets. Full story in
-[Aggregations: `<For>`](/#/learn/aggregations#bound-aggregations).
+[Aggregations: `<For>`](#/learn/aggregations#bound-aggregations).
 
 ## The If directive
 
@@ -51,4 +51,4 @@ failing loud. Combine with an expression binding instead:
 <Text visible="{= ${/a} && ${/b} }" />
 ```
 
-See both directives in [structural](/#/explore/structural).
+See both directives in [structural](#/explore/structural).

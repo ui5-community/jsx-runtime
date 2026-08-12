@@ -22,8 +22,8 @@ a plain function. This runtime explicitly does not: `<X/>` is
 always `new X(settings)`. To compose from a function, invoke it
 as a value expression.
 
-Concept reference: [Fragments](/#/learn/fragments).
+Concept reference: [Fragments](#/learn/fragments).
 
-See also: [fragments](/#/explore/fragments) — the raw `<>…</>` form
-without a helper wrapper; [embed-six](/#/explore/embed-six) — the
+See also: [fragments](#/explore/fragments) — the raw `<>…</>` form
+without a helper wrapper; [embed-six](#/explore/embed-six) — the
 helper-function pattern in context with five other embedding options.

@@ -16,7 +16,7 @@ Everything downstream is UI5 exactly as before: metadata,
 `applySettings`, bindings, aggregations, events. There is no
 virtual DOM, no reconciler, no re-render loop. **A JSX
 expression is a constructor call, not a render description.**
-Reactivity comes from [UI5 bindings](/#/learn/data-binding), same
+Reactivity comes from [UI5 bindings](#/learn/data-binding), same
 as in an XML view.
 
 ## How it works
@@ -51,6 +51,6 @@ at author time. Babel emits calls. Runtime hands them to UI5.
 
 ## Ready?
 
-[Your first TSX view](/#/learn/first-view) shows the whole story
-in ten lines of code. Then [Setup](/#/learn/setup) wires the
+[Your first TSX view](#/learn/first-view) shows the whole story
+in ten lines of code. Then [Setup](#/learn/setup) wires the
 build.

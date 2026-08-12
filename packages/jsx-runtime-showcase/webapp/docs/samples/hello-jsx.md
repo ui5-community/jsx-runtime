@@ -13,8 +13,8 @@ runtime hands to UI5 as `new Button({ text: "Hi", press: () => ... })`.
 A JSX expression is a **constructor call**, not a render description.
 No virtual DOM, no reconciler, no re-render.
 
-Concept reference: [Controls & JSX elements](/#/learn/controls).
+Concept reference: [Controls & JSX elements](#/learn/controls).
 
-See also: [events-fn](/#/explore/events-fn) — same button, typed event
-payload; [binding-string](/#/explore/binding-string) — introduce a
+See also: [events-fn](#/explore/events-fn) — same button, typed event
+payload; [binding-string](#/explore/binding-string) — introduce a
 `JSONModel` and let UI5's reactivity replace the imperative handler.

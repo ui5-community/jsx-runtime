@@ -138,7 +138,7 @@ With the instance in hand:
 
 ## Why this shape
 
-Every phase reads from the active `Scope`. A [plugin](/#/learn/plugin-spi)
+Every phase reads from the active `Scope`. A [plugin](#/learn/plugin-spi)
 adds its handler / processor / renderer / applier at
 scope-open time, and the phase machinery consults the merged
 registry. Bindings still route through `applySettings` in phase

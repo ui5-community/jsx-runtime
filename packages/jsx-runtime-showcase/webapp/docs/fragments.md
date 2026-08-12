@@ -67,7 +67,7 @@ onCloseDialog(): void {
 `addDependent` splices the dialog into the caller's dependents
 aggregation. The dialog's parent chain now leads back to the
 view, so `.onCloseDialog` from the Close button resolves on
-this view's controller via the [dot-handler walk](/#/learn/events#dot-handler-strings).
+this view's controller via the [dot-handler walk](#/learn/events#dot-handler-strings).
 
 Mount the same fragment from a different view and it resolves
 against *that* view. Truly controller-less.
@@ -80,6 +80,6 @@ against *that* view. Truly controller-less.
   runtime doesn't inspect it.
 
 Fragment factories are one rung in the broader
-[embedding ladder](/#/learn/nested-views). See both senses in
-[fragments](/#/explore/fragments), [fragment-fn](/#/explore/fragment-fn),
-and [fragment-dialog](/#/explore/fragment-dialog).
+[embedding ladder](#/learn/nested-views). See both senses in
+[fragments](#/explore/fragments), [fragment-fn](#/explore/fragment-fn),
+and [fragment-dialog](#/explore/fragment-dialog).

@@ -9,8 +9,8 @@ disappears when a `JSONModel` and binding strings replace the
 byId round-trips. Compare against `binding-string` to feel the
 difference.
 
-Concept reference: [Data binding](/#/learn/data-binding).
+Concept reference: [Data binding](#/learn/data-binding).
 
-See also: [binding-string](/#/explore/binding-string) — the same
+See also: [binding-string](#/explore/binding-string) — the same
 value-mirroring, done with a `JSONModel` and two binding strings.
 This sample is the deliberate foil for that one.

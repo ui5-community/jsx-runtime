@@ -78,7 +78,7 @@ uses. If you need to compute an id yourself,
 
 ## See also
 
-- [Your first TSX view](/#/learn/first-view): the section
+- [Your first TSX view](#/learn/first-view): the section
   "About `getAutoPrefixId`" that points here from every sample.
-- [JSX vs XMLView](/#/learn/jsx-vs-xmlview): where the two view
+- [JSX vs XMLView](#/learn/jsx-vs-xmlview): where the two view
   worlds line up on this and every other concept.

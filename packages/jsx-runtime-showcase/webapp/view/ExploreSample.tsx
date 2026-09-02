@@ -148,6 +148,12 @@ const REGISTRY: Record<string, {
 		icon: "sap-icon://grid",
 		viewName: "ui5.community.jsx.showcase.view.showcases.TableGrid",
 		sourcePath: "view/showcases/TableGrid.tsx"
+	},
+	"custom-data-key": {
+		title: "CustomData & the key prop",
+		icon: "sap-icon://key-user-settings",
+		viewName: "ui5.community.jsx.showcase.view.showcases.CustomDataKey",
+		sourcePath: "view/showcases/CustomDataKey.tsx"
 	}
 };
 

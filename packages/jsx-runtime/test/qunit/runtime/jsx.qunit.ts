@@ -9,6 +9,7 @@ import { jsx, jsxs } from "ui5/community/jsx/runtime/jsx-runtime";
 import Button from "sap/m/Button";
 import VBox from "sap/m/VBox";
 import Text from "sap/m/Text";
+import CustomData from "sap/ui/core/CustomData";
 
 QUnit.module("runtime/jsx");
 
@@ -46,4 +47,22 @@ QUnit.test("string type throws when no htmlIntrinsic is registered", (assert) =>
 		/htmlIntrinsic|renderer/i,
 		"clear error naming the missing HTML intrinsic"
 	);
+});
+
+// Babel's automatic JSX transform extracts `key` from the element's attributes
+// and passes it as the third argument to jsx(). Controls that declare a real
+// `key` property (like sap.ui.core.CustomData) must receive that value.
+QUnit.test("jsx() forwards the third 'key' arg to a control that has a key property", (assert) => {
+	const cd = jsx(CustomData, { value: "123test" }, "testkey") as CustomData;
+	assert.strictEqual(cd.getKey(), "testkey", "key property set from third argument");
+	cd.destroy();
+});
+
+QUnit.test("jsx() ignores the third 'key' arg for controls without a key property", (assert) => {
+	// Button has no `key` property — the third arg must be silently dropped.
+	assert.ok(() => {
+		const b = jsx(Button, { text: "ok" }, "some-key") as Button;
+		b.destroy();
+		return true;
+	}, "no throw when key arg passed to a control without a key property");
 });

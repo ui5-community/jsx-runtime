@@ -112,7 +112,8 @@ export default class Explorer extends Controller {
 		{ key: "explore.g.advanced", title: "Advanced", icon: "sap-icon://sys-help", children: [
 			{ key: "explore.controller-as-file", title: "Controller as separate file", icon: "sap-icon://source-code", route: "exploreSample", arg: "controller-as-file" },
 			{ key: "explore.structural",      title: "Structural <For>, <If>",    icon: "sap-icon://tree",           route: "exploreSample", arg: "structural" },
-			{ key: "explore.type-coercion", title: "Property type coercion", icon: "sap-icon://alert",         route: "exploreSample", arg: "type-coercion" }
+			{ key: "explore.type-coercion", title: "Property type coercion", icon: "sap-icon://alert",         route: "exploreSample", arg: "type-coercion" },
+			{ key: "explore.custom-data-key", title: "CustomData & the key prop", icon: "sap-icon://key-user-settings", route: "exploreSample", arg: "custom-data-key" }
 		]},
 		{ key: "explore.g.plugins", title: "Plugins / Extend", icon: "sap-icon://puzzle", children: [
 			{ key: "explore.switch-plugin", title: "Plugin <Switch>", icon: "sap-icon://switch-classes", route: "exploreSample", arg: "switch-plugin" }

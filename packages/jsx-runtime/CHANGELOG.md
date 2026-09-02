@@ -1,5 +1,15 @@
 # @ui5-community/jsx-runtime
 
+## 0.1.1
+
+### Patch Changes
+
+- [#4](https://github.com/ui5-community/jsx-runtime/pull/4) [`b464107`](https://github.com/ui5-community/jsx-runtime/commit/b464107c297a7e4168f4a0b3d8bf52f713cce55e) Thanks [@petermuessig](https://github.com/petermuessig)! - Fix `key` prop being silently dropped for controls that declare it as a property (e.g. `sap.ui.core.CustomData`).
+
+  Babel's automatic JSX transform always extracts `key` from the element's attributes and passes it as the third argument to `jsx(type, props, key)` — it is never present in the `props` object. The runtime now detects this case and forwards the value to the control's `key` property when the control metadata declares one. For controls without a `key` property the behaviour is unchanged.
+
+  Fixes [#3](https://github.com/ui5-community/jsx-runtime/issues/3).
+
 ## 0.1.0
 
 ### Minor Changes

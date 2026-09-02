@@ -193,9 +193,10 @@ function makeHandler(handlerName: string): (this: Element, event: Event) => void
  * the rest (binding extraction, aggregation wiring, applying defaults) under
  * the default control-instance renderer.
  *
- * Babel may pass an extra `key` argument for keyed lists; UI5 doesn't have a
- * concept of React keys, so we accept it for signature compatibility and
- * ignore it.
+ * Babel may pass an extra `key` argument for keyed lists. When the target
+ * control declares a property named `key` (e.g. `sap.ui.core.CustomData`),
+ * the value is forwarded to that property. Otherwise it is ignored — UI5 has
+ * no concept of React-style list reconciliation keys.
  *
  * @example
  * // Consumers never call jsx() directly; Babel's automatic runtime
@@ -276,6 +277,14 @@ export function jsx<T extends ManagedObject>(
 	// by the applier loop after construction. Cache it so hot views
 	// pay the allocation once per element rather than twice.
 	const propEntries = Object.entries(allProps);
+	// Babel's automatic JSX transform always extracts the `key` prop from the
+	// element's attributes and passes it as the third argument to `jsx()`, never
+	// inside the props object. For controls that own a real `key` property (e.g.
+	// `sap.ui.core.CustomData`), inject it back into the entries so it travels
+	// through the normal intrinsic + applier pipeline and lands in settings.
+	if (_key !== undefined && metadata.hasProperty("key")) {
+		propEntries.push(["key", _key]);
+	}
 
 	for (const [key, value] of propEntries) {
 		if (key === "children") {

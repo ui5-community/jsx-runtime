@@ -71,7 +71,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prepack": "node scripts/swap-ui5-config.mjs --mode swap",
     "postpack": "node scripts/swap-ui5-config.mjs --mode restore",
-    "dev": "ui5 serve --port 8081 --open test/qunit/testsuite.qunit.html",
+    "dev": "ui5 serve --port 8081 --open test-resources/ui5/community/jsx/runtime/qunit/testsuite.qunit.html",
     "start": "ui5 serve --port 8081",
     "ts-typecheck": "tsc --noEmit",
     "lint": "eslint src test",

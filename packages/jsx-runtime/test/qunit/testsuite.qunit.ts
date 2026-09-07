@@ -33,6 +33,7 @@ export default {
 		"runtime/intrinsics": { title: "runtime: built-in IntrinsicHandlers" },
 		"runtime/property-appliers": { title: "runtime: PropertyApplier ordering" },
 		"runtime/auto-prefix-id": { title: "runtime: auto id prefix bridge" },
+		"runtime/string-aggregation-binding": { title: "runtime: string aggregation binding + template" },
 		"plugins/switch": { title: "plugins: <Switch> / <Case> / <Default>" }
 	}
 };

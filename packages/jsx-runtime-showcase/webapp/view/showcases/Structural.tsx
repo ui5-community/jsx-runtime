@@ -18,16 +18,19 @@ import { For, If } from "ui5/community/jsx/runtime/jsx-runtime";
  * with a row template; bound `<If>` binds each child's `visible`
  * property directly. Same reactivity, idiomatic JSX syntax.
  *
- * ## `<For>`, three equivalent spellings
+ * ## `<For>`, four equivalent spellings
  *
- * All three Lists below render the same rows from the same
+ * All four Lists below render the same rows from the same
  * `/items` model path and stay in lockstep on add / remove.
  *
  * 1. **Explicit**, `<For each={binding}>{() => <Row/>}</For>`.
  * 2. **Implicit**, `<List items={binding}><Row/></List>`; the JSX
  *    child slots in as the aggregation's `template`.
- * 3. **Raw**, pass the `template` inside the binding info object.
- *    This is what the two spellings above desugar to before UI5
+ * 3. **String**, `<List items="{/items}"><Row/></List>`; the classic
+ *    XML-view spelling — the runtime parses the string into a
+ *    binding info and the child becomes the `template`.
+ * 4. **Raw**, pass the `template` inside the binding info object.
+ *    This is what the spellings above desugar to before UI5
  *    sees them.
  *
  * ## `<If>`, two modes
@@ -91,8 +94,19 @@ export default class Structural extends View {
 					<StandardListItem title="{label}" description="ID: {id}" />
 				</List>
 
+				{/* String: the classic XML-view spelling. The runtime
+				    parses the binding string and the JSX child slots
+				    in as the `template`, identical to the implicit
+				    object form above. */}
+				<List
+					headerText='People (string items="{/items}" + template child)'
+					items="{/items}"
+				>
+					<StandardListItem title="{label}" description="ID: {id}" />
+				</List>
+
 				{/* Raw: the binding info object itself carries the
-				    `template`. This is what both spellings above
+				    `template`. This is what all spellings above
 				    desugar to before UI5 sees them. */}
 				<List
 					headerText="People (raw items={{ path, template }})"

@@ -113,6 +113,7 @@ export default class Foo extends View {
 | enum attr `type="Emphasized"` | import the enum or pass the string; e.g. `illustrationType={IllustratedMessageType.SuccessHighFive}` (enums are their own module: `sap/m/IllustratedMessageType`, default export) |
 | `press=".onGo"` (controller handler) | same `.onGo` string, or `press={this.onGo}` |
 | binding `text="{i18n>x}"` | same string |
+| aggregation binding `items="{/rows}"` with a row template | same string; put the row template as the JSX child: `<List items="{/rows}"><StandardListItem .../></List>` |
 
 ### Bindings with a formatter
 XML `core:require` + `"{formatter: 'formatter.fmt', path: 'i18n>x'}"`

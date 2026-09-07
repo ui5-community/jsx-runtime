@@ -116,9 +116,9 @@ Reference: [binding-object sample](../packages/jsx-runtime-showcase/webapp/view/
 
 ---
 
-## 6. Bound aggregation with a row template — three spellings
+## 6. Bound aggregation with a row template — four spellings
 
-All three render the same rows from `/items` and stay in lockstep on add/remove. Pick by taste.
+All four render the same rows from `/items` and stay in lockstep on add/remove. Pick by taste.
 
 **Explicit `<For>`:**
 
@@ -134,6 +134,14 @@ All three render the same rows from `/items` and stay in lockstep on add/remove.
 
 ```tsx
 <List items={{ path: "/items" }}>
+    <StandardListItem title="{label}" description="ID: {id}" />
+</List>
+```
+
+**String — the classic XML-view spelling; child slots in as `template`:**
+
+```tsx
+<List items="{/items}">
     <StandardListItem title="{label}" description="ID: {id}" />
 </List>
 ```

@@ -35,6 +35,15 @@ export type ControlMetadata = {
 	hasEvent(name: string): boolean;
 	hasProperty(name: string): boolean;
 	/**
+	 * Returns true if the control declares a public aggregation of this
+	 * name. Used by the runtime to confirm a default-aggregation prop that
+	 * arrived as a *string* binding (`items="{/x}"`) really is an
+	 * aggregation before normalizing it into a binding info (so the JSX
+	 * child can become the row `template`). Backed by
+	 * `ManagedObjectMetadata.hasAggregation`.
+	 */
+	hasAggregation(name: string): boolean;
+	/**
 	 * Returns the property descriptor (containing `type: string`, the UI5
 	 * type name like `"int"`, `"boolean"`, `"sap.m.ButtonType"`) or
 	 * `undefined` when the property doesn't exist on this control.

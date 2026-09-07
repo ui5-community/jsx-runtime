@@ -318,15 +318,50 @@ export function jsx<T extends ManagedObject>(
 			// and `<Fragment>` inline. Plugins can add `<Switch>`, etc.
 			const processed = processChildren(children, settings, defaultAggregation);
 			const arr = flattenChildren(processed);
-			const existing = settings[defaultAggregation] as
+			let existing = settings[defaultAggregation] as
 				| { path?: unknown; template?: unknown }
 				| undefined;
 
+			// String-syntax aggregation binding, e.g. `items="{view>/rows}"`.
+			// UI5 parses such a string into a list-binding info inside
+			// `applySettings` (via `extractBindingInfo` → `BindingParser`),
+			// so a *childless* `<List items="{/x}"/>` already binds correctly
+			// and is left untouched below. But when JSX children are present
+			// they are the intended row template, and the string would
+			// otherwise be clobbered by the `else if (arr.length > 0)` branch
+			// (a primitive string is not `isBindingLike`). Parse it up-front —
+			// using the same `BindingParser.complexParser` primitive
+			// `extractBindingInfo` uses — so the string becomes a binding info
+			// and the child slots in as its `template`, matching the
+			// object-syntax path exactly. Only when there are children to
+			// attach; otherwise leave the raw string for UI5.
+			if (
+				arr.length > 0 &&
+				typeof existing === "string" &&
+				metadata.hasAggregation(defaultAggregation)
+			) {
+				// `complexParser` throws on malformed binding syntax; treat a
+				// throw as "not a binding" and leave the string for UI5 to
+				// report at its own documented site (mirrors the try/catch in
+				// `propertyTypeIntrinsic`).
+				let parsed: unknown;
+				try {
+					parsed = BindingParser.complexParser(existing);
+				} catch {
+					parsed = undefined;
+				}
+				if (parsed && typeof parsed === "object") {
+					settings[defaultAggregation] = parsed as { path?: unknown; template?: unknown };
+					existing = parsed as { path?: unknown; template?: unknown };
+				}
+			}
+
 			// If a prop already populated the default aggregation with a
-			// BindingInfo (typically `items={someListRef}`), treat the JSX
-			// child as that binding's `template` instead of clobbering the
-			// binding. UI5's `extractBindingInfo` recognises an object with
-			// `path` as a binding; the child becomes the row factory.
+			// BindingInfo (typically `items={someListRef}`, or the string form
+			// normalised just above), treat the JSX child as that binding's
+			// `template` instead of clobbering the binding. UI5's
+			// `extractBindingInfo` recognises an object with `path` as a
+			// binding; the child becomes the row factory.
 			if (isBindingLike(existing)) {
 				if (existing.template === undefined && arr.length > 0) {
 					existing.template = arr.length === 1 ? arr[0] : arr;

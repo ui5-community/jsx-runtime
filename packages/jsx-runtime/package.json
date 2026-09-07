@@ -1,6 +1,6 @@
 {
   "name": "@ui5-community/jsx-runtime",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A plugin-based JSX runtime for UI5, write UI5 views as TSX with per-control TypeScript typing.",
   "license": "Apache-2.0",
   "author": "UI5 Community",

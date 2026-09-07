@@ -1,5 +1,16 @@
 # @ui5-community/jsx-runtime
 
+## 0.1.2
+
+### Patch Changes
+
+- [`28f2e36`](https://github.com/ui5-community/jsx-runtime/commit/28f2e361176e800b6cd93a97fcc55305dfd9543a) Thanks [@petermuessig](https://github.com/petermuessig)! - Fix string-syntax aggregation bindings clobbering their row template. Binding an
+  aggregation with the classic string form plus a JSX child, e.g.
+  `<VBox items="{view>/rows}"><FlexBox/></VBox>`, now installs an aggregation
+  binding whose `template` is the child — parity with the object form
+  `items={{ path: "view>/rows" }}`. Childless string aggregation bindings are
+  unaffected (UI5 already handled those). Fixes [#6](https://github.com/ui5-community/jsx-runtime/issues/6).
+
 ## 0.1.1
 
 ### Patch Changes

@@ -77,6 +77,7 @@ export default class Explorer extends Controller {
 			{ key: "learn.data-binding",  title: "Data binding",                  icon: "sap-icon://database",       route: "learnDoc", arg: "data-binding" },
 			{ key: "learn.fragments",     title: "Fragments",                     icon: "sap-icon://collapse-group", route: "learnDoc", arg: "fragments" },
 			{ key: "learn.nested-views",  title: "Nested views & embedding",      icon: "sap-icon://combine",        route: "learnDoc", arg: "nested-views" },
+			{ key: "learn.routing",       title: "Routing to TSX views",          icon: "sap-icon://chain-link",     route: "learnDoc", arg: "routing" },
 			{ key: "learn.directives",    title: "Structural directives",         icon: "sap-icon://tree",           route: "learnDoc", arg: "directives" },
 			{ key: "learn.type-coercion", title: "Property type coercion",        icon: "sap-icon://alert",          route: "learnDoc", arg: "type-coercion" }
 		]},

@@ -61,7 +61,9 @@ const view = await View.create({
 ```
 
 The `module:` prefix is UI5's target for programmatic views.
-Routing, embedding, `NavContainer` mounting: same as XML.
+Routing, embedding, `NavContainer` mounting: same as XML. For the manifest
+pattern and `getAutoPrefixId` requirement, see
+[Routing to TSX views →](#/learn/routing).
 
 Now wire the build: [Setup →](#/learn/setup).
 

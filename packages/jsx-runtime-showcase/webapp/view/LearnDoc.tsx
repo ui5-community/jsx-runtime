@@ -320,6 +320,7 @@ function iconForTopic(topic: string): string {
 		case "data-binding": return "sap-icon://database";
 		case "fragments": return "sap-icon://collapse-group";
 		case "nested-views": return "sap-icon://combine";
+		case "routing": return "sap-icon://chain-link";
 		case "directives": return "sap-icon://tree";
 		case "type-coercion": return "sap-icon://alert";
 		// Expert Corner

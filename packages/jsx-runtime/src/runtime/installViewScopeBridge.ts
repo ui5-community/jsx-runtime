@@ -1,5 +1,6 @@
 import View from "sap/ui/core/mvc/View";
 import type Control from "sap/ui/core/Control";
+import Log from "sap/base/Log";
 import { withScope } from "./scope";
 
 /**
@@ -15,36 +16,44 @@ import { withScope } from "./scope";
  *
  * The clean way to expose that context is to wrap the
  * subclass's `createContent()` in a `withScope({ view: this },
- * …)`. Doing that at every JSX-view call site is noise every
- * consumer would repeat. Instead this module installs a
- * one-time prototype patch on `sap.ui.core.mvc.View.prototype.createContent`
- * that transparently opens the scope for the duration of the
- * subclass's own `createContent()` call.
+ * …)`. This module installs a one-time prototype patch on
+ * `View.prototype.onControllerConnected` that does exactly that:
+ * before delegating to the original `onControllerConnected`, it
+ * installs a per-instance wrapper on `this.createContent` that
+ * opens the scope and catches errors, then cleans up via `finally`.
  *
- * ## Why patch the base prototype
+ * ## Why patch `onControllerConnected`, not `createContent`
  *
- * `sap.ui.core.mvc.View`'s design invites subclasses to override
- * `createContent()`. XMLView, JSONView, TypedView, JSView all
- * do exactly that, none of them calls `super.createContent()`,
- * and the base method is a no-op that returns `null`. Patching
- * the *base* prototype's `createContent` catches every subclass
- * override transparently: when a JSX view's own
- * `createContent()` runs, it does so with `this === theView`
- * *and* under an active JSX scope that carries the view. XMLView
- * / JSONView still work, they don't call `jsx()`, so the added
- * scope is a no-op for them.
+ * UI5's `onControllerConnected` calls `this.createContent(e)`,
+ * which dynamically dispatches to the **subclass** prototype
+ * (e.g. `MyJsxView.prototype.createContent`). Patching
+ * `View.prototype.createContent` only intercepts code that
+ * explicitly calls `super.createContent()` — no View subclass
+ * ever does that (the base method is a no-op returning `null`).
+ *
+ * By patching `onControllerConnected` instead, we install a
+ * per-instance own-property on `this.createContent` *before*
+ * the original `onControllerConnected` body runs. Own-properties
+ * shadow prototype properties, so `this.createContent(...)` in
+ * `runWithPreprocessors` routes through our wrapper regardless
+ * of which subclass is in play.
+ *
+ * XMLView / JSONView / TypedView override `createContent()` and
+ * don't call `jsx()`, so the added `withScope` is a no-op for
+ * them. Error-logging is equally transparent — only JSX views
+ * are likely to throw novel errors, and the log entry will
+ * clearly identify the view by id.
  *
  * ## The idempotence guard
  *
  * `installed` prevents double-wrapping if this module is loaded
  * twice (e.g. via two different resource-root mappings, or from
- * a test harness that reloads the runtime). Double-wrapping
- * wouldn't be catastrophic (the inner `withScope` merges its
- * partial on top of the parent scope), but it would obscure the
- * ambient-state chain and every retry would pay a stack frame.
+ * a test harness that reloads the runtime).
  *
  * @namespace ui5.community.jsx.runtime.jsx-runtime
  */
+const COMPONENT = "ui5.community.jsx.runtime";
+
 let installed = false;
 
 /**
@@ -56,24 +65,64 @@ let installed = false;
 export function installViewScopeBridge(): void {
 	if (installed) return;
 	installed = true;
-	const original = View.prototype.createContent as (
-		this: View
-	) => Control | Control[] | Promise<Control | Control[]>;
-	View.prototype.createContent = function patchedCreateContent(
-		this: View
-	): Control | Control[] | Promise<Control | Control[]> {
-		// The `view: this` slot on `Scope` is what `jsx()` reads
-		// when deciding whether to auto-prefix a child control's
-		// `id`. The scope is popped on the callback's synchronous
-		// return; async `createContent()` overrides (those that
-		// return a Promise) also get the view in scope only for
-		// the synchronous body preceding the first `await`, the
-		// hot path for auto-prefixing (control construction inside
-		// a JSX expression before an `await`) is fully covered.
-		//
-		// XMLView / JSONView / TypedView override `createContent()`
-		// without ever calling `jsx()`, so the ambient scope is
-		// unused for them. Zero cost.
-		return withScope({ view: this }, () => original.apply(this, []));
-	} as typeof View.prototype.createContent;
+
+	// `onControllerConnected` is an internal UI5 method not exposed in the
+	// public TypeScript typings — use `any` casts to access/patch it.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const viewProto = View.prototype as any;
+	type CreateContentFn = (this: View) => Control | Control[] | Promise<Control | Control[]>;
+	type OnControllerConnectedFn = (this: View, controller: unknown, settings?: unknown) => unknown;
+
+	const originalOnControllerConnected = viewProto.onControllerConnected as OnControllerConnectedFn;
+
+	viewProto.onControllerConnected = function patchedOnControllerConnected(
+		this: View,
+		controller: unknown,
+		settings?: unknown
+	): unknown {
+		// Retrieve the subclass's (or base's) createContent *now*, before we
+		// shadow it on the instance.
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const subclassCreateContent = (this as any).createContent as CreateContentFn;
+
+		const viewId = this.getId();
+
+		const logAndRethrow = (error: unknown): never => {
+			Log.error(
+				`createContent() failed for view '${viewId}': ${String(error)}`,
+				error instanceof Error ? (error.stack ?? "") : "",
+				COMPONENT
+			);
+			throw error;
+		};
+
+		// Install the per-instance wrapper that the `onControllerConnected`
+		// body will call via `this.createContent(...)`.
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(this as any).createContent = function wrappedCreateContent(
+			this: View
+		): Control | Control[] | Promise<Control | Control[]> {
+			return withScope({ view: this }, () => {
+				let result: Control | Control[] | Promise<Control | Control[]>;
+				try {
+					result = subclassCreateContent.call(this);
+				} catch (error) {
+					return logAndRethrow(error);
+				}
+				if (result instanceof Promise) {
+					return result.catch(logAndRethrow);
+				}
+				return result;
+			});
+		};
+
+		try {
+			return originalOnControllerConnected.call(this, controller, settings);
+		} finally {
+			// Always clean up the instance shadow so the prototype chain is
+			// restored for any subsequent calls on this view instance.
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			delete (this as any).createContent;
+		}
+	};
 }

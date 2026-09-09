@@ -154,6 +154,15 @@
       "viewName": "ui5.community.jsx.showcase.view.showcases.TableBound",
       "sourcePath": "webapp/view/showcases/TableBound.tsx",
       "docPath": "webapp/docs/samples/table-bound.md"
+    },
+    {
+      "id": "forwarded-menu",
+      "title": "Forwarded aggregation (Menu)",
+      "chapter": 18,
+      "concepts": ["forwarded aggregation", "sap.m.Menu", "contextMenu", "no explicit id"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.ForwardedMenu",
+      "sourcePath": "webapp/view/showcases/ForwardedMenu.tsx",
+      "docPath": "webapp/docs/samples/forwarded-menu.md"
     }
   ]
 }

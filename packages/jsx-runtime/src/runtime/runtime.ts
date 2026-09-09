@@ -318,6 +318,17 @@ export function jsx<T extends ManagedObject>(
 			// and `<Fragment>` inline. Plugins can add `<Switch>`, etc.
 			const processed = processChildren(children, settings, defaultAggregation);
 			const arr = flattenChildren(processed);
+			// Detect a forwarded aggregation early (e.g. sap.m.Menu#items). The
+			// forwarding target (an internal wrapper control) is created inside
+			// `init()` and resolved by id at add-time. When concrete children
+			// ride along in `new type(settings)`, `applySettings` tries to
+			// resolve the target before it is registered → TypeError. We defer
+			// those children to a post-construction `addAggregation` call (see
+			// the `else if (arr.length > 0)` branch below), matching the
+			// XMLView fill order. Bound forwarded aggregations (string-binding /
+			// template path) are not affected — only the concrete-children case.
+			const defaultAggForwarded =
+				metadata.getAggregation(defaultAggregation)?.forwarding !== undefined;
 			let existing = settings[defaultAggregation] as
 				| { path?: unknown; template?: unknown }
 				| undefined;
@@ -367,7 +378,23 @@ export function jsx<T extends ManagedObject>(
 					existing.template = arr.length === 1 ? arr[0] : arr;
 				}
 			} else if (arr.length > 0) {
-				settings[defaultAggregation] = arr.length === 1 ? arr[0] : arr;
+				if (defaultAggForwarded) {
+					// Forwarded aggregations (e.g. sap.m.Menu#items) route to an
+					// internal target that is created in `init()` but only
+					// resolvable by id *after* construction. Passing children via
+					// `settings` makes `applySettings` attempt the lookup too
+					// early → TypeError. Fill them after construction via
+					// `addAggregation`, matching how XMLView populates them.
+					const forwardedChildren = arr;
+					post((instance) => {
+						for (const child of forwardedChildren) {
+							(instance as { addAggregation?: (name: string, oObject: unknown) => void })
+								.addAggregation?.(defaultAggregation, child);
+						}
+					});
+				} else {
+					settings[defaultAggregation] = arr.length === 1 ? arr[0] : arr;
+				}
 			}
 		}
 	}

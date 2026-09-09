@@ -44,17 +44,6 @@ export type ControlMetadata = {
 	 */
 	hasAggregation(name: string): boolean;
 	/**
-	 * Returns the aggregation descriptor for `name`, or `undefined` when no
-	 * such aggregation is declared. The returned object's public `forwarding`
-	 * field is set when the aggregation is forwarded to an internal child
-	 * control (e.g. `sap.m.Menu#items` → its `-menuWrapper`). The runtime
-	 * uses this to detect a forwarded *default* aggregation and defer its
-	 * concrete children to a post-construction `addAggregation` call, since
-	 * the forwarding target isn't resolvable during the single-shot
-	 * `new type(settings)`. Backed by `ManagedObjectMetadata.getAggregation`.
-	 */
-	getAggregation(name: string): { forwarding?: unknown } | undefined;
-	/**
 	 * Returns the property descriptor (containing `type: string`, the UI5
 	 * type name like `"int"`, `"boolean"`, `"sap.m.ButtonType"`) or
 	 * `undefined` when the property doesn't exist on this control.

@@ -155,6 +155,12 @@ const REGISTRY: Record<string, {
 		icon: "sap-icon://key-user-settings",
 		viewName: "ui5.community.jsx.showcase.view.showcases.CustomDataKey",
 		sourcePath: "view/showcases/CustomDataKey.tsx"
+	},
+	"forwarded-menu": {
+		title: "Forwarded aggregation (Menu)",
+		icon: "sap-icon://menu2",
+		viewName: "ui5.community.jsx.showcase.view.showcases.ForwardedMenu",
+		sourcePath: "view/showcases/ForwardedMenu.tsx"
 	}
 };
 

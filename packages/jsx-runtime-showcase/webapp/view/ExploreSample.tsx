@@ -10,6 +10,7 @@ import HBox from "sap/m/HBox";
 import Title from "sap/m/Title";
 import Text from "sap/m/Text";
 import MessageStrip from "sap/m/MessageStrip";
+import Log from "sap/base/Log";
 import * as Prism from "prismjs";
 
 import CodeBlock from "../control/CodeBlock";
@@ -324,6 +325,11 @@ export default class ExploreSample extends View {
 			})
 			.catch((error: unknown) => {
 				if (this.currentSampleId !== sampleId) return;
+				Log.error(
+					`Could not load docs/samples/${sampleId}.md: ${String(error)}`,
+					error instanceof Error ? (error.stack ?? "") : "",
+					"ui5.community.jsx.showcase.view.ExploreSample"
+				);
 				this.description.setContent(
 					`<div class="jsx-showcase-explore-description">` +
 					`<p><i>Could not load docs/samples/${escapeHtml(sampleId)}.md: ${escapeHtml(String(error))}</i></p>` +
@@ -350,6 +356,11 @@ export default class ExploreSample extends View {
 			this.demoSlot.removeAllItems();
 			this.demoSlot.addItem(demoView);
 		}).catch((error: unknown) => {
+			Log.error(
+				`Failed to load ${reg.viewName}: ${String(error)}`,
+				error instanceof Error ? (error.stack ?? "") : "",
+				"ui5.community.jsx.showcase.view.ExploreSample"
+			);
 			this.demoSlot.removeAllItems();
 			this.demoSlot.addItem(new Text({
 				text: `Failed to load ${reg.viewName}: ${String(error)}`

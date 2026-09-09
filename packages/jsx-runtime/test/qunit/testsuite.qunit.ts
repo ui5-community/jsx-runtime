@@ -34,6 +34,8 @@ export default {
 		"runtime/property-appliers": { title: "runtime: PropertyApplier ordering" },
 		"runtime/auto-prefix-id": { title: "runtime: auto id prefix bridge" },
 		"runtime/string-aggregation-binding": { title: "runtime: string aggregation binding + template" },
+		"runtime/forwarded-aggregation": { title: "runtime: forwarded default aggregation (Menu#items)" },
+		"runtime/view-error-logging": { title: "runtime: view createContent() errors logged via Log.error" },
 		"plugins/switch": { title: "plugins: <Switch> / <Case> / <Default>" }
 	}
 };

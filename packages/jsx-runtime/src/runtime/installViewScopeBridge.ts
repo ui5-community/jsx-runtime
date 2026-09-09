@@ -1,6 +1,7 @@
 import View from "sap/ui/core/mvc/View";
 import type Control from "sap/ui/core/Control";
 import Log from "sap/base/Log";
+import ManagedObjectMetadata from "sap/ui/base/ManagedObjectMetadata";
 import { withScope } from "./scope";
 
 /**
@@ -116,13 +117,34 @@ export function installViewScopeBridge(): void {
 			});
 		};
 
+		// Guard `View.createId` against generated ids for the duration of
+		// `onControllerConnected`. UI5's `runWithPreprocessors` sets
+		// `View.createId` as the id-preprocessor for ALL ManagedObjects
+		// constructed inside `createContent()`, including internal controls
+		// like Menu's `MenuWrapper` whose ids are derived from a generated
+		// parent id. Without this guard, those generated-derived ids get
+		// view-prefixed, making them unresolvable when the aggregation
+		// forwarder later looks them up. The instance shadow is removed in
+		// the `finally` block to restore the normal prototype chain.
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const originalCreateId = (this as any).createId as (sId: string) => string;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(this as any).createId = function guardedCreateId(this: View, sId: string): string {
+			if (ManagedObjectMetadata.isGeneratedId(sId)) {
+				return sId;
+			}
+			return originalCreateId.call(this, sId);
+		};
+
 		try {
 			return originalOnControllerConnected.call(this, controller, settings);
 		} finally {
-			// Always clean up the instance shadow so the prototype chain is
+			// Always clean up the instance shadows so the prototype chain is
 			// restored for any subsequent calls on this view instance.
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			delete (this as any).createContent;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			delete (this as any).createId;
 		}
 	};
 }

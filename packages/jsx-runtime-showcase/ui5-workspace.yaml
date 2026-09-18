@@ -3,4 +3,6 @@ metadata:
   name: default
 dependencyManagement:
   resolutions:
+    - path: ../../../../git/openui5
+    - path: ../../../../git/sapui5.runtime
     - path: ../jsx-runtime

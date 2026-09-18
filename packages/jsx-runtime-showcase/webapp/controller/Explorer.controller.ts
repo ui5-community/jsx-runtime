@@ -85,7 +85,8 @@ export default class Explorer extends Controller {
 			{ key: "learn.runtime-anatomy", title: "Runtime anatomy",       icon: "sap-icon://process",        route: "learnDoc", arg: "runtime-anatomy" },
 			{ key: "learn.auto-prefix",     title: "Auto id prefix",        icon: "sap-icon://text",           route: "learnDoc", arg: "auto-prefix" },
 			{ key: "learn.plugin-spi",      title: "The Plugin SPI",        icon: "sap-icon://puzzle",         route: "learnDoc", arg: "plugin-spi" },
-			{ key: "learn.switch-plugin",   title: "Case study: <Switch>", icon: "sap-icon://switch-classes", route: "learnDoc", arg: "switch-plugin" }
+			{ key: "learn.switch-plugin",   title: "Case study: <Switch>", icon: "sap-icon://switch-classes", route: "learnDoc", arg: "switch-plugin" },
+			{ key: "learn.native-html",     title: "Native HTML (sap.html)", icon: "sap-icon://html5",         route: "learnDoc", arg: "native-html" }
 		]}
 	];
 
@@ -118,7 +119,8 @@ export default class Explorer extends Controller {
 			{ key: "explore.forwarded-menu",  title: "Forwarded aggregation (Menu)", icon: "sap-icon://menu2",     route: "exploreSample", arg: "forwarded-menu" }
 		]},
 		{ key: "explore.g.plugins", title: "Plugins / Extend", icon: "sap-icon://puzzle", children: [
-			{ key: "explore.switch-plugin", title: "Plugin <Switch>", icon: "sap-icon://switch-classes", route: "exploreSample", arg: "switch-plugin" }
+			{ key: "explore.switch-plugin", title: "Plugin <Switch>",          icon: "sap-icon://switch-classes", route: "exploreSample", arg: "switch-plugin" },
+			{ key: "explore.native-html",   title: "Native HTML via sap.html", icon: "sap-icon://html5",          route: "exploreSample", arg: "native-html" }
 		]}
 	];
 

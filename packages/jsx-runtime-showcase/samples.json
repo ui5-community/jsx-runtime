@@ -163,6 +163,15 @@
       "viewName": "ui5.community.jsx.showcase.view.showcases.ForwardedMenu",
       "sourcePath": "webapp/view/showcases/ForwardedMenu.tsx",
       "docPath": "webapp/docs/samples/forwarded-menu.md"
+    },
+    {
+      "id": "native-html",
+      "title": "Native HTML via sap.html",
+      "chapter": 19,
+      "concepts": ["sap.html controls", "html plugin", "withScope(htmlScope)", "text children", "mixed content", "native events", "import-free HTML tags"],
+      "viewName": "ui5.community.jsx.showcase.view.showcases.NativeHtml",
+      "sourcePath": "webapp/view/showcases/NativeHtml.tsx",
+      "docPath": "webapp/docs/native-html.md"
     }
   ]
 }

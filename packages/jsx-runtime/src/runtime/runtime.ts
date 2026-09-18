@@ -1458,29 +1458,12 @@ export namespace JSX {
 	export interface ElementChildrenAttribute { children: object }
 
 	/**
-	 * Common HTML / SVG attribute bag, deliberately permissive.
+	 * Permissive fallback for SVG, custom-element, and unknown tags.
 	 *
-	 * String-typed JSX (`<div>`, `<svg>`, `<polyline>`) is the hook
-	 * point for a future HTML-aware RenderManager plugin. Outside that
-	 * plugin, the runtime throws a clear error at construction time,
-	 * see the `htmlIntrinsic` dispatch in `jsx()`.
-	 *
-	 * The typing here is intentionally minimal:
-	 *
-	 *  - The standard HTML attributes that *every* tag accepts
-	 *    (`id`, `class`, `style`, `title`, `data-*`, etc.) are typed.
-	 *  - `[attr: string]: unknown` covers the long tail (SVG-specific
-	 *    attributes, ARIA, custom-element props) without forcing us
-	 *    to mirror `lib.dom.d.ts`.
-	 *  - Event handlers are typed loosely as `(e: Event) => void`;
-	 *    the RM plugin's typed renderer can narrow them per-element
-	 *    via a more specific `IntrinsicElements` map if it wants.
-	 *
-	 * A future iteration can replace this with per-tag types pulled from
-	 * `lib.dom.d.ts` (the same approach `solid-js` and `preact` use).
-	 * For the sketch the permissive bag is enough to make
-	 * `<div class="x"><polyline points="..."/></div>` typecheck cleanly
-	 * without any cast.
+	 * Used as the value type of the `[tag: string]` index signature in
+	 * `IntrinsicElements` so that any tag not listed explicitly still
+	 * compiles without a cast. Named `sap.html` tags get richer types
+	 * via the specific interfaces below.
 	 */
 	export interface HTMLAttributes {
 		id?: string;
@@ -1495,34 +1478,492 @@ export namespace JSX {
 	}
 
 	/**
-	 * `IntrinsicElements` is the type-checker's table of "what props
-	 * does each string-typed tag accept". A non-empty map makes
-	 * `<div>` legal in TSX; the value type defines the prop schema.
+	 * Global attributes shared by every `sap.html` control (maps to the
+	 * properties declared on `sap.html.HTMLElementBase`, available from
+	 * OpenUI5 1.154.0). All props are optional; unset props emit no DOM
+	 * attribute (UI5's "initial property" semantics). JSX-specific extras
+	 * (`class`, `id`, `ref`, `children`) are added on top via
+	 * `LibraryManagedAttributes`.
 	 *
-	 * The string-indexer entry is what actually matters here, it
-	 * makes *every* HTML/SVG/custom-element tag legal with the
-	 * permissive `HTMLAttributes` shape. The named entries are listed
-	 * for IDE-completion friendliness on the most common tags; they
-	 * resolve to the same shape.
+	 * Event handlers — listed explicitly for the most common DOM events —
+	 * accept an inline function **or** a `".dotHandler"` controller-method
+	 * string (resolved at fire-time against the surrounding view's controller
+	 * by the core `dotHandlerIntrinsic`). Additional events can always be
+	 * passed via the permissive `[prop: string]: any` index.
+	 */
+	export interface HtmlBaseAttributes {
+		// ---- Text content (text-only child shorthand) ----------------------
+		/** Sole text child — rendered as text content inside the element. */
+		text?: string;
+		// ---- Global HTML attributes (sap.html.HTMLElementBase) -------------
+		accesskey?: string;
+		autocapitalize?: string;
+		autocorrect?: string;
+		autofocus?: boolean;
+		contenteditable?: string | boolean;
+		dir?: string;
+		draggable?: boolean;
+		enterkeyhint?: string;
+		hidden?: boolean;
+		inert?: boolean;
+		inputmode?: string;
+		lang?: string;
+		popover?: string;
+		role?: string;
+		spellcheck?: boolean;
+		style?: string;
+		tabindex?: string | number;
+		title?: string;
+		translate?: string;
+		// ---- ARIA attributes (subset of HTMLElementBase aria* properties) --
+		ariaActiveDescendant?: string;
+		ariaAtomic?: string;
+		ariaAutoComplete?: string;
+		ariaBrailleLabel?: string;
+		ariaBrailleRoleDescription?: string;
+		ariaBusy?: string;
+		ariaChecked?: string;
+		ariaColCount?: string;
+		ariaColIndex?: string;
+		ariaColIndexText?: string;
+		ariaColSpan?: string;
+		ariaControls?: string;
+		ariaCurrent?: string;
+		ariaDescribedBy?: string;
+		ariaDescription?: string;
+		ariaDetails?: string;
+		ariaDisabled?: string;
+		ariaDropEffect?: string;
+		ariaErrorMessage?: string;
+		ariaExpanded?: string;
+		ariaFlowTo?: string;
+		ariaGrabbed?: string;
+		ariaHasPopup?: string;
+		ariaHidden?: string;
+		ariaInvalid?: string;
+		ariaKeyShortcuts?: string;
+		ariaLabel?: string;
+		ariaLabelledBy?: string;
+		ariaLevel?: string;
+		ariaLive?: string;
+		ariaModal?: string;
+		ariaMultiLine?: string;
+		ariaMultiSelectable?: string;
+		ariaOrientation?: string;
+		ariaOwns?: string;
+		ariaPlaceholder?: string;
+		ariaPosInSet?: string;
+		ariaPressed?: string;
+		ariaReadOnly?: string;
+		ariaRelevant?: string;
+		ariaRequired?: string;
+		ariaRoleDescription?: string;
+		ariaRowCount?: string;
+		ariaRowIndex?: string;
+		ariaRowIndexText?: string;
+		ariaRowSpan?: string;
+		ariaSelected?: string;
+		ariaSetSize?: string;
+		ariaSort?: string;
+		ariaValueMax?: string;
+		ariaValueMin?: string;
+		ariaValueNow?: string;
+		ariaValueText?: string;
+		// ---- Common DOM events (sap.html.HTMLElementBase events) -----------
+		click?: ((e: Event) => void) | `.${string}`;
+		auxclick?: ((e: Event) => void) | `.${string}`;
+		dblclick?: ((e: Event) => void) | `.${string}`;
+		keydown?: ((e: Event) => void) | `.${string}`;
+		keyup?: ((e: Event) => void) | `.${string}`;
+		keypress?: ((e: Event) => void) | `.${string}`;
+		mousedown?: ((e: Event) => void) | `.${string}`;
+		mouseup?: ((e: Event) => void) | `.${string}`;
+		mousemove?: ((e: Event) => void) | `.${string}`;
+		mouseenter?: ((e: Event) => void) | `.${string}`;
+		mouseleave?: ((e: Event) => void) | `.${string}`;
+		mouseover?: ((e: Event) => void) | `.${string}`;
+		mouseout?: ((e: Event) => void) | `.${string}`;
+		focus?: ((e: Event) => void) | `.${string}`;
+		blur?: ((e: Event) => void) | `.${string}`;
+		input?: ((e: Event) => void) | `.${string}`;
+		change?: ((e: Event) => void) | `.${string}`;
+		submit?: ((e: Event) => void) | `.${string}`;
+		reset?: ((e: Event) => void) | `.${string}`;
+		scroll?: ((e: Event) => void) | `.${string}`;
+		toggle?: ((e: Event) => void) | `.${string}`;
+		beforetoggle?: ((e: Event) => void) | `.${string}`;
+		load?: ((e: Event) => void) | `.${string}`;
+		error?: ((e: Event) => void) | `.${string}`;
+		// JSX extras (class, id, ref, children, key handled by LibraryManagedAttributes)
+		/** @internal resolved by classIntrinsic */
+		class?: string;
+		children?: unknown;
+		[prop: string]: any;
+	}
+
+	/** Props for `<a>` — `sap.html.A` (since 1.154.0). */
+	export interface AnchorAttributes extends HtmlBaseAttributes {
+		href?: string;
+		target?: string;
+		rel?: string;
+		download?: string | boolean;
+		hreflang?: string;
+		type?: string;
+		ping?: string;
+		referrerpolicy?: string;
+	}
+
+	/** Props for `<button>` — `sap.html.Button` (since 1.154.0). */
+	export interface ButtonHtmlAttributes extends HtmlBaseAttributes {
+		/** Use `enabled={false}` — the control maps it to the `disabled` attribute. */
+		enabled?: boolean;
+		name?: string;
+		/** `"button" | "submit" | "reset"` */
+		type?: string;
+		value?: string;
+		form?: string;
+		popovertarget?: string;
+		popovertargetaction?: string;
+		formaction?: string;
+		formenctype?: string;
+		formmethod?: string;
+		formnovalidate?: boolean;
+		formtarget?: string;
+		commandfor?: string;
+		command?: string;
+	}
+
+	/** Props for `<img>` — `sap.html.Img` (since 1.154.0). */
+	export interface ImgAttributes extends HtmlBaseAttributes {
+		src?: string;
+		alt?: string;
+		width?: number | string;
+		height?: number | string;
+		loading?: string;
+		decoding?: string;
+		fetchpriority?: string;
+		crossorigin?: string;
+		ismap?: boolean;
+		usemap?: string;
+		referrerpolicy?: string;
+		srcset?: string;
+		sizes?: string;
+	}
+
+	/** Props for `<input>` — `sap.html.Input` (since 1.154.0). */
+	export interface InputAttributes extends HtmlBaseAttributes {
+		/** Use `enabled={false}` — the control maps it to the `disabled` attribute. */
+		enabled?: boolean;
+		name?: string;
+		/** `"text" | "email" | "number" | "password" | "checkbox" | "radio" | …` */
+		type?: string;
+		value?: string;
+		checked?: boolean;
+		placeholder?: string;
+		readonly?: boolean;
+		required?: boolean;
+		multiple?: boolean;
+		min?: string | number;
+		max?: string | number;
+		step?: string | number;
+		minlength?: number;
+		maxlength?: number;
+		pattern?: string;
+		size?: number;
+		accept?: string;
+		autocomplete?: string;
+		list?: string;
+		form?: string;
+		formaction?: string;
+		formenctype?: string;
+		formmethod?: string;
+		formnovalidate?: boolean;
+		formtarget?: string;
+		popovertarget?: string;
+		popovertargetaction?: string;
+	}
+
+	/** Props for `<label>` — `sap.html.Label` (since 1.154.0). */
+	export interface LabelHtmlAttributes extends HtmlBaseAttributes {
+		/** ID of the labelled control. */
+		for?: string;
+		form?: string;
+	}
+
+	/** Props for `<select>` — `sap.html.Select` (since 1.154.0). */
+	export interface SelectAttributes extends HtmlBaseAttributes {
+		/** Use `enabled={false}` — the control maps it to the `disabled` attribute. */
+		enabled?: boolean;
+		name?: string;
+		multiple?: boolean;
+		required?: boolean;
+		size?: number;
+		autocomplete?: string;
+		form?: string;
+	}
+
+	/** Props for `<textarea>` — `sap.html.Textarea` (since 1.154.0). */
+	export interface TextareaAttributes extends HtmlBaseAttributes {
+		/** Use `enabled={false}` — the control maps it to the `disabled` attribute. */
+		enabled?: boolean;
+		name?: string;
+		rows?: number;
+		cols?: number;
+		placeholder?: string;
+		readonly?: boolean;
+		required?: boolean;
+		minlength?: number;
+		maxlength?: number;
+		autocomplete?: string;
+		form?: string;
+		wrap?: string;
+	}
+
+	/** Props for `<form>` — `sap.html.Form` (since 1.154.0). */
+	export interface FormAttributes extends HtmlBaseAttributes {
+		action?: string;
+		method?: string;
+		enctype?: string;
+		target?: string;
+		novalidate?: boolean;
+		autocomplete?: string;
+		name?: string;
+		rel?: string;
+	}
+
+	/** Props for `<table>` — `sap.html.Table` (since 1.154.0). */
+	export interface TableHtmlAttributes extends HtmlBaseAttributes {
+		border?: string | number;
+		cellpadding?: string | number;
+		cellspacing?: string | number;
+		summary?: string;
+	}
+
+	/** Props for `<td>` and `<th>` — `sap.html.Td` / `sap.html.Th` (since 1.154.0). */
+	export interface TableCellAttributes extends HtmlBaseAttributes {
+		colspan?: number | string;
+		rowspan?: number | string;
+		headers?: string;
+		scope?: string;
+		abbr?: string;
+	}
+
+	/** Props for `<col>` and `<colgroup>` — void / structural (since 1.154.0). */
+	export interface ColAttributes extends HtmlBaseAttributes {
+		span?: number | string;
+	}
+
+	/** Props for `<li>` — `sap.html.Li` (since 1.154.0). */
+	export interface LiAttributes extends HtmlBaseAttributes {
+		value?: number | string;
+	}
+
+	/** Props for `<ol>` — `sap.html.Ol` (since 1.154.0). */
+	export interface OlAttributes extends HtmlBaseAttributes {
+		reversed?: boolean;
+		start?: number;
+		type?: string;
+	}
+
+	/** Props for `<details>` — `sap.html.Details` (since 1.154.0). */
+	export interface DetailsAttributes extends HtmlBaseAttributes {
+		open?: boolean;
+		name?: string;
+	}
+
+	/** Props for `<dialog>` — if present in sap.html (since 1.154.0). */
+	export interface DialogHtmlAttributes extends HtmlBaseAttributes {
+		open?: boolean;
+	}
+
+	/** Props for `<meter>` — `sap.html.Meter` (since 1.154.0). */
+	export interface MeterAttributes extends HtmlBaseAttributes {
+		value?: number | string;
+		min?: number | string;
+		max?: number | string;
+		low?: number | string;
+		high?: number | string;
+		optimum?: number | string;
+		form?: string;
+	}
+
+	/** Props for `<progress>` — `sap.html.Progress` (since 1.154.0). */
+	export interface ProgressAttributes extends HtmlBaseAttributes {
+		value?: number | string;
+		max?: number | string;
+	}
+
+	/** Props for `<time>` — `sap.html.Time` (since 1.154.0). */
+	export interface TimeAttributes extends HtmlBaseAttributes {
+		datetime?: string;
+	}
+
+	/** Props for `<data>` — `sap.html.Data` (since 1.154.0). */
+	export interface DataAttributes extends HtmlBaseAttributes {
+		value?: string;
+	}
+
+	/** Props for `<option>` — `sap.html.Option` (since 1.154.0). */
+	export interface OptionAttributes extends HtmlBaseAttributes {
+		value?: string;
+		selected?: boolean;
+		disabled?: boolean;
+		label?: string;
+	}
+
+	/** Props for `<optgroup>` — `sap.html.Optgroup` (since 1.154.0). */
+	export interface OptgroupAttributes extends HtmlBaseAttributes {
+		label?: string;
+		disabled?: boolean;
+	}
+
+	/** Props for `<fieldset>` — `sap.html.Fieldset` (since 1.154.0). */
+	export interface FieldsetAttributes extends HtmlBaseAttributes {
+		disabled?: boolean;
+		name?: string;
+		form?: string;
+	}
+
+	/** Props for `<map>` — `sap.html.Map` (since 1.154.0). */
+	export interface MapAttributes extends HtmlBaseAttributes {
+		name?: string;
+	}
+
+	/** Props for `<area>` — `sap.html.Area` (void, since 1.154.0). */
+	export interface AreaAttributes extends HtmlBaseAttributes {
+		alt?: string;
+		href?: string;
+		target?: string;
+		rel?: string;
+		download?: string | boolean;
+		referrerpolicy?: string;
+		coords?: string;
+		shape?: string;
+		ping?: string;
+	}
+
+	/** Props for `<canvas>` — `sap.html.Canvas` (since 1.154.0). */
+	export interface CanvasAttributes extends HtmlBaseAttributes {
+		width?: number | string;
+		height?: number | string;
+	}
+
+	/**
+	 * `IntrinsicElements` maps each lowercase HTML tag to the prop type of the
+	 * corresponding `sap.html` control (available from OpenUI5 1.154.0 with
+	 * the `ui5/community/jsx/runtime/plugins/html` opt-in plugin). Tags listed
+	 * explicitly get per-element types derived from the `sap.html.*` settings
+	 * interfaces; the `[tag: string]: HTMLAttributes` index is a permissive
+	 * fallback for SVG, custom elements, and sap.html tags not listed here.
+	 *
+	 * Note: use the `enabled` prop (not `disabled`) for interactive controls
+	 * (`<button>`, `<input>`, `<select>`, `<textarea>`) — `sap.html` controls
+	 * map `enabled={false}` to the native `disabled` attribute.
 	 */
 	export interface IntrinsicElements {
+		// Permissive fallback — SVG, custom elements, unlisted sap.html tags:
 		[tag: string]: HTMLAttributes;
-		// Common HTML
-		div: HTMLAttributes;
-		span: HTMLAttributes;
-		p: HTMLAttributes;
-		a: HTMLAttributes;
-		button: HTMLAttributes;
-		input: HTMLAttributes;
-		label: HTMLAttributes;
-		ul: HTMLAttributes;
-		ol: HTMLAttributes;
-		li: HTMLAttributes;
-		table: HTMLAttributes;
-		tr: HTMLAttributes;
-		td: HTMLAttributes;
-		th: HTMLAttributes;
-		// Common SVG
+		// ---- sap.html block-level / grouping elements ----------------------
+		div: HtmlBaseAttributes;
+		p: HtmlBaseAttributes;
+		section: HtmlBaseAttributes;
+		article: HtmlBaseAttributes;
+		aside: HtmlBaseAttributes;
+		header: HtmlBaseAttributes;
+		footer: HtmlBaseAttributes;
+		main: HtmlBaseAttributes;
+		nav: HtmlBaseAttributes;
+		hgroup: HtmlBaseAttributes;
+		blockquote: HtmlBaseAttributes;
+		pre: HtmlBaseAttributes;
+		figure: HtmlBaseAttributes;
+		figcaption: HtmlBaseAttributes;
+		address: HtmlBaseAttributes;
+		search: HtmlBaseAttributes;
+		// ---- sap.html inline elements --------------------------------------
+		span: HtmlBaseAttributes;
+		a: AnchorAttributes;
+		abbr: HtmlBaseAttributes;
+		b: HtmlBaseAttributes;
+		bdi: HtmlBaseAttributes;
+		bdo: HtmlBaseAttributes;
+		cite: HtmlBaseAttributes;
+		code: HtmlBaseAttributes;
+		data: DataAttributes;
+		dfn: HtmlBaseAttributes;
+		em: HtmlBaseAttributes;
+		i: HtmlBaseAttributes;
+		ins: HtmlBaseAttributes;
+		del: HtmlBaseAttributes;
+		kbd: HtmlBaseAttributes;
+		mark: HtmlBaseAttributes;
+		q: HtmlBaseAttributes;
+		rp: HtmlBaseAttributes;
+		rt: HtmlBaseAttributes;
+		ruby: HtmlBaseAttributes;
+		s: HtmlBaseAttributes;
+		samp: HtmlBaseAttributes;
+		small: HtmlBaseAttributes;
+		strong: HtmlBaseAttributes;
+		sub: HtmlBaseAttributes;
+		sup: HtmlBaseAttributes;
+		time: TimeAttributes;
+		u: HtmlBaseAttributes;
+		"var": HtmlBaseAttributes;
+		wbr: HtmlBaseAttributes;
+		// ---- sap.html heading elements -------------------------------------
+		h1: HtmlBaseAttributes;
+		h2: HtmlBaseAttributes;
+		h3: HtmlBaseAttributes;
+		h4: HtmlBaseAttributes;
+		h5: HtmlBaseAttributes;
+		h6: HtmlBaseAttributes;
+		// ---- sap.html list elements ----------------------------------------
+		ul: HtmlBaseAttributes;
+		ol: OlAttributes;
+		li: LiAttributes;
+		dl: HtmlBaseAttributes;
+		dt: HtmlBaseAttributes;
+		dd: HtmlBaseAttributes;
+		menu: HtmlBaseAttributes;
+		// ---- sap.html table elements ---------------------------------------
+		table: TableHtmlAttributes;
+		caption: HtmlBaseAttributes;
+		colgroup: ColAttributes;
+		col: ColAttributes;
+		thead: HtmlBaseAttributes;
+		tbody: HtmlBaseAttributes;
+		tfoot: HtmlBaseAttributes;
+		tr: HtmlBaseAttributes;
+		td: TableCellAttributes;
+		th: TableCellAttributes;
+		// ---- sap.html form elements ----------------------------------------
+		form: FormAttributes;
+		input: InputAttributes;
+		button: ButtonHtmlAttributes;
+		select: SelectAttributes;
+		textarea: TextareaAttributes;
+		label: LabelHtmlAttributes;
+		fieldset: FieldsetAttributes;
+		legend: HtmlBaseAttributes;
+		datalist: HtmlBaseAttributes;
+		optgroup: OptgroupAttributes;
+		option: OptionAttributes;
+		output: HtmlBaseAttributes;
+		// ---- sap.html interactive / sectioning elements --------------------
+		details: DetailsAttributes;
+		summary: HtmlBaseAttributes;
+		meter: MeterAttributes;
+		progress: ProgressAttributes;
+		// ---- sap.html media/embedded elements (void or structural) ----------
+		img: ImgAttributes;
+		area: AreaAttributes;
+		map: MapAttributes;
+		canvas: CanvasAttributes;
+		// ---- sap.html void / self-closing elements --------------------------
+		br: HtmlBaseAttributes;
+		hr: HtmlBaseAttributes;
+		// ---- SVG (permissive — not sap.html; use HTMLAttributes fallback) --
 		svg: HTMLAttributes;
 		g: HTMLAttributes;
 		path: HTMLAttributes;

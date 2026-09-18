@@ -161,6 +161,12 @@ const REGISTRY: Record<string, {
 		icon: "sap-icon://menu2",
 		viewName: "ui5.community.jsx.showcase.view.showcases.ForwardedMenu",
 		sourcePath: "view/showcases/ForwardedMenu.tsx"
+	},
+	"native-html": {
+		title: "Native HTML via sap.html",
+		icon: "sap-icon://html5",
+		viewName: "ui5.community.jsx.showcase.view.showcases.NativeHtml",
+		sourcePath: "view/showcases/NativeHtml.tsx"
 	}
 };
 

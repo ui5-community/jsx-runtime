@@ -125,6 +125,18 @@
 }
 
 /*
+ * The ToolPage aside content area needs a scrollbar when the nav list
+ * is taller than the viewport. UI5's `sapTntNL` already has
+ * `overflow-y: auto` on the inner UL, but the parent `sapTntToolPage`
+ * has `overflow: hidden` which clips the scrollbar track. Giving the
+ * aside content its own `overflow-y: auto` surfaces the scrollbar so
+ * users can reach nav items below the fold.
+ */
+.sapTntToolPageAsideContent {
+	overflow-y: auto;
+}
+
+/*
  * Welcome view uses the same shared `sap.tnt.ToolPage` shell as
  * Learn and Explore. On the welcome route we hide the side
  * navigation entirely (via `SideNavigation.setVisible(false)` in

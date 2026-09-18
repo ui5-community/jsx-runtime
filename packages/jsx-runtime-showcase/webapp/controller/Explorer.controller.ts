@@ -286,6 +286,15 @@ export default class Explorer extends Controller {
 			toolPage?.removeStyleClass("jsx-welcome-no-sidenav");
 			sideNav?.setVisible(true);
 			toolPage?.setSideExpanded?.(true);
+			// Scroll the selected nav item into view after the binding
+			// has updated the DOM (sapTntNLISelected class lands async).
+			setTimeout(() => {
+				const view = this.getView();
+				if (!view) return;
+				const navListDom = view.byId("explorerNavList")?.getDomRef();
+				const selected = navListDom?.querySelector(".sapTntNLISelected");
+				selected?.scrollIntoView({ block: "nearest" });
+			}, 0);
 		}
 	}
 

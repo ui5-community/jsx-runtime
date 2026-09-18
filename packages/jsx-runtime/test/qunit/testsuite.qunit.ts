@@ -36,6 +36,7 @@ export default {
 		"runtime/string-aggregation-binding": { title: "runtime: string aggregation binding + template" },
 		"runtime/forwarded-aggregation": { title: "runtime: forwarded default aggregation (Menu#items)" },
 		"runtime/view-error-logging": { title: "runtime: view createContent() errors logged via Log.error" },
-		"plugins/switch": { title: "plugins: <Switch> / <Case> / <Default>" }
+		"plugins/switch": { title: "plugins: <Switch> / <Case> / <Default>" },
+		"plugins/html": { title: "plugins: html sap.html intrinsic" }
 	}
 };

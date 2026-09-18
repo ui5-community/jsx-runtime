@@ -327,6 +327,7 @@ function iconForTopic(topic: string): string {
 		case "runtime-anatomy": return "sap-icon://process";
 		case "plugin-spi": return "sap-icon://puzzle";
 		case "switch-plugin": return "sap-icon://switch-classes";
+		case "native-html": return "sap-icon://html5";
 		default: return "sap-icon://education";
 	}
 }

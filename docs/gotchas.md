@@ -28,16 +28,46 @@ Documented at [src/runtime/scope.ts](../packages/jsx-runtime/src/runtime/scope.t
 
 ---
 
-## HTML intrinsic tags are typed but not runtime-supported (yet)
+## HTML intrinsic tags — use the `plugins/html` opt-in
 
-`JSX.IntrinsicElements` permissively types `<div>`, `<svg>`, `<my-tag>`, etc. The **default** renderer throws on lowercase tags — it constructs UI5 controls, and a literal `div` cannot become a control.
+Lowercase HTML tags (`<div>`, `<span>`, `<input>`, …) are typed in
+`JSX.IntrinsicElements` but are **not enabled by default**. The default
+scope throws on them — it constructs UI5 controls, and a bare string tag
+has no UI5 metadata to construct from.
+
+To use HTML tags, opt in to the `plugins/html` package (requires
+**OpenUI5 ≥ 1.154.0**, which ships the `sap.html` library):
 
 ```tsx
-// ❌ Typechecks, throws at runtime
-<div class="wrap"><span>hi</span></div>
+import { withScope } from "ui5/community/jsx/runtime/jsx-runtime";
+import { htmlScope, preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
+
+// At bootstrap (once, before any HTML-tag view renders):
+await preloadSapHtml();
+
+// In createContent():
+return withScope(htmlScope, () => (
+  <div class="wrap"><span>Hi</span></div>
+));
 ```
 
-An HTML-aware renderer plugin is planned that installs an `htmlIntrinsic` in the scope; until then, treat lowercase tags as unusable in JSX. The error message from `jsx()` names the missing `htmlIntrinsic` explicitly.
+Each lowercase tag maps to the corresponding `sap.html.*` control class
+(`<div>` → `sap/html/Div`, `<input>` → `sap/html/Input`, etc.). Because
+these are real `ManagedObject` controls, data binding, events, `class=`,
+and `ref=` all work identically to any other UI5 control.
+
+Outside `withScope(htmlScope, …)`, lowercase tags still throw a clear
+error naming the missing `htmlIntrinsic`. The scope boundary is explicit
+and reversible.
+
+See [docs: Native HTML via sap.html](../packages/jsx-runtime-showcase/webapp/docs/native-html.md)
+and the [plugins/html README](../packages/jsx-runtime/src/plugins/html/README.md)
+for full details.
+
+SVG tags (`<svg>`, `<path>`, `<g>`, …) remain unimplemented; there is
+no `sap.svg` library equivalent. They are typed permissively in
+`JSX.IntrinsicElements` as `HTMLAttributes` (fallback) but will still
+throw at runtime if used without a custom `htmlIntrinsic` that handles them.
 
 ---
 

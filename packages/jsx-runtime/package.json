@@ -49,6 +49,10 @@
       "types": "./dist/resources/ui5/community/jsx/runtime/plugins/switch/index.d.ts",
       "default": "./dist/resources/ui5/community/jsx/runtime/plugins/switch/index.js"
     },
+    "./plugins/html": {
+      "types": "./dist/resources/ui5/community/jsx/runtime/plugins/html/index.d.ts",
+      "default": "./dist/resources/ui5/community/jsx/runtime/plugins/html/index.js"
+    },
     "./src/*": "./src/*",
     "./dist/*": "./dist/*",
     "./package.json": "./package.json"

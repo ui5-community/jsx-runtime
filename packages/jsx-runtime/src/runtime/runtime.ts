@@ -1375,7 +1375,19 @@ const ifProcessor: ChildrenProcessor = {
 				// model, etc.); sharing one object across N children corrupts
 				// every binding after the first. Same class of bug as the
 				// FR-CON-04 list-template issue fixed in commit 2e12ecd.
-				childCtl.bindProperty("visible", { ...(condition as object) });
+				//
+				// `visible` is a boolean property. The bound path may resolve
+				// to any model value (string, number, object). Inject a
+				// `formatter: Boolean` so any truthy value → true and any
+				// falsy value → false, matching the <If> semantic of
+				// "show children when condition is truthy". An explicit
+				// user-supplied formatter in the binding info takes precedence
+				// (spread puts ours first; the user's key overwrites it).
+				const info = condition as Record<string, unknown>;
+				childCtl.bindProperty("visible", {
+					formatter: Boolean,
+					...info,
+				});
 			}
 			emit(childCtl);
 		}

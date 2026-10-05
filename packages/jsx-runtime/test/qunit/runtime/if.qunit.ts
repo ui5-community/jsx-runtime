@@ -64,6 +64,21 @@ QUnit.test("<If condition> string-syntax binding binds visible on each child", (
 	outer.destroy();
 });
 
+QUnit.test("<If condition> binding with non-boolean model value coerces to boolean", (assert) => {
+	// Regression: condition bound to a string model path (e.g. a text field)
+	// must not throw "expected boolean" — the formatter must coerce the value.
+	const label = jsx(Text, { text: "{/detectedLangText}" }) as Text;
+	const ifNode = jsx(If as never, { condition: "{/detectedLangText}", children: label });
+	const outer = jsx(VBox, { children: ifNode }) as VBox;
+	// Non-empty string → visible: true (no throw)
+	outer.setModel(new JSONModel({ detectedLangText: "English" }));
+	assert.strictEqual(label.getVisible(), true, "non-empty string → visible true");
+	// Empty string → visible: false (no throw)
+	outer.setModel(new JSONModel({ detectedLangText: "" }));
+	assert.strictEqual(label.getVisible(), false, "empty string → visible false");
+	outer.destroy();
+});
+
 QUnit.test("<If condition> plain string literal (no binding) inlines children", (assert) => {
 	const t = jsx(Text, { text: "yes" }) as Text;
 	const ifNode = jsx(If as never, { condition: "plain text", children: t });

@@ -743,6 +743,27 @@ function isBindingLike(value: unknown): value is Record<string, unknown> & { pat
 }
 
 /**
+ * If `value` is a binding *string* (e.g. `"{/path}"`, `"{model>path}"`,
+ * `"{= ${a} > 5 }"`), parse it into a binding-info object so the
+ * object-only `isBindingLike` gate accepts it. A plain literal string,
+ * a string without `{`, or a malformed binding (where `complexParser`
+ * throws) is returned unchanged — same contract as the string-aggregation
+ * fix (commit 28f2e36).
+ */
+function coerceBindingString(value: unknown): unknown {
+	if (typeof value !== "string" || !value.includes("{")) {
+		return value;
+	}
+	let parsed: unknown;
+	try {
+		parsed = BindingParser.complexParser(value);
+	} catch {
+		return value;
+	}
+	return parsed && typeof parsed === "object" ? parsed : value;
+}
+
+/**
  * Walk `children` once, dispatching each child to the registered
  * `ChildrenProcessor` whose `matches` claims it. Any child that no
  * processor claims is forwarded to the leftover-list, where the default
@@ -871,10 +892,14 @@ function flattenChildren(children: unknown): unknown[] {
  * (and any other falsy literal) drops them.
  */
 function resolveLiteralIf(node: IfNode): unknown {
-	if (node.condition && !isBindingLike(node.condition)) {
+	// Coerce a binding string so it doesn't masquerade as a truthy literal;
+	// if it parses to a binding object, treat the node as binding-inline
+	// (truthy) — matching the "slipped through" defensive case below.
+	const condition = coerceBindingString(node.condition);
+	if (condition && !isBindingLike(condition)) {
 		return node.children;
 	}
-	if (!node.condition) {
+	if (!condition) {
 		return null;
 	}
 	// Defensive: a binding-like that slipped through processChildren
@@ -1270,7 +1295,10 @@ const forProcessor: ChildrenProcessor = {
 		void _emit;
 		const node = child as ForNode;
 		const target = node.aggregation ?? defaultAggregation;
-		const each = node.each as Record<string, unknown> | undefined;
+		// Accept string-syntax bindings (e.g. each="{/items}") in addition
+		// to the object form — same treatment as the aggregation-binding fix
+		// for controls (commit 28f2e36).
+		const each = coerceBindingString(node.each) as Record<string, unknown> | undefined;
 		if (!each || !isBindingLike(each)) {
 			throw new Error(
 				"<For each={...}> requires a binding info / ListBindingRef as `each`"
@@ -1315,7 +1343,11 @@ const ifProcessor: ChildrenProcessor = {
 	},
 	process(child, _settings, _defaultAggregation, emit) {
 		const node = child as IfNode;
-		if (!isBindingLike(node.condition)) {
+		// Accept string-syntax bindings (e.g. condition="{/flag}") in addition
+		// to the object form. A plain literal (true/false/string without {})
+		// is returned unchanged by coerceBindingString.
+		const condition = coerceBindingString(node.condition);
+		if (!isBindingLike(condition)) {
 			// Literal, leave the IfNode in place; `flattenChildren` will
 			// inline (or drop) it depending on truthiness. This preserves
 			// the previous semantics where `<If condition={false}>` truly
@@ -1343,7 +1375,7 @@ const ifProcessor: ChildrenProcessor = {
 				// model, etc.); sharing one object across N children corrupts
 				// every binding after the first. Same class of bug as the
 				// FR-CON-04 list-template issue fixed in commit 2e12ecd.
-				childCtl.bindProperty("visible", { ...(node.condition as object) });
+				childCtl.bindProperty("visible", { ...(condition as object) });
 			}
 			emit(childCtl);
 		}

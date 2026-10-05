@@ -49,3 +49,16 @@ QUnit.test("<For aggregation=...> targets a named aggregation", (assert) => {
 	assert.strictEqual(info?.path, "/rows", "explicit aggregation used");
 	list.destroy();
 });
+
+QUnit.test("<For each> string-syntax binding installs an aggregation binding with template", (assert) => {
+	const forNode = jsx(For as never, {
+		each: "{/items}",
+		children: () => jsx(StandardListItem, { title: "{name}" })
+	});
+	const list = jsx(List, { children: forNode }) as List;
+	const info = list.getBindingInfo("items") as { path?: string; template?: unknown } | undefined;
+	assert.ok(info, "binding info installed on `items`");
+	assert.strictEqual(info?.path, "/items", "path parsed from string each");
+	assert.ok(info?.template instanceof StandardListItem, "template is the rendered child");
+	list.destroy();
+});

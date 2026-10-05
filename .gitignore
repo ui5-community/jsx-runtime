@@ -40,6 +40,7 @@ npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.playwright-mcp/
 
 # Package-manager lockfiles from other tools (pnpm-only)
 package-lock.json

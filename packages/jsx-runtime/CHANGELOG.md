@@ -1,5 +1,11 @@
 # @ui5-community/jsx-runtime
 
+## 0.1.5
+
+### Patch Changes
+
+- [#17](https://github.com/ui5-community/jsx-runtime/pull/17) [`6b026c2`](https://github.com/ui5-community/jsx-runtime/commit/6b026c2fde3c8d7a0dd5fbb2d014211208fc816c) Thanks [@petermuessig](https://github.com/petermuessig)! - Fix `<If condition={binding}>` throwing "expected boolean" when the bound model path resolves to a non-boolean value (e.g. a string). The `ifProcessor` now injects `formatter: Boolean` into the binding info so any truthy/falsy model value is coerced to `boolean` before UI5 sets `visible` on child controls.
+
 ## 0.1.4
 
 ### Patch Changes

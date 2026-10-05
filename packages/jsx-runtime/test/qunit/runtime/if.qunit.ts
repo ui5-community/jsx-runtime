@@ -52,3 +52,22 @@ QUnit.test("<If> throws when a child already binds visible", (assert) => {
 	);
 	t.destroy();
 });
+
+QUnit.test("<If condition> string-syntax binding binds visible on each child", (assert) => {
+	const t1 = jsx(Text, { text: "a" }) as Text;
+	const t2 = jsx(Text, { text: "b" }) as Text;
+	const ifNode = jsx(If as never, { condition: "{/flag}", children: [t1, t2] });
+	const outer = jsx(VBox, { children: ifNode }) as VBox;
+	outer.setModel(new JSONModel({ flag: true }));
+	assert.ok(t1.getBindingInfo("visible"), "child A has visible binding (string condition)");
+	assert.ok(t2.getBindingInfo("visible"), "child B has visible binding (string condition)");
+	outer.destroy();
+});
+
+QUnit.test("<If condition> plain string literal (no binding) inlines children", (assert) => {
+	const t = jsx(Text, { text: "yes" }) as Text;
+	const ifNode = jsx(If as never, { condition: "plain text", children: t });
+	const outer = jsx(VBox, { children: ifNode }) as VBox;
+	assert.deepEqual(outer.getItems(), [t], "non-binding string treated as truthy, child inlined");
+	outer.destroy();
+});

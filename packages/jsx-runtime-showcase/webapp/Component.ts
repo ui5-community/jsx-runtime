@@ -1,4 +1,5 @@
 import UIComponent from "sap/ui/core/UIComponent";
+import Log from "sap/base/Log";
 
 import { getMode, setMode } from "./util/theme";
 import { preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
@@ -33,7 +34,19 @@ export default class Component extends UIComponent {
 		// Preload sap.html (and sap/ui/core/html/TextContent) so the
 		// html plugin can resolve <div>/<span>/… synchronously at JSX
 		// construction time in the NativeHtml sample view.
-		await preloadSapHtml();
+		// A failure (wrong framework version, network error) is non-fatal:
+		// the app still works, but HTML-tag views will throw at construction
+		// time with a clear "module not loaded" message instead of silently.
+		try {
+			await preloadSapHtml();
+		} catch (err) {
+			Log.error(
+				"ui5/community/jsx/runtime/plugins/html: preloadSapHtml() failed — " +
+				"native HTML tags (<div>, <span>, …) will not work in this session.",
+				err instanceof Error ? err.message : String(err),
+				"ui5.community.jsx.showcase.Component"
+			);
+		}
 		this.getRouter().initialize();
 	}
 }

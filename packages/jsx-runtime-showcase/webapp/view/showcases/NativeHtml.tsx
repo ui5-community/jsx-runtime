@@ -174,7 +174,7 @@ export default class NativeHtml extends View {
 					>
 						Say hello (native button)
 					</button>
-					<a href="#" click={(_e: UI5Event): void => { MessageToast.show("Link clicked"); }}>
+					<a href="#native-html" click={(_e: UI5Event): void => { MessageToast.show("Link clicked"); }}>
 						Native link
 					</a>
 				</p>

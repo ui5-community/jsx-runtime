@@ -35,6 +35,9 @@ ui5-workspace.yaml
 .idea/
 Thumbs.db
 
+# Playwright MCP browser-session snapshots
+.playwright-mcp/
+
 # Logs
 npm-debug.log*
 pnpm-debug.log*

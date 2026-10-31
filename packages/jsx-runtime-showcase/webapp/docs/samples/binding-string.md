@@ -1,8 +1,14 @@
 A view-local `JSONModel` registered under the named scope
 `"form"`. The `<Input>`'s `value` and a sibling `<Text>`'s
-`text` both bind to `"{form>/name}"`. UI5's binding system
-keeps them in sync as the user types. No `liveChange` handler,
-no `byId(...).setText(...)` round-trips.
+`text` both bind to `"{form>/name}"`. Because `JSONModel` defaults
+to `TwoWay` mode, UI5 writes the `<Input>`'s value back to the
+model automatically when the `change` event fires (blur or Enter).
+No explicit `change` handler, no `byId(...).setText(...)`.
+
+> **Note — `change`, not `liveChange`:** The `<Text>` mirror
+> updates when the model updates, which happens on blur or Enter,
+> not on every keystroke. For per-keystroke updates (live search,
+> character count) you need an explicit `liveChange` handler.
 
 Compare to the `no-bindings` foil: the entire mirroring
 infrastructure collapses into two binding strings. That's the
@@ -17,5 +23,6 @@ Concept reference: [Data binding](#/learn/data-binding).
 See also: [no-bindings](#/explore/no-bindings) — the foil, same
 mirroring done imperatively via `byId` + `setText`;
 [binding-object](#/explore/binding-object) — when the binding needs
-more than a `path`; [structural](#/explore/structural) — the same
-binding syntax powering bound aggregations.
+more than a `path`;
+[structural](#/explore/structural) — the same binding syntax
+powering bound aggregations.

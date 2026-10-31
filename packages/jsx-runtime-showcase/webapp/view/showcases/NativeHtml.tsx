@@ -35,6 +35,27 @@ import { htmlScope } from "ui5/community/jsx/runtime/plugins/html/index";
  *   plugin wraps each text segment in a `sap.ui.core.html.TextContent`
  *   placed at the correct position in the `children` aggregation.
  *
+ * ## Two-way write-back
+ *
+ * `sap.html` property bindings are **read-only by default**: they read
+ * from the model into the control, but user edits are not automatically
+ * written back. Call `model.setProperty()` explicitly inside the
+ * `input` (or `change`) event handler:
+ *
+ * ```tsx
+ * <input
+ *     value="{/name}"
+ *     input={(event: UI5Event): void => {
+ *         // getValue() returns the stale model value, not what the user typed.
+ *         // Read from the DOM directly via getDomRef().
+ *         const inputEl = (event.getSource() as unknown as {
+ *             getDomRef(): HTMLInputElement | null;
+ *         }).getDomRef();
+ *         model.setProperty("/name", inputEl?.value ?? "");
+ *     }}
+ * />
+ * ```
+ *
  * ## Try it
  *
  * Type in the input below; the `<output>` and `<p>` elements reflect
@@ -83,10 +104,15 @@ export default class NativeHtml extends View {
 						type="text"
 						value="{/name}"
 						class="sapUiSmallMarginBegin"
-						input={(): void => {
-							// The `input` event on sap.html.Input fires like any UI5 event.
-							// We just read the updated binding value for the toast.
-							const name = this.state.getProperty("/name") as string;
+						input={(event: UI5Event): void => {
+							// sap.html property bindings are model-driven: getValue()
+							// returns the last value pushed FROM the model, not the
+							// current DOM text the user typed. Read from the DOM directly.
+							const inputEl = (event.getSource() as unknown as {
+								getDomRef(): HTMLInputElement | null;
+							}).getDomRef();
+							const name = inputEl?.value ?? "";
+							this.state.setProperty("/name", name);
 							this.state.setProperty("/lastKey", name.slice(-1) || "(backspace)");
 						}}
 					/>
@@ -95,7 +121,7 @@ export default class NativeHtml extends View {
 				{/* Bound <output> and <p> reflect the model value */}
 				<p class="sapUiTinyMarginTop">
 					Bound output:
-					<output class="sapUiSmallMarginBegin">{/* children rendered by binding */}</output>
+					<output text="{/name}" class="sapUiSmallMarginBegin" />
 				</p>
 				<p>
 					Hello, <strong text="{/name}" />! (last key: <em text="{/lastKey}" />)

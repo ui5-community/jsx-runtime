@@ -4,7 +4,7 @@ import DataType from "sap/ui/base/DataType";
 import BindingParser from "sap/ui/base/BindingParser";
 import View from "sap/ui/core/mvc/View";
 import type Element from "sap/ui/core/Element";
-import type Event from "sap/ui/base/Event";
+import type UI5Event from "sap/ui/base/Event";
 import type {
 	ChildrenProcessor,
 	ControlClass,
@@ -167,19 +167,19 @@ function findController(start: Element): ControllerLike | undefined {
  * who need "capture now" semantics anyway (e.g. dialogs opened from
  * a shared controller that mount under different views).
  */
-function makeHandler(handlerName: string): (this: Element, event: Event) => void {
+function makeHandler(handlerName: string): (this: Element, event: UI5Event) => void {
 	// Capture any pinned controller at JSX-construction time, this
 	// is the F2 improvement: authors can pin a specific controller
 	// via `withScope({ controller }, …)` and the handler resolves
 	// against it regardless of where the control ultimately mounts.
 	const pinned = pinnedController();
-	return function (this: Element, event: Event): void {
+	return function (this: Element, event: UI5Event): void {
 		const controller = pinned ?? findController(this);
 		const fn = controller?.[handlerName];
 		if (typeof fn !== "function") {
 			throw new Error(`Event handler '${handlerName}' not found on controller`);
 		}
-		(fn as (event: Event) => void).call(controller, event);
+		(fn as (event: UI5Event) => void).call(controller, event);
 	};
 }
 
@@ -1052,7 +1052,7 @@ const fnHandlerIntrinsic: IntrinsicHandler = {
 		return typeof ctx.value === "function" && ctx.metadata.hasEvent(propName);
 	},
 	apply(_propName, value) {
-		const fn = value as (this: unknown, event: Event) => unknown;
+		const fn = value as (this: unknown, event: UI5Event) => unknown;
 		const pinned = pinnedController();
 		if (pinned) {
 			// Fast path: hand UI5 the same `[fn, listener]` shape XMLView
@@ -1064,7 +1064,7 @@ const fnHandlerIntrinsic: IntrinsicHandler = {
 		// inside the handler is resolved via the ancestor walk at fire
 		// time. Bound functions ignore the reassigned receiver, so
 		// `press={this.onTap.bind(this)}` still works transparently.
-		return function (this: Element, event: Event): unknown {
+		return function (this: Element, event: UI5Event): unknown {
 			const owner = findController(this);
 			return fn.call(owner ?? this, event);
 		};
@@ -1614,30 +1614,30 @@ export namespace JSX {
 		ariaValueNow?: string;
 		ariaValueText?: string;
 		// ---- Common DOM events (sap.html.HTMLElementBase events) -----------
-		click?: ((e: Event) => void) | `.${string}`;
-		auxclick?: ((e: Event) => void) | `.${string}`;
-		dblclick?: ((e: Event) => void) | `.${string}`;
-		keydown?: ((e: Event) => void) | `.${string}`;
-		keyup?: ((e: Event) => void) | `.${string}`;
-		keypress?: ((e: Event) => void) | `.${string}`;
-		mousedown?: ((e: Event) => void) | `.${string}`;
-		mouseup?: ((e: Event) => void) | `.${string}`;
-		mousemove?: ((e: Event) => void) | `.${string}`;
-		mouseenter?: ((e: Event) => void) | `.${string}`;
-		mouseleave?: ((e: Event) => void) | `.${string}`;
-		mouseover?: ((e: Event) => void) | `.${string}`;
-		mouseout?: ((e: Event) => void) | `.${string}`;
-		focus?: ((e: Event) => void) | `.${string}`;
-		blur?: ((e: Event) => void) | `.${string}`;
-		input?: ((e: Event) => void) | `.${string}`;
-		change?: ((e: Event) => void) | `.${string}`;
-		submit?: ((e: Event) => void) | `.${string}`;
-		reset?: ((e: Event) => void) | `.${string}`;
-		scroll?: ((e: Event) => void) | `.${string}`;
-		toggle?: ((e: Event) => void) | `.${string}`;
-		beforetoggle?: ((e: Event) => void) | `.${string}`;
-		load?: ((e: Event) => void) | `.${string}`;
-		error?: ((e: Event) => void) | `.${string}`;
+		click?: ((e: UI5Event) => void) | `.${string}`;
+		auxclick?: ((e: UI5Event) => void) | `.${string}`;
+		dblclick?: ((e: UI5Event) => void) | `.${string}`;
+		keydown?: ((e: UI5Event) => void) | `.${string}`;
+		keyup?: ((e: UI5Event) => void) | `.${string}`;
+		keypress?: ((e: UI5Event) => void) | `.${string}`;
+		mousedown?: ((e: UI5Event) => void) | `.${string}`;
+		mouseup?: ((e: UI5Event) => void) | `.${string}`;
+		mousemove?: ((e: UI5Event) => void) | `.${string}`;
+		mouseenter?: ((e: UI5Event) => void) | `.${string}`;
+		mouseleave?: ((e: UI5Event) => void) | `.${string}`;
+		mouseover?: ((e: UI5Event) => void) | `.${string}`;
+		mouseout?: ((e: UI5Event) => void) | `.${string}`;
+		focus?: ((e: UI5Event) => void) | `.${string}`;
+		blur?: ((e: UI5Event) => void) | `.${string}`;
+		input?: ((e: UI5Event) => void) | `.${string}`;
+		change?: ((e: UI5Event) => void) | `.${string}`;
+		submit?: ((e: UI5Event) => void) | `.${string}`;
+		reset?: ((e: UI5Event) => void) | `.${string}`;
+		scroll?: ((e: UI5Event) => void) | `.${string}`;
+		toggle?: ((e: UI5Event) => void) | `.${string}`;
+		beforetoggle?: ((e: UI5Event) => void) | `.${string}`;
+		load?: ((e: UI5Event) => void) | `.${string}`;
+		error?: ((e: UI5Event) => void) | `.${string}`;
 		// JSX extras (class, id, ref, children, key handled by LibraryManagedAttributes)
 		/** @internal resolved by classIntrinsic */
 		class?: string;

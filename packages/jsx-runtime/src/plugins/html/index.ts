@@ -177,7 +177,7 @@ export function normaliseHtmlProps(
 
 	// For void elements: reject any children (or text property).
 	if (isVoid) {
-		const hasText = "text" in props && props.text !== undefined && props.text !== null;
+		const hasText = "text" in props && props.text !== undefined && props.text !== null && props.text !== "";
 		const hasChildren = rawChildren !== null && rawChildren !== undefined;
 		if (hasText || hasChildren) {
 			throw new Error(
@@ -201,10 +201,13 @@ export function normaliseHtmlProps(
 		? (rawChildren as unknown[])
 		: [rawChildren];
 
-	// Filter out whitespace-only strings (Babel indentation artifacts) so
-	// they don't count as "content" when deciding sole-text vs mixed.
+	// Filter out JSX indentation artefacts — strings that are purely
+	// whitespace AND contain at least one newline, which is the signature
+	// of JSX-emitted indentation between elements (e.g. "\n\t\t\t\t").
+	// Lone spaces such as {" "} or {"  "} are intentional text content and
+	// must NOT be filtered here.
 	const meaningful = childArray.filter(
-		(c) => !(typeof c === "string" && c.trim() === "")
+		(c) => !(typeof c === "string" && c.trim() === "" && /[\n\r]/.test(c))
 	);
 
 	if (meaningful.length === 0) {

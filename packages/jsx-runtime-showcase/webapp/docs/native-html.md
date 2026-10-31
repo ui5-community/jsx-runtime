@@ -118,6 +118,44 @@ event name** (not the `onclick` DOM attribute style):
 <form   submit={this.onSubmit.bind(this)}> // method reference
 ```
 
+## Two-way binding: write-back is explicit
+
+`sap.html` property bindings are **read-only**: they sync the model
+value into the control, but user edits are **not** automatically
+written back. To keep the model up to date you must call
+`model.setProperty()` inside the `input` or `change` event handler:
+
+```tsx
+<input
+    value="{/name}"
+    input={(event: UI5Event): void => {
+        // getValue() returns the stale model value — the binding pushes
+        // the model into the property, but DOM changes don't flow back.
+        // Read the current text from the DOM directly.
+        const inputEl = (event.getSource() as unknown as {
+            getDomRef(): HTMLInputElement | null;
+        }).getDomRef();
+        model.setProperty("/name", inputEl?.value ?? "");
+    }}
+/>
+```
+
+### `input` vs `change`
+
+| Event | Fires | Typical use |
+|---|---|---|
+| `input` | every keystroke | live filter, live preview |
+| `change` | blur or Enter | commit-on-leave, server call |
+
+Use `input` when the bound output (another `sap.html` element, a
+`<Text>`, an aggregation) needs to reflect every keypress.
+Use `change` when you only need to react once the user is done.
+
+> **Contrast with `sap.m.Input`:** `sap.m.Input` with a `JSONModel`
+> binding and default `TwoWay` mode writes back automatically on
+> `change`. That implicit write-back does not apply to `sap.html`
+> controls.
+
 ## `enabled` vs `disabled`
 
 Interactive controls use `enabled` (default `true`); the framework

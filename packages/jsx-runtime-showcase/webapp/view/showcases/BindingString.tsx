@@ -12,9 +12,14 @@ import JSONModel from "sap/ui/model/json/JSONModel";
  *
  * A view-local `JSONModel` registered under the named scope `"form"`.
  * The `<Input>`'s `value` and a sibling `<Text>`'s `text` both bind
- * to `"{form>/name}"`. UI5's binding system keeps them in sync as
- * the user types. No `liveChange` handler, no `byId(...).setText(...)`
- * round-trips.
+ * to `"{form>/name}"`. Because `JSONModel` defaults to `TwoWay` mode,
+ * UI5 writes the new value back to the model when the `change` event
+ * fires (blur or Enter). The `<Text>` updates as soon as the model
+ * changes — no `change` handler, no `byId(...).setText(...)`.
+ *
+ * > **`change`, not `liveChange`:** The mirror updates on blur / Enter,
+ * > not on every keystroke. For per-keystroke updates you need an
+ * > explicit `liveChange` handler.
  *
  * Compare to Chapter 5 (the foil): the entire mirroring infrastructure
  * collapses into two binding strings. That is the whole pitch.

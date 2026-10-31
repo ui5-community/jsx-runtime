@@ -1,6 +1,6 @@
 # `@ui5-community/jsx-runtime/plugins/html`
 
-> **Requires OpenUI5 ≥ 1.154.0** — the `sap.html` library was introduced in 1.154.0-SNAPSHOT.
+> **Requires OpenUI5 ≥ 1.154.0** — the `sap.html` library was introduced in 1.154.0.
 
 An opt-in plugin that maps lowercase HTML tags in TSX views to the corresponding `sap.html.*` UI5 control classes, letting you write native HTML without importing each class individually.
 

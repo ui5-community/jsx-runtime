@@ -85,7 +85,6 @@ const FakeTextContent = Control.extend(
 
 // Map of module path → fake constructor. This is the lookup table that the
 // patched sap.ui.require will consult for the single-string (sync) form.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FAKE_MODULES: Record<string, unknown> = {
 	"sap/html/Div": FakeDiv,
 	"sap/html/Span": FakeSpan,

@@ -202,9 +202,16 @@ QUnit.test("sole number child → `text` property (stringified)", (assert) => {
 });
 
 QUnit.test("whitespace-only children treated as empty (no text, no children)", (assert) => {
-	const result = normaliseHtmlProps("span", { children: ["  ", "\n  "] });
+	// JSX indentation artefacts always contain newlines ("\n\t\t\t\t"); pure-
+	// space strings like {" "} are intentional content and must be preserved.
+	const result = normaliseHtmlProps("span", { children: ["\n\t", "\n\t\t"] });
 	assert.notOk("children" in result, "no children");
 	assert.notOk("text" in result, "no text property for whitespace-only content");
+});
+
+QUnit.test("lone space {' '} preserved as text content", (assert) => {
+	const result = normaliseHtmlProps("span", { children: " " });
+	assert.strictEqual((result as Record<string, unknown>).text, " ", "single space kept as text");
 });
 
 QUnit.test("multiple text segments concatenated into `text`", (assert) => {

@@ -15,13 +15,14 @@
   },
   "scripts": {
     "clean": "rimraf dist coverage report .nyc_output webapp/api",
-    "build": "pnpm --filter @ui5-community/jsx-runtime build:api && ui5 build --clean-dest",
+    "build": "pnpm check:framework && pnpm --filter @ui5-community/jsx-runtime build:api && ui5 build --clean-dest",
+    "check:framework": "node scripts/check-framework-version.mjs",
     "dev": "ui5 serve --port 8080 -o index-local.html",
     "start": "ui5 serve --port 8080 -o index.html --config ui5-dist.yaml",
     "ts-typecheck": "tsc --noEmit",
     "lint": "eslint webapp",
     "test-runner": "ui5-test-runner --url http://localhost:8080/test/testsuite.qunit.html --start dev --start-timeout 60000",
-    "test": "npm run ts-typecheck && npm run lint && npm run test-runner"
+    "test": "npm run check:framework && npm run ts-typecheck && npm run lint && npm run test-runner"
   },
   "dependencies": {
     "@ui5-community/jsx-runtime": "workspace:^",

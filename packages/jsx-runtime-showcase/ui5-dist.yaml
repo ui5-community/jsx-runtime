@@ -8,10 +8,11 @@ resources:
       webapp: dist
 framework:
   name: OpenUI5
-  version: "1.148.2"
+  version: "1.154.0"
   libraries:
     - name: sap.m
     - name: sap.f
+    - name: sap.html
     - name: sap.tnt
     - name: sap.ui.core
     - name: sap.ui.layout

@@ -24,12 +24,23 @@ Outside that scope, lowercase tags still throw a clear
 **Void elements** (`<br>`, `<input>`, `<img>`, …) reject children or a
 `text` property — providing either throws a clear error at construction time.
 
-**Preload once** at bootstrap before any HTML-tag view renders:
+The component implements **`IAsyncContentCreation`** and preloads HTML modules
+before delegating to the manifest's root-view creation:
 
 ```ts
-// Component.ts
-await preloadSapHtml();   // loads sap.html + all sap/html/* controls
-this.getRouter().initialize();
+public async createContent(): Promise<Control | null> {
+  await preloadSapHtml();
+  return this.runAsOwner(() => super.createContent());
+}
 ```
+
+UI5 waits for this Promise during asynchronous component creation. Router
+initialization stays in synchronous `init()`; no service or explicit router
+wait is needed. `runAsOwner()` preserves component ownership after the await,
+and the HTML sample's `createContent()` remains synchronous.
+
+A preload failure rejects content/component creation and prevents mounting
+its content. See the concept reference below for imports, metadata and the
+complete component example.
 
 Concept reference: [Native HTML via sap.html](#/learn/native-html).

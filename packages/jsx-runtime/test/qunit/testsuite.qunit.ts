@@ -37,6 +37,7 @@ export default {
 		"runtime/forwarded-aggregation": { title: "runtime: forwarded default aggregation (Menu#items)" },
 		"runtime/view-error-logging": { title: "runtime: view createContent() errors logged via Log.error" },
 		"plugins/switch": { title: "plugins: <Switch> / <Case> / <Default>" },
-		"plugins/html": { title: "plugins: html sap.html intrinsic" }
+		"plugins/html": { title: "plugins: html sap.html intrinsic" },
+		"plugins/html-preload": { title: "plugins: HTML preload and async component content" }
 	}
 };

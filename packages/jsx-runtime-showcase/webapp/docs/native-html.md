@@ -35,21 +35,63 @@ Because `<div>`, `<input>`, etc. are mapped to real `sap.html.Div` /
 
 ## Preloading
 
-The `sap.html` library is not part of the default UI5 preload. Load it
-once at bootstrap before any HTML-tag view renders:
+### The async helper
+
+`preloadSapHtml(): Promise<void>` first awaits `Lib.load({ name: "sap.html" })`,
+then async-requires every control listed in the library metadata and
+`sap/ui/core/html/TextContent`. A library preload caches definitions without
+executing every control factory; the async require step makes the constructors
+available for synchronous JSX calls, often without additional requests.
+The helper rejects on failure and is safe to call repeatedly through UI5's cache.
+
+### Default: preload in component content creation
+
+Use the public `IAsyncContentCreation` lifecycle instead of a component service:
 
 ```ts
-// Component.ts
+// webapp/Component.ts
+import UIComponent from "sap/ui/core/UIComponent";
+import type Control from "sap/ui/core/Control";
 import { preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
 
-public async init(): Promise<void> {
-  super.init();
-  await preloadSapHtml();   // ← before router.initialize()
-  this.getRouter().initialize();
+export default class Component extends UIComponent {
+  public static metadata = {
+    manifest: "json",
+    interfaces: ["sap.ui.core.IAsyncContentCreation"]
+  };
+
+  public init(): void {
+    super.init();
+    this.getRouter().initialize();
+  }
+
+  public async createContent(): Promise<Control | null> {
+    await preloadSapHtml();
+    return this.runAsOwner(() => super.createContent());
+  }
 }
 ```
 
-`preloadSapHtml()` is idempotent — safe to call multiple times.
+The base `createContent()` uses the root view from `manifest.json`.
+`runAsOwner()` restores component ownership after the await. Use asynchronous
+component creation (`Component.create()` or an async `ComponentContainer`);
+UI5 waits for content creation, and asynchronous routing waits for root content.
+The router can initialize normally in synchronous `init()`.
+
+No service declaration, factory registration or `getService()` wait is needed.
+HTML modules are ready before the root view is created, so individual TSX views
+keep synchronous `createContent()` and `withScope(htmlScope, …)`. The automatic
+view-scope bridge does not need to span an await.
+
+Do not make component `init()` or `onBeforeRendering()` async, and do not build
+HTML JSX in those hooks before preload is ready. A preload failure rejects
+content and component creation; handle it through `Component.create()`'s catch
+handler or `ComponentContainer.componentFailed`. If the component can be
+destroyed during loading, check `this.isDestroyed()` after the await before
+creating content.
+
+Standalone code may instead await `preloadSapHtml()` at an async application
+entry before HTML JSX construction. Do not put an await inside `withScope`.
 
 ## Opt-in: `withScope(htmlScope, fn)`
 

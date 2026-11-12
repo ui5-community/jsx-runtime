@@ -1,28 +1,27 @@
 import UIComponent from "sap/ui/core/UIComponent";
-import Log from "sap/base/Log";
+import type Control from "sap/ui/core/Control";
+import { preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
 
 import { getMode, setMode } from "./util/theme";
-import { preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
 
 /**
  * Root component of the showcase.
  *
- * The manifest declares `ui5.community.jsx.runtime` as a `libs`
- * dependency, so UI5 auto-loads the library before `init()` runs.
- *
- * `preloadSapHtml()` fetches the `sap.html` library and the
- * `sap/ui/core/html/TextContent` module (required for mixed
- * text+control children in native HTML JSX tags) before the
- * router opens any view.
+ * `IAsyncContentCreation` makes asynchronous component creation await the
+ * `createContent()` Promise. HTML modules are resolved before the manifest's
+ * root view is created, with component ownership restored after the await.
+ * Router initialization stays in synchronous `init()`, and TSX views keep
+ * synchronous content creation so their automatic JSX view scopes are intact.
  *
  * @namespace ui5.community.jsx.showcase
  */
 export default class Component extends UIComponent {
 	public static metadata = {
-		manifest: "json"
+		manifest: "json",
+		interfaces: ["sap.ui.core.IAsyncContentCreation"]
 	};
 
-	public async init(): Promise<void> {
+	public init(): void {
 		super.init();
 		// Reconcile UI5's runtime theme with the persisted (or
 		// OS-derived) mode. The pre-paint resolver in
@@ -31,22 +30,14 @@ export default class Component extends UIComponent {
 		// Mermaid + the CodeBlock have a consistent view of "the
 		// theme has arrived" on first render.
 		setMode(getMode());
-		// Preload sap.html (and sap/ui/core/html/TextContent) so the
-		// html plugin can resolve <div>/<span>/… synchronously at JSX
-		// construction time in the NativeHtml sample view.
-		// A failure (wrong framework version, network error) is non-fatal:
-		// the app still works, but HTML-tag views will throw at construction
-		// time with a clear "module not loaded" message instead of silently.
-		try {
-			await preloadSapHtml();
-		} catch (err) {
-			Log.error(
-				"ui5/community/jsx/runtime/plugins/html: preloadSapHtml() failed — " +
-				"native HTML tags (<div>, <span>, …) will not work in this session.",
-				err instanceof Error ? err.message : String(err),
-				"ui5.community.jsx.showcase.Component"
-			);
-		}
 		this.getRouter().initialize();
+	}
+
+	public async createContent(): Promise<Control | null> {
+		await preloadSapHtml();
+		if (this.isDestroyed()) {
+			throw new Error("Showcase component was destroyed during HTML preload.");
+		}
+		return this.runAsOwner(() => super.createContent());
 	}
 }

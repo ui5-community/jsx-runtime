@@ -42,3 +42,6 @@ yarn-error.log*
 # Package-manager lockfiles from other tools (pnpm-only)
 package-lock.json
 yarn.lock
+
+# Local presentations and working notes (not published or versioned)
+/docs/_local/

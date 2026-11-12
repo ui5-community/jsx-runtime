@@ -26,6 +26,11 @@ If you genuinely need async-aware scoping, wrap `withScope` in a plugin-local `w
 
 Documented at [src/runtime/scope.ts](../packages/jsx-runtime/src/runtime/scope.ts).
 
+The automatic view-scope bridge also loses its view context when a view's
+`createContent()` awaits before constructing JSX. Keep view content synchronous;
+for HTML preload, use the component's async `createContent()` boundary described
+in the [HTML plugin README](../packages/jsx-runtime/src/plugins/html/README.md#preloading-in-component-createcontent-default).
+
 ---
 
 ## HTML intrinsic tags — use the `plugins/html` opt-in
@@ -42,7 +47,7 @@ To use HTML tags, opt in to the `plugins/html` package (requires
 import { withScope } from "ui5/community/jsx/runtime/jsx-runtime";
 import { htmlScope, preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
 
-// At bootstrap (once, before any HTML-tag view renders):
+// In component createContent() with IAsyncContentCreation, before root-view creation:
 await preloadSapHtml();
 
 // In createContent():
@@ -62,7 +67,8 @@ and reversible.
 
 See [docs: Native HTML via sap.html](../packages/jsx-runtime-showcase/webapp/docs/native-html.md)
 and the [plugins/html README](../packages/jsx-runtime/src/plugins/html/README.md)
-for full details.
+for the default async component `createContent()` pattern, including
+`IAsyncContentCreation` and ownership restoration via `runAsOwner()`.
 
 SVG tags (`<svg>`, `<path>`, `<g>`, …) remain unimplemented; there is
 no `sap.svg` library equivalent. They are typed permissively in

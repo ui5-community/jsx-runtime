@@ -12,10 +12,11 @@
  *
  * ```tsx
  * import { withScope }   from "ui5/community/jsx/runtime/jsx-runtime";
- * import { htmlScope, preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
+ * import { htmlScope } from "ui5/community/jsx/runtime/plugins/html/index";
  *
- * // Once, at component init (async OK here):
- * await preloadSapHtml();
+ * // Await preloadSapHtml() in component createContent(), before creating the
+ * // root view. Use IAsyncContentCreation and runAsOwner(); see the README.
+ * // Component init/router setup and view JSX construction stay synchronous.
  *
  * // In a view's createContent():
  * createContent() {
@@ -140,8 +141,10 @@ export function resolveHtmlControl(tag: string): SapHtmlControlClass {
 			`ui5/community/jsx/runtime/plugins/html: <${tag}> maps to module ` +
 			`"${modulePath}", but the module is not loaded. ` +
 			`Did you call and await preloadSapHtml() before this JSX view rendered? ` +
-			`Add \`await preloadSapHtml()\` to your Component.init() (or equivalent ` +
-			`bootstrap point) before initialising the router / creating the first view.`
+			`Await preloadSapHtml() in async Component.createContent() with ` +
+			`IAsyncContentCreation, then create the root view under runAsOwner(). ` +
+			`Alternatively await it at an async app entry before HTML JSX construction. ` +
+			`Component.init() remains synchronous.`
 		);
 	}
 	return ctor;
@@ -249,9 +252,9 @@ export function normaliseHtmlProps(
 /**
  * Synchronously resolve `sap/ui/core/html/TextContent` — the private core
  * control used to carry inline text in mixed-content sap.html aggregations.
- * Same preload requirement as the sap/html/* controls (it is in sap.ui.core
- * which must be loaded; it is loaded by preloadSapHtml() via the core
- * library dependency chain).
+ * Same preload requirement as the sap/html/* controls. This core module is
+ * explicitly async-required by preloadSapHtml() alongside the HTML constructors;
+ * library preloading alone does not execute it.
  */
 function resolveTextContent(): new (settings?: { text?: string }) => ManagedObject {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -328,16 +331,20 @@ export const htmlScope: Partial<Scope> = {
  * `sap/ui/core/html/TextContent`, so that all `sap/html/*` modules are in
  * the synchronous require cache before any HTML-tag JSX view renders.
  *
- * Call **once** at application bootstrap — e.g. from `Component.init()` or
- * from the root view's `onBeforeRendering`. Await the returned promise before
- * initialising the router or opening any view that uses HTML tags.
+ * Default component pattern: implement `IAsyncContentCreation`, await this in
+ * component `createContent()`, then delegate to root-view creation inside
+ * `this.runAsOwner(() => super.createContent())`. UI5 awaits the content Promise;
+ * views can keep synchronous `createContent()` and their automatic JSX scopes.
+ * Standalone callers can instead await this at an async application entry.
  *
- * ```ts
- * // In Component.init():
- * super.init();
- * await preloadSapHtml();
- * this.getRouter().initialize();
- * ```
+ * Library preloading caches definitions without executing every control factory;
+ * the async require step makes constructors available even when no further
+ * network requests are needed.
+ *
+ * Component `init()` and `onBeforeRendering()` must remain synchronous (UI5 does
+ * not await them). The router can initialize normally in init; asynchronous
+ * routing waits for root content. Do not construct HTML JSX before preload or
+ * await inside a JSX `withScope` callback. See the plugin README for full wiring.
  *
  * Safe to call multiple times — UI5's `Lib.load` is idempotent.
  */

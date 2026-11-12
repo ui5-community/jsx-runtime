@@ -1,4 +1,6 @@
 import ComponentContainer from "sap/ui/core/ComponentContainer";
+import type { ComponentContainer$ComponentFailedEvent } from "sap/ui/core/ComponentContainer";
+import Log from "sap/base/Log";
 import { preloadOtherTheme } from "./util/theme";
 
 /**
@@ -15,9 +17,9 @@ import { preloadOtherTheme } from "./util/theme";
  *     `sap.ui.require.toUrl` so the URL resolves correctly in dev,
  *     dist-preview, and any hosted-with-a-prefix deployment.
  *  2. Mount the Component's `ComponentContainer` into `#content`
- *     immediately. The router (see `manifest.json`) decides which
- *     view is shown, `""` → Welcome, `#/learn/*` / `#/explore/*` →
- *     Explorer shell.
+ *     immediately. The component initializes its router normally; the
+ *     asynchronous container waits for the component's async content
+ *     creation, including HTML preload, before mounting its content.
  *
  * The static `#jsx-splash` element in `index.html` stays visible
  * until the Component's `componentCreated` event fires, at that
@@ -33,16 +35,15 @@ const container = new ComponentContainer({
 	settings: { id: "showcase" },
 	async: true,
 	manifest: true,
-	componentCreated: onComponentReady
+	componentCreated: onComponentReady,
+	componentFailed: onComponentFailed
 });
 container.placeAt("content");
 
 /**
- * Fade out and remove the splash once the Component is ready.
- * `componentCreated` fires after the async component finishes
- * initialising, which means the router has been created and the
- * first view is (or is about to be) mounted. The 200 ms opacity
- * transition is driven by CSS in `index.html`.
+ * Remove the splash once async component content creation (including HTML
+ * preload) has completed. This callback does not initialize routing or perform
+ * an additional preload wait.
  */
 function onComponentReady(): void {
 	// Warm the browser cache with the opposite theme's library CSS at
@@ -68,4 +69,19 @@ function onComponentReady(): void {
 	setTimeout(() => {
 		splash.parentNode?.removeChild(splash);
 	}, 300);
+}
+
+/** HTML preload/content failures reject component creation; its content is not mounted. */
+function onComponentFailed(event: ComponentContainer$ComponentFailedEvent): void {
+	const reason = event.getParameter("reason");
+	Log.error(
+		"Showcase component creation failed.",
+		reason instanceof Error ? reason.message : String(reason),
+		"ui5.community.jsx.showcase.index"
+	);
+	event.preventDefault(); // This handler reports the failure; avoid duplicate framework logging.
+	const hint = document.querySelector(".jsx-splash-hint");
+	if (hint) hint.textContent = "Unable to start the showcase. Check the connection and reload.";
+	const spinner = document.querySelector<HTMLElement>(".jsx-splash-spinner");
+	if (spinner) spinner.hidden = true;
 }

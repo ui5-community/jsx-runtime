@@ -6,12 +6,9 @@ An opt-in plugin that maps lowercase HTML tags in TSX views to the corresponding
 
 ```tsx
 import { withScope } from "ui5/community/jsx/runtime/jsx-runtime";
-import { htmlScope, preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
+import { htmlScope } from "ui5/community/jsx/runtime/plugins/html/index";
 
-// Once at bootstrap (Component.init / app entry):
-await preloadSapHtml();
-
-// In a view's createContent():
+// In a synchronous view, after the component's async createContent() preload:
 return withScope(htmlScope, () => (
   <div class="myCard">
     <h3>Hello, {name}!</h3>
@@ -50,20 +47,86 @@ return withScope(htmlScope, () => <div>…</div>);
 
 ---
 
-## Preloading
+## How `preloadSapHtml()` works
 
-`sap.html` is loaded lazily; the sync `sap.ui.require` call inside the plugin only works if the library is already in the require cache. Call `preloadSapHtml()` once at bootstrap:
+`preloadSapHtml(): Promise<void>` has two asynchronous stages:
+
+1. **Load the library:** await `Lib.load({ name: "sap.html" })` and read the
+   control module names from its metadata.
+2. **Resolve the constructors:** async-require all those modules plus
+   `sap/ui/core/html/TextContent`, which carries mixed text/control children.
+
+A library preload caches module definitions; it does **not** execute every
+control factory. The second stage is therefore necessary even when it causes
+no additional network requests. Once the Promise resolves, synchronous
+`sap.ui.require("sap/html/Div")` can return the constructor needed by JSX.
+
+The helper does not enable HTML tags globally. It only prepares modules;
+`withScope(htmlScope, …)` is still the explicit JSX opt-in. Failures reject its
+Promise. Repeated calls are safe because UI5 caches library/module loading.
+
+For standalone usage, await it at an async application entry **before** HTML
+JSX construction—not inside `Component.init()` or `onBeforeRendering()`, which
+UI5 does not await. The default component pattern below supplies the async boundary.
+
+## Preloading in component `createContent()` (default)
+
+Await `preloadSapHtml()` in the component's asynchronous `createContent()`,
+**before creating its root view**. Declare `IAsyncContentCreation` so UI5 awaits
+that Promise as part of asynchronous component creation.
 
 ```ts
-// Component.ts
-public async init(): Promise<void> {
-  super.init();
-  await preloadSapHtml();  // ← before router.initialize()
-  this.getRouter().initialize();
+// webapp/Component.ts
+import UIComponent from "sap/ui/core/UIComponent";
+import type Control from "sap/ui/core/Control";
+import { preloadSapHtml } from "ui5/community/jsx/runtime/plugins/html/index";
+
+export default class Component extends UIComponent {
+  public static metadata = {
+    manifest: "json",
+    interfaces: ["sap.ui.core.IAsyncContentCreation"]
+  };
+
+  public init(): void {
+    super.init();
+    this.getRouter().initialize();
+  }
+
+  public async createContent(): Promise<Control | null> {
+    await preloadSapHtml();
+    return this.runAsOwner(() => super.createContent());
+  }
 }
 ```
 
-`preloadSapHtml()` calls `Lib.load({ name: "sap.html" })`, reads the library metadata's `controls` list to discover every `sap/html/*` module, then async-requires them all in one batch — plus `sap/ui/core/html/TextContent` for mixed-content support. After the promise resolves, every `sap/html/*` control is in the synchronous require cache. Safe to call multiple times.
+Keep the root-view declaration in `manifest.json`; `super.createContent()`
+uses it normally. `runAsOwner()` restores component ownership after the await,
+so the root view and its controls belong to the component.
+
+Create the component asynchronously through `Component.create()` or an async
+`ComponentContainer`. Router initialization remains in synchronous `init()`:
+asynchronous routing waits for root content, which is not created until preload
+has completed. No service declaration, factory registration or explicit router
+wait is required.
+
+Individual TSX views keep synchronous `createContent()` and scope only their JSX:
+
+```tsx
+createContent() {
+  return withScope(htmlScope, () => <div>Hello, HTML!</div>);
+}
+```
+
+This avoids crossing an await inside the automatic view-scope bridge. Do not
+put an await inside `withScope`, and do not construct HTML JSX directly in
+component `init()` before preload readiness. See the
+[synchronous scope gotcha](../../../../../docs/gotchas.md#withscope-is-synchronous-only).
+
+A preload failure rejects content creation and therefore `Component.create()`.
+Handle it through the factory's catch handler or
+`ComponentContainer.componentFailed`. If supporting component destruction during
+loading, check `this.isDestroyed()` after the await before creating root content,
+as the showcase does.
 
 ---
 
